@@ -1,6 +1,8 @@
 package com.test.jm.controller;
 
 import com.test.jm.util.RedisUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 @RestController
 public class ConfigClientController {
+    private static Logger logger = LoggerFactory.getLogger(ConfigClientController.class);
+
     @Value("${test.appname}")
     private String name;
 

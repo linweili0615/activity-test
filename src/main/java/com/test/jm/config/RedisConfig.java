@@ -40,7 +40,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         return rcm;
     }
 
-    @Bean(name = "redisTemplate")
+    @Bean
     public RedisTemplate<?, ?> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);

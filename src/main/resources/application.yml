@@ -15,6 +15,9 @@ spring:
       profile: test
       fail-fast: true
       label: master
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: GMT+8
 
 eureka:
   client:

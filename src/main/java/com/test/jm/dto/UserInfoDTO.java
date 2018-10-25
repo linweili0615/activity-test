@@ -1,5 +1,6 @@
 package com.test.jm.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserInfoDTO {
@@ -9,8 +10,8 @@ public class UserInfoDTO {
     private String telno;
     private Integer error_count;
     private Integer status;
-    private Date add_date;
-    private Date modify_date;
+    private LocalDateTime add_date;
+    private LocalDateTime modify_date;
 
     public String getId() {
         return id;
@@ -52,19 +53,19 @@ public class UserInfoDTO {
         this.status = status;
     }
 
-    public Date getAdd_date() {
+    public LocalDateTime getAdd_date() {
         return add_date;
     }
 
-    public void setAdd_date(Date add_date) {
+    public void setAdd_date(LocalDateTime add_date) {
         this.add_date = add_date;
     }
 
-    public Date getModify_date() {
+    public LocalDateTime getModify_date() {
         return modify_date;
     }
 
-    public void setModify_date(Date modify_date) {
+    public void setModify_date(LocalDateTime modify_date) {
         this.modify_date = modify_date;
     }
 

@@ -4,10 +4,10 @@ import com.test.jm.dto.UserInfoDTO;
 
 public interface UserInfoDao {
 
-    public int addUserInfo(UserInfoDTO userInfoDTO);
+     Integer addUserInfo(UserInfoDTO userInfoDTO);
 
-    public UserInfoDTO getUserInfo(UserInfoDTO userInfoDTO);
+     UserInfoDTO getUserInfo(UserInfoDTO userInfoDTO);
 
-    public int updateUserInfo(UserInfoDTO userInfoDTO);
+     Integer updateUserInfo(UserInfoDTO userInfoDTO);
 
 }

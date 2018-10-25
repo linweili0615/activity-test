@@ -10,7 +10,7 @@
           user_info
           (id, username, telno, error_count, status, add_date, modify_date)
           VALUES
-          (#{id}, #{username}, #{telno}, #{error_count}, #{status}, #{add_date}, #{modify_date]});
+          (#{id}, #{username}, #{telno}, 0, 0, #{add_date}, #{modify_date});
     </insert>
 
     <select id="getUserInfo" parameterType="com.test.jm.dto.UserInfoDTO"
@@ -29,13 +29,18 @@
         </trim>
     </select>
 
-    <!--<update id="updateUserInfo" parameterType="com.test.jm.dto.UserInfoDTO">-->
-        <!--UPDATE user_info-->
-        <!--<set>-->
-            <!--<if test="id != null">-->
-                <!---->
-            <!--</if>-->
-        <!--</set>-->
-    <!--</update>-->
+    <update id="updateUserInfo" parameterType="com.test.jm.dto.UserInfoDTO">
+        UPDATE user_info
+        <set>
+            <if test="error_count != null">
+                error_count = #{error_count},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+                modify_date = now(),
+        </set>
+        WHERE id = #{id}
+    </update>
 
 </mapper>

@@ -11,7 +11,7 @@ public class UserInfoService {
     @Autowired
     private UserInfoDao userInfoDao;
 
-    public int addUserInfo(UserInfoDTO userInfoDTO){
+    public Integer addUserInfo(UserInfoDTO userInfoDTO){
         return userInfoDao.addUserInfo(userInfoDTO);
     }
 
@@ -19,7 +19,7 @@ public class UserInfoService {
         return userInfoDao.getUserInfo(userInfoDTO);
     }
 
-//    public int updateUserInfo(UserInfoDTO userInfoDTO){
-//
-//    }
+    public Integer updateUserInfo(UserInfoDTO userInfoDTO){
+        return userInfoDao.updateUserInfo(userInfoDTO);
+    }
 }

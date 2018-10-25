@@ -1,0 +1,431 @@
+2018-10-25 10:53:39.638  INFO 27552 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771: startup date [Thu Oct 25 10:53:39 CST 2018]; root of context hierarchy
+2018-10-25 10:53:39.941  INFO 27552 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 10:53:39.970  INFO 27552 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$6c9edc47] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 10:53:40.355  INFO 27552 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2018-10-25 10:53:41.684  INFO 27552 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=activity-test, profiles=[test], label=master, version=bf0d4f9694c155bc0a36ab1f7f85719af625807d, state=null
+2018-10-25 10:53:41.685  INFO 27552 --- [           main] b.c.PropertySourceBootstrapConfiguration : Located property source: CompositePropertySource {name='configService', propertySources=[MapPropertySource {name='configClient'}, MapPropertySource {name='https://github.com/linweili0615/cloud-config.git/activity-test/application-test.yml'}]}
+2018-10-25 10:53:41.695  INFO 27552 --- [           main] com.test.jm.JmApplicationTests           : The following profiles are active: test
+2018-10-25 10:53:41.702  INFO 27552 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@224b4d61: startup date [Thu Oct 25 10:53:41 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771
+2018-10-25 10:53:42.187  INFO 27552 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-10-25 10:53:42.657  INFO 27552 --- [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=30129a09-9722-3802-b78e-93abc4e5375b
+2018-10-25 10:53:42.707  INFO 27552 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 10:53:42.788  INFO 27552 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5084d94a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 10:53:42.815  INFO 27552 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [com.test.jm.config.RedisConfig$$EnhancerBySpringCGLIB$$9b99e7dc] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 10:53:42.822  INFO 27552 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'keyGenerator' of type [com.test.jm.config.RedisConfig$$Lambda$267/1012776440] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 10:53:42.857  INFO 27552 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$6c9edc47] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 10:53:43.700  WARN 27552 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 10:53:43.700  INFO 27552 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 10:53:43.706  WARN 27552 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 10:53:43.707  INFO 27552 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 10:53:43.828  INFO 27552 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 10:53:44.116  INFO 27552 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@224b4d61: startup date [Thu Oct 25 10:53:41 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771
+2018-10-25 10:53:44.184  INFO 27552 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getId()
+2018-10-25 10:53:44.184  INFO 27552 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test123],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getNames()
+2018-10-25 10:53:44.186  INFO 27552 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-25 10:53:44.187  INFO 27552 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-25 10:53:44.214  INFO 27552 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 10:53:44.214  INFO 27552 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 10:53:44.266  WARN 27552 --- [           main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2018-10-25 10:53:45.288  INFO 27552 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Starting beans in phase 0
+2018-10-25 10:53:45.302  INFO 27552 --- [           main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2018-10-25 10:53:45.339  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2018-10-25 10:53:45.788  INFO 27552 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2018-10-25 10:53:45.789  INFO 27552 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2018-10-25 10:53:45.891  INFO 27552 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2018-10-25 10:53:45.891  INFO 27552 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2018-10-25 10:53:46.037  INFO 27552 --- [           main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2018-10-25 10:53:46.133  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2018-10-25 10:53:46.133  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2018-10-25 10:53:46.133  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2018-10-25 10:53:46.133  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2018-10-25 10:53:46.133  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2018-10-25 10:53:46.133  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2018-10-25 10:53:46.133  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2018-10-25 10:53:46.256  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2018-10-25 10:53:46.259  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2018-10-25 10:53:46.262  INFO 27552 --- [           main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2018-10-25 10:53:46.266  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1540436026264 with initial instances count: 2
+2018-10-25 10:53:46.270  INFO 27552 --- [           main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application activity-test with eureka with status UP
+2018-10-25 10:53:46.271  INFO 27552 --- [           main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540436026271, current=UP, previous=STARTING]
+2018-10-25 10:53:46.273  INFO 27552 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 10:53:46.286  INFO 27552 --- [           main] com.test.jm.JmApplicationTests           : Started JmApplicationTests in 7.492 seconds (JVM running for 8.756)
+2018-10-25 10:53:46.325  INFO 27552 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 10:53:46.619  INFO 27552 --- [           main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2018-10-25 10:53:46.827  INFO 27552 --- [           main] o.s.b.f.xml.XmlBeanDefinitionReader      : Loading XML bean definitions from class path resource [org/springframework/jdbc/support/sql-error-codes.xml]
+2018-10-25 10:53:46.874  INFO 27552 --- [       Thread-5] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@224b4d61: startup date [Thu Oct 25 10:53:41 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771
+2018-10-25 10:53:46.874  INFO 27552 --- [       Thread-5] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application activity-test with eureka with status DOWN
+2018-10-25 10:53:46.874  WARN 27552 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540436026874, current=DOWN, previous=UP]
+2018-10-25 10:53:46.874  INFO 27552 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 10:53:46.876  INFO 27552 --- [       Thread-5] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 0
+2018-10-25 10:53:46.880  INFO 27552 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 10:53:46.883  INFO 27552 --- [       Thread-5] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2018-10-25 10:53:46.897  INFO 27552 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2018-10-25 10:53:46.900  WARN 27552 --- [       Thread-5] .s.c.a.CommonAnnotationBeanPostProcessor : Invocation of destroy method failed on bean with name 'scopedTarget.eurekaClient': org.springframework.beans.factory.BeanCreationNotAllowedException: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)
+2018-10-25 11:13:34.392  INFO 29084 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771: startup date [Thu Oct 25 11:13:34 CST 2018]; root of context hierarchy
+2018-10-25 11:13:34.660  INFO 29084 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 11:13:34.719  INFO 29084 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$6c9edc47] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 11:13:35.100  INFO 29084 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2018-10-25 11:13:36.504  INFO 29084 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=activity-test, profiles=[test], label=master, version=bf0d4f9694c155bc0a36ab1f7f85719af625807d, state=null
+2018-10-25 11:13:36.505  INFO 29084 --- [           main] b.c.PropertySourceBootstrapConfiguration : Located property source: CompositePropertySource {name='configService', propertySources=[MapPropertySource {name='configClient'}, MapPropertySource {name='https://github.com/linweili0615/cloud-config.git/activity-test/application-test.yml'}]}
+2018-10-25 11:13:36.513  INFO 29084 --- [           main] com.test.jm.JmApplicationTests           : The following profiles are active: test
+2018-10-25 11:13:36.518  INFO 29084 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@224b4d61: startup date [Thu Oct 25 11:13:36 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771
+2018-10-25 11:13:36.910  INFO 29084 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-10-25 11:13:37.299  INFO 29084 --- [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=30129a09-9722-3802-b78e-93abc4e5375b
+2018-10-25 11:13:37.343  INFO 29084 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 11:13:37.423  INFO 29084 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5084d94a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 11:13:37.453  INFO 29084 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [com.test.jm.config.RedisConfig$$EnhancerBySpringCGLIB$$9b99e7dc] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 11:13:37.463  INFO 29084 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'keyGenerator' of type [com.test.jm.config.RedisConfig$$Lambda$267/1424188812] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 11:13:37.496  INFO 29084 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$6c9edc47] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 11:13:38.333  WARN 29084 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 11:13:38.333  INFO 29084 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 11:13:38.339  WARN 29084 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 11:13:38.339  INFO 29084 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 11:13:38.460  INFO 29084 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 11:13:38.732  INFO 29084 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@224b4d61: startup date [Thu Oct 25 11:13:36 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771
+2018-10-25 11:13:38.793  INFO 29084 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getId()
+2018-10-25 11:13:38.794  INFO 29084 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test123],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getNames()
+2018-10-25 11:13:38.796  INFO 29084 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-25 11:13:38.796  INFO 29084 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-25 11:13:38.823  INFO 29084 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 11:13:38.823  INFO 29084 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 11:13:38.877  WARN 29084 --- [           main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2018-10-25 11:13:39.896  INFO 29084 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Starting beans in phase 0
+2018-10-25 11:13:39.910  INFO 29084 --- [           main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2018-10-25 11:13:39.948  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2018-10-25 11:13:40.332  INFO 29084 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2018-10-25 11:13:40.332  INFO 29084 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2018-10-25 11:13:40.438  INFO 29084 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2018-10-25 11:13:40.438  INFO 29084 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2018-10-25 11:13:40.587  INFO 29084 --- [           main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2018-10-25 11:13:40.670  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2018-10-25 11:13:40.670  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2018-10-25 11:13:40.670  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2018-10-25 11:13:40.670  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2018-10-25 11:13:40.670  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2018-10-25 11:13:40.670  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2018-10-25 11:13:40.670  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2018-10-25 11:13:40.784  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2018-10-25 11:13:40.787  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2018-10-25 11:13:40.789  INFO 29084 --- [           main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2018-10-25 11:13:40.792  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1540437220791 with initial instances count: 2
+2018-10-25 11:13:40.800  INFO 29084 --- [           main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application activity-test with eureka with status UP
+2018-10-25 11:13:40.800  INFO 29084 --- [           main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540437220800, current=UP, previous=STARTING]
+2018-10-25 11:13:40.806  INFO 29084 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 11:13:40.817  INFO 29084 --- [           main] com.test.jm.JmApplicationTests           : Started JmApplicationTests in 7.377 seconds (JVM running for 8.357)
+2018-10-25 11:13:40.982  INFO 29084 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 11:13:41.140  INFO 29084 --- [           main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2018-10-25 11:13:41.340  INFO 29084 --- [       Thread-5] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@224b4d61: startup date [Thu Oct 25 11:13:36 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5a9f4771
+2018-10-25 11:13:41.341  INFO 29084 --- [       Thread-5] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application activity-test with eureka with status DOWN
+2018-10-25 11:13:41.341  WARN 29084 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540437221341, current=DOWN, previous=UP]
+2018-10-25 11:13:41.341  INFO 29084 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 11:13:41.343  INFO 29084 --- [       Thread-5] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 0
+2018-10-25 11:13:41.346  INFO 29084 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 11:13:41.352  INFO 29084 --- [       Thread-5] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2018-10-25 11:13:41.368  INFO 29084 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2018-10-25 11:13:41.370  WARN 29084 --- [       Thread-5] .s.c.a.CommonAnnotationBeanPostProcessor : Invocation of destroy method failed on bean with name 'scopedTarget.eurekaClient': org.springframework.beans.factory.BeanCreationNotAllowedException: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)
+2018-10-25 16:03:58.199  INFO 36756 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@68d279ec: startup date [Thu Oct 25 16:03:58 CST 2018]; root of context hierarchy
+2018-10-25 16:03:58.389  INFO 36756 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:03:58.438  INFO 36756 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$b79ab780] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:03:58.795  INFO 36756 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2018-10-25 16:04:03.085  INFO 36756 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=activity-test, profiles=[test], label=master, version=bf0d4f9694c155bc0a36ab1f7f85719af625807d, state=null
+2018-10-25 16:04:03.086  INFO 36756 --- [           main] b.c.PropertySourceBootstrapConfiguration : Located property source: CompositePropertySource {name='configService', propertySources=[MapPropertySource {name='configClient'}, MapPropertySource {name='https://github.com/linweili0615/cloud-config.git/activity-test/application-test.yml'}]}
+2018-10-25 16:04:03.095  INFO 36756 --- [           main] com.test.jm.JmApplicationTests           : The following profiles are active: test
+2018-10-25 16:04:03.099  INFO 36756 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@362a019c: startup date [Thu Oct 25 16:04:03 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@68d279ec
+2018-10-25 16:04:03.572  INFO 36756 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-10-25 16:04:03.962  INFO 36756 --- [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=18c526eb-286d-3e40-b0c9-cd9dbc13186e
+2018-10-25 16:04:04.006  INFO 36756 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:04:04.087  INFO 36756 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9b80b483] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:04:04.115  INFO 36756 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [com.test.jm.config.RedisConfig$$EnhancerBySpringCGLIB$$e695c315] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:04:04.124  INFO 36756 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'keyGenerator' of type [com.test.jm.config.RedisConfig$$Lambda$267/356519935] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:04:04.157  INFO 36756 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$b79ab780] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:04:04.180  WARN 36756 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'loginInterceptor'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.test.jm.config.LoginInterceptor' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2018-10-25 16:04:04.190  INFO 36756 --- [           main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-10-25 16:04:04.317 ERROR 36756 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field loginInterceptor in com.test.jm.config.WebMvcConfig required a bean of type 'com.test.jm.config.LoginInterceptor' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.test.jm.config.LoginInterceptor' in your configuration.
+
+2018-10-25 16:04:04.319 ERROR 36756 --- [           main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@3c947bc5] to prepare test instance [com.test.jm.JmApplicationTests@7e7f3cfd]
+
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:108)
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:190)
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:132)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)
+	at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
+	at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
+	at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'loginInterceptor'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.test.jm.config.LoginInterceptor' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:584)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:370)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1336)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:572)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:495)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:759)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:867)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:548)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:386)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:127)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 24 common frames omitted
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.test.jm.config.LoginInterceptor' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1506)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1101)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1062)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:581)
+	... 42 common frames omitted
+
+2018-10-25 16:46:13.632  INFO 37572 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@48d61b48: startup date [Thu Oct 25 16:46:13 CST 2018]; root of context hierarchy
+2018-10-25 16:46:13.823  INFO 37572 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:46:13.854  INFO 37572 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$7974374f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:46:14.286  INFO 37572 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2018-10-25 16:46:17.069  INFO 37572 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=activity-test, profiles=[test], label=master, version=bf0d4f9694c155bc0a36ab1f7f85719af625807d, state=null
+2018-10-25 16:46:17.069  INFO 37572 --- [           main] b.c.PropertySourceBootstrapConfiguration : Located property source: CompositePropertySource {name='configService', propertySources=[MapPropertySource {name='configClient'}, MapPropertySource {name='https://github.com/linweili0615/cloud-config.git/activity-test/application-test.yml'}]}
+2018-10-25 16:46:17.078  INFO 37572 --- [           main] com.test.jm.JmApplicationTests           : The following profiles are active: test
+2018-10-25 16:46:17.083  INFO 37572 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@4ef27d66: startup date [Thu Oct 25 16:46:17 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@48d61b48
+2018-10-25 16:46:17.609  INFO 37572 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-10-25 16:46:18.102  INFO 37572 --- [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=18c526eb-286d-3e40-b0c9-cd9dbc13186e
+2018-10-25 16:46:18.146  INFO 37572 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:46:18.232  INFO 37572 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5d5a3452] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:46:18.261  INFO 37572 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [com.test.jm.config.RedisConfig$$EnhancerBySpringCGLIB$$a86f42e4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:46:18.269  INFO 37572 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'keyGenerator' of type [com.test.jm.config.RedisConfig$$Lambda$267/1040172900] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:46:18.304  INFO 37572 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$7974374f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:46:18.326  WARN 37572 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'loginInterceptor'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.test.jm.config.LoginInterceptor' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2018-10-25 16:46:18.332  INFO 37572 --- [           main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-10-25 16:46:18.449 ERROR 37572 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field loginInterceptor in com.test.jm.config.WebMvcConfig required a bean of type 'com.test.jm.config.LoginInterceptor' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.test.jm.config.LoginInterceptor' in your configuration.
+
+2018-10-25 16:46:18.451 ERROR 37572 --- [           main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@3c947bc5] to prepare test instance [com.test.jm.JmApplicationTests@24841372]
+
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:108)
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:190)
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:132)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)
+	at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
+	at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
+	at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webMvcConfig': Unsatisfied dependency expressed through field 'loginInterceptor'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.test.jm.config.LoginInterceptor' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:584)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:90)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:370)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1336)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:572)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:495)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:317)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:759)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:867)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:548)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:386)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:127)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 24 common frames omitted
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.test.jm.config.LoginInterceptor' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1506)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1101)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1062)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:581)
+	... 42 common frames omitted
+
+2018-10-25 16:49:54.022  INFO 25180 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@6c0d7c83: startup date [Thu Oct 25 16:49:54 CST 2018]; root of context hierarchy
+2018-10-25 16:49:54.436  INFO 25180 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:49:54.466  INFO 25180 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$bb70d5b8] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:49:54.875  INFO 25180 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2018-10-25 16:49:57.568  INFO 25180 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=activity-test, profiles=[test], label=master, version=bf0d4f9694c155bc0a36ab1f7f85719af625807d, state=null
+2018-10-25 16:49:57.569  INFO 25180 --- [           main] b.c.PropertySourceBootstrapConfiguration : Located property source: CompositePropertySource {name='configService', propertySources=[MapPropertySource {name='configClient'}, MapPropertySource {name='https://github.com/linweili0615/cloud-config.git/activity-test/application-test.yml'}]}
+2018-10-25 16:49:57.599  INFO 25180 --- [           main] com.test.jm.JmApplicationTests           : The following profiles are active: test
+2018-10-25 16:49:57.604  INFO 25180 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@10c8f62: startup date [Thu Oct 25 16:49:57 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@6c0d7c83
+2018-10-25 16:49:58.148  INFO 25180 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-10-25 16:49:58.527  INFO 25180 --- [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=18c526eb-286d-3e40-b0c9-cd9dbc13186e
+2018-10-25 16:49:58.565  INFO 25180 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:49:58.647  INFO 25180 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9f56d2bb] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:49:58.673  INFO 25180 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [com.test.jm.config.RedisConfig$$EnhancerBySpringCGLIB$$ea6be14d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:49:58.680  INFO 25180 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'keyGenerator' of type [com.test.jm.config.RedisConfig$$Lambda$267/2013613908] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:49:58.713  INFO 25180 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$bb70d5b8] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:49:59.535  WARN 25180 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 16:49:59.535  INFO 25180 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 16:49:59.541  WARN 25180 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 16:49:59.541  INFO 25180 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 16:49:59.634  INFO 25180 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 16:49:59.915  INFO 25180 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@10c8f62: startup date [Thu Oct 25 16:49:57 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@6c0d7c83
+2018-10-25 16:49:59.977  INFO 25180 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getId()
+2018-10-25 16:49:59.978  INFO 25180 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test123],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getNames()
+2018-10-25 16:49:59.979  INFO 25180 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-25 16:49:59.979  INFO 25180 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-25 16:50:00.004  INFO 25180 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 16:50:00.005  INFO 25180 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 16:50:00.057  WARN 25180 --- [           main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2018-10-25 16:50:01.092  INFO 25180 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Starting beans in phase 0
+2018-10-25 16:50:01.106  INFO 25180 --- [           main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2018-10-25 16:50:01.142  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2018-10-25 16:50:01.547  INFO 25180 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2018-10-25 16:50:01.547  INFO 25180 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2018-10-25 16:50:01.650  INFO 25180 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2018-10-25 16:50:01.650  INFO 25180 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2018-10-25 16:50:01.808  INFO 25180 --- [           main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2018-10-25 16:50:01.905  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2018-10-25 16:50:01.905  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2018-10-25 16:50:01.905  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2018-10-25 16:50:01.905  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2018-10-25 16:50:01.905  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2018-10-25 16:50:01.905  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2018-10-25 16:50:01.906  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2018-10-25 16:50:02.024  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2018-10-25 16:50:02.027  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2018-10-25 16:50:02.029  INFO 25180 --- [           main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2018-10-25 16:50:02.032  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1540457402031 with initial instances count: 1
+2018-10-25 16:50:02.037  INFO 25180 --- [           main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application activity-test with eureka with status UP
+2018-10-25 16:50:02.038  INFO 25180 --- [           main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540457402038, current=UP, previous=STARTING]
+2018-10-25 16:50:02.040  INFO 25180 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 16:50:02.052  INFO 25180 --- [           main] com.test.jm.JmApplicationTests           : Started JmApplicationTests in 8.872 seconds (JVM running for 9.87)
+2018-10-25 16:50:02.223  INFO 25180 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 16:50:02.477  INFO 25180 --- [       Thread-5] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@10c8f62: startup date [Thu Oct 25 16:49:57 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@6c0d7c83
+2018-10-25 16:50:02.478  INFO 25180 --- [       Thread-5] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application activity-test with eureka with status DOWN
+2018-10-25 16:50:02.478  WARN 25180 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540457402478, current=DOWN, previous=UP]
+2018-10-25 16:50:02.478  INFO 25180 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 16:50:02.480  INFO 25180 --- [       Thread-5] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 0
+2018-10-25 16:50:02.485  INFO 25180 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 16:50:02.497  INFO 25180 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2018-10-25 16:50:02.500  WARN 25180 --- [       Thread-5] .s.c.a.CommonAnnotationBeanPostProcessor : Invocation of destroy method failed on bean with name 'scopedTarget.eurekaClient': org.springframework.beans.factory.BeanCreationNotAllowedException: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)
+2018-10-25 16:55:41.914  INFO 37816 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@68d279ec: startup date [Thu Oct 25 16:55:41 CST 2018]; root of context hierarchy
+2018-10-25 16:55:42.094  INFO 37816 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:55:42.128  INFO 37816 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$b79ab780] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:55:42.509  INFO 37816 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2018-10-25 16:55:43.852  INFO 37816 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Located environment: name=activity-test, profiles=[test], label=master, version=bf0d4f9694c155bc0a36ab1f7f85719af625807d, state=null
+2018-10-25 16:55:43.852  INFO 37816 --- [           main] b.c.PropertySourceBootstrapConfiguration : Located property source: CompositePropertySource {name='configService', propertySources=[MapPropertySource {name='configClient'}, MapPropertySource {name='https://github.com/linweili0615/cloud-config.git/activity-test/application-test.yml'}]}
+2018-10-25 16:55:43.862  INFO 37816 --- [           main] com.test.jm.JmApplicationTests           : The following profiles are active: test
+2018-10-25 16:55:43.866  INFO 37816 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@362a019c: startup date [Thu Oct 25 16:55:43 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@68d279ec
+2018-10-25 16:55:44.413  INFO 37816 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-10-25 16:55:44.832  INFO 37816 --- [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=18c526eb-286d-3e40-b0c9-cd9dbc13186e
+2018-10-25 16:55:44.875  INFO 37816 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2018-10-25 16:55:44.953  INFO 37816 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9b80b483] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:55:44.980  INFO 37816 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [com.test.jm.config.RedisConfig$$EnhancerBySpringCGLIB$$e695c315] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:55:44.987  INFO 37816 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'keyGenerator' of type [com.test.jm.config.RedisConfig$$Lambda$267/1184248953] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:55:45.022  INFO 37816 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$b79ab780] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-25 16:55:45.843  WARN 37816 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 16:55:45.844  INFO 37816 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 16:55:45.849  WARN 37816 --- [           main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2018-10-25 16:55:45.850  INFO 37816 --- [           main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2018-10-25 16:55:45.943  INFO 37816 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 16:55:46.217  INFO 37816 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@362a019c: startup date [Thu Oct 25 16:55:43 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@68d279ec
+2018-10-25 16:55:46.281  INFO 37816 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getId()
+2018-10-25 16:55:46.281  INFO 37816 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/test123],methods=[GET]}" onto public java.lang.String com.test.jm.controller.ConfigClientController.getNames()
+2018-10-25 16:55:46.283  INFO 37816 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-25 16:55:46.284  INFO 37816 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-25 16:55:46.310  INFO 37816 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 16:55:46.310  INFO 37816 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-25 16:55:46.363  WARN 37816 --- [           main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2018-10-25 16:55:47.380  INFO 37816 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Starting beans in phase 0
+2018-10-25 16:55:47.394  INFO 37816 --- [           main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2018-10-25 16:55:47.430  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2018-10-25 16:55:47.846  INFO 37816 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2018-10-25 16:55:47.846  INFO 37816 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2018-10-25 16:55:47.955  INFO 37816 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2018-10-25 16:55:47.955  INFO 37816 --- [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2018-10-25 16:55:48.101  INFO 37816 --- [           main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2018-10-25 16:55:48.189  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2018-10-25 16:55:48.189  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2018-10-25 16:55:48.189  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2018-10-25 16:55:48.189  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2018-10-25 16:55:48.189  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2018-10-25 16:55:48.190  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2018-10-25 16:55:48.190  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2018-10-25 16:55:48.304  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2018-10-25 16:55:48.307  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2018-10-25 16:55:48.310  INFO 37816 --- [           main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2018-10-25 16:55:48.314  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1540457748313 with initial instances count: 2
+2018-10-25 16:55:48.321  INFO 37816 --- [           main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application activity-test with eureka with status UP
+2018-10-25 16:55:48.321  INFO 37816 --- [           main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540457748321, current=UP, previous=STARTING]
+2018-10-25 16:55:48.328  INFO 37816 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 16:55:48.335  INFO 37816 --- [           main] com.test.jm.JmApplicationTests           : Started JmApplicationTests in 7.186 seconds (JVM running for 8.258)
+2018-10-25 16:55:48.507  INFO 37816 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 16:55:48.754  INFO 37816 --- [       Thread-5] o.s.w.c.s.GenericWebApplicationContext   : Closing org.springframework.web.context.support.GenericWebApplicationContext@362a019c: startup date [Thu Oct 25 16:55:43 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@68d279ec
+2018-10-25 16:55:48.755  INFO 37816 --- [       Thread-5] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application activity-test with eureka with status DOWN
+2018-10-25 16:55:48.755  WARN 37816 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1540457748755, current=DOWN, previous=UP]
+2018-10-25 16:55:48.755  INFO 37816 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333: registering service...
+2018-10-25 16:55:48.757  INFO 37816 --- [       Thread-5] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 0
+2018-10-25 16:55:48.762  INFO 37816 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACTIVITY-TEST/linweili-PC:activity-test:3333 - registration status: 204
+2018-10-25 16:55:48.773  INFO 37816 --- [       Thread-5] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2018-10-25 16:55:48.776  WARN 37816 --- [       Thread-5] .s.c.a.CommonAnnotationBeanPostProcessor : Invocation of destroy method failed on bean with name 'scopedTarget.eurekaClient': org.springframework.beans.factory.BeanCreationNotAllowedException: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)

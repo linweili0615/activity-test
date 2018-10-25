@@ -10,7 +10,7 @@ public class UserInfoDTO {
     private String telno;
     private Integer error_count;
     private Integer status;
-    private LocalDateTime add_date;
+    private LocalDateTime create_date;
     private LocalDateTime modify_date;
 
     public String getId() {
@@ -53,12 +53,12 @@ public class UserInfoDTO {
         this.status = status;
     }
 
-    public LocalDateTime getAdd_date() {
-        return add_date;
+    public LocalDateTime getCreate_date() {
+        return create_date;
     }
 
-    public void setAdd_date(LocalDateTime add_date) {
-        this.add_date = add_date;
+    public void setCreate_date(LocalDateTime create_date) {
+        this.create_date = create_date;
     }
 
     public LocalDateTime getModify_date() {
@@ -77,7 +77,7 @@ public class UserInfoDTO {
                 ", telno='" + telno + '\'' +
                 ", error_count=" + error_count +
                 ", status=" + status +
-                ", add_date=" + add_date +
+                ", create_date=" + create_date +
                 ", modify_date=" + modify_date +
                 '}';
     }

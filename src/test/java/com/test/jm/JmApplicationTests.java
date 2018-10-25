@@ -1,8 +1,11 @@
 package com.test.jm;
 
+import com.test.jm.dao.TokenDao;
 import com.test.jm.dto.UserInfoDTO;
 import com.test.jm.service.UserInfoService;
 import com.test.jm.util.RedisUtil;
+import com.test.jm.util.TokenUtils;
+import io.jsonwebtoken.Claims;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class JmApplicationTests {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private TokenDao tokenDao;
+
     @Test
     public void contextLoads(){
         String id = UUID.randomUUID().toString();
@@ -50,9 +56,6 @@ public class JmApplicationTests {
         userInfoDTO.setId(UUID.randomUUID().toString());
         userInfoDTO.setUsername("linweili");
         userInfoDTO.setTelno("18814288784");
-        userInfoDTO.setAdd_date(LocalDateTime.now());
-        userInfoDTO.setModify_date(LocalDateTime.now());
-
         Integer status = userInfoService.addUserInfo(userInfoDTO);
         System.out.println("status:" + status);
     }
@@ -80,6 +83,21 @@ public class JmApplicationTests {
         Integer status = userInfoService.updateUserInfo(userInfoDTO);
         System.out.println("status:" + status);
     }
+
+    @Test
+    public void getToken(){
+
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setId("6455276a-6bbe-417a-a8e7-725ef5619d64");
+        String token = TokenUtils.createJwtToken(userInfoDTO);
+        System.out.println("token: " + token);
+        Claims claims = TokenUtils.parseJWTToken(token);
+        String gettoken = claims.getId();
+        System.out.println("gettoken: " + gettoken);
+
+
+    }
+
 
 
 

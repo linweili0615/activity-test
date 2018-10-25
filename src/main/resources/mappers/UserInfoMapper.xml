@@ -3,14 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.jm.dao.UserInfoDao">
 
-
-
     <insert id="addUserInfo" parameterType="com.test.jm.dto.UserInfoDTO">
           INSERT INTO
           user_info
-          (id, username, telno, error_count, status, add_date, modify_date)
+          (id, username, telno, error_count, status, create_date, modify_date)
           VALUES
-          (#{id}, #{username}, #{telno}, 0, 0, #{add_date}, #{modify_date});
+          (#{id}, #{username}, #{telno}, 0, 0, now(), now());
     </insert>
 
     <select id="getUserInfo" parameterType="com.test.jm.dto.UserInfoDTO"
@@ -40,7 +38,7 @@
             </if>
                 modify_date = now(),
         </set>
-        WHERE id = #{id}
+        WHERE id = #{id};
     </update>
 
 </mapper>

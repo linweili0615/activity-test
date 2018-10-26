@@ -1,7 +1,9 @@
 package com.test.jm;
 
 import com.test.jm.dao.TokenDao;
+import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
+import com.test.jm.service.TokenService;
 import com.test.jm.service.UserInfoService;
 import com.test.jm.util.RedisUtil;
 import com.test.jm.util.TokenUtils;
@@ -30,8 +32,12 @@ public class JmApplicationTests {
     @Autowired
     private UserInfoService userInfoService;
 
+
     @Autowired
     private TokenDao tokenDao;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Test
     public void contextLoads(){
@@ -87,15 +93,24 @@ public class JmApplicationTests {
     @Test
     public void getToken(){
 
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setId("6455276a-6bbe-417a-a8e7-725ef5619d64");
-        String token = TokenUtils.createJwtToken(userInfoDTO);
+        String token = TokenUtils.createJwtToken("6455276a-6bbe-417a-a8e7-725ef5619d64",30);
         System.out.println("token: " + token);
         Claims claims = TokenUtils.parseJWTToken(token);
         String gettoken = claims.getId();
         System.out.println("gettoken: " + gettoken);
 
+    }
 
+    @Test
+    public void addToken(){
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setId("6455276a-6bbe-417a-a8e7-725ef5619d64");
+        String token = TokenUtils.createJwtToken(userInfoDTO.getId(),30);
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setUser_id(userInfoDTO.getId());
+        tokenDTO.setToken(token);
+        Integer count = tokenService.addToken(userInfoDTO);
+        System.out.println("count: " + count);
     }
 
 

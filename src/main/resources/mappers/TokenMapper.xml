@@ -8,7 +8,7 @@
           user_token
           (user_id, token, status, expire_time, create_time, modify_time)
           VALUES
-          (#{user_id}, #{token},0 , now(), now(), now());
+          (#{user_id}, #{token},0 , #{expire_time}, now(), now());
     </insert>
 
     <select id="findTokenByUserId" parameterType="com.test.jm.dto.TokenDTO"

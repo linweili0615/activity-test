@@ -20,8 +20,8 @@ public class TokenService {
     }
 
     public Integer addToken(UserInfoDTO userInfoDTO){
-        //过期时间
-        long expirationdate = 30 ;
+        //过期时间(minutes)
+        long expirationdate = 60 ;
         String token = TokenUtils.createJwtToken(userInfoDTO.getId(), expirationdate);
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setToken(token);

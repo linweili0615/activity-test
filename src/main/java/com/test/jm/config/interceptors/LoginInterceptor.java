@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
+@Component
 public class LoginInterceptor implements HandlerInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
@@ -61,9 +63,10 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
 
         }else {
-            logger.info("token信息不能为空");
-            return false;
+            logger.info("尚未登录，跳转到登录界面");
+            response.sendRedirect(request.getContextPath() + "/user/login");
         }
+        return true;
 
 
 

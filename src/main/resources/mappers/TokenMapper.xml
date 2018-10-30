@@ -11,12 +11,12 @@
           (#{user_id}, #{token},0 , #{expire_time}, now(), now());
     </insert>
 
-    <select id="findTokenByUserId" parameterType="com.test.jm.dto.TokenDTO"
+    <select id="findTokenByUserId" parameterType="java.lang.String"
             resultType="com.test.jm.dto.TokenDTO">
-        SELECT id, username, telno, add_date FROM user_token
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="user_id != null">
-                user_id = #{user_id}
+        SELECT user_id, token, expire_time, modify_time FROM user_token
+        <trim prefix="WHERE">
+            <if test="_parameter != null">
+                user_id = #{_parameter}
             </if>
         </trim>
         ORDER BY  modify_time DESC

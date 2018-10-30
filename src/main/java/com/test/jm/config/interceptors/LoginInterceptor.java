@@ -2,6 +2,7 @@ package com.test.jm.config.interceptors;
 
 import com.test.jm.dao.TokenDao;
 import com.test.jm.dto.TokenDTO;
+import com.test.jm.service.LoginService;
 import com.test.jm.util.CookieUtils;
 import com.test.jm.util.TokenUtils;
 import io.jsonwebtoken.Claims;
@@ -26,48 +27,18 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
     private TokenDao tokenDao;
 
+    @Autowired
+    private LoginService loginService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String jm_cookie = CookieUtils.getCookie(request,"jm");
-        Claims claims;
-        if(StringUtils.isNotBlank(jm_cookie)){
-            try {
-                claims = TokenUtils.parseJWTToken(jm_cookie);
-                String userid = claims.getId();
-                TokenDTO tokenDTO = tokenDao.findTokenByUserId(userid);
-                //数据库没有token记录
-                if(null == tokenDTO){
-                    logger.info("数据库没有该用户token记录：userid:{}, token:{}", userid, jm_cookie);
-                    return false;
-                }
-                //数据库token与客户端token比较
-                if(!jm_cookie.equals(tokenDTO.getToken())){
-                    logger.info("数据库token与客户端token不一致：userid{}, token:{}", userid, jm_cookie);
-                    return false;
-                }
-                //判断token过期
-                Date tokenDate = claims.getExpiration();
-                if(!tokenDate.after(new Date())){
-                    logger.info("该用户token信息已过期：userid{}, token:{}", userid, jm_cookie);
-                    return false;
-                }
-                logger.info("token信息校验通过：userid{}, token:{}", userid, jm_cookie);
-
-            }catch (Exception e){
-                logger.info("该token信息已校验异常: {}", jm_cookie);
-                e.printStackTrace();
-                return false;
-            }
-
-            logger.info("该token信息验证通过: {}", jm_cookie);
+        if(loginService.validToken(request)){
             return true;
-
-        }else {
-            logger.info("尚未登录，跳转到登录界面");
-            response.sendRedirect(request.getContextPath() + "/user/login");
         }
-        return true;
 
+        logger.info("尚未登录，跳转到登录界面");
+        response.sendRedirect(request.getContextPath() + "/user/login");
+        return false;
 
 
     }

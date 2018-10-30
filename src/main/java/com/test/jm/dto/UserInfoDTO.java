@@ -8,6 +8,7 @@ public class UserInfoDTO {
     private String id;
     private String username;
     private String telno;
+    private String pwd;
     private Integer error_count;
     private Integer status;
     private LocalDateTime create_date;
@@ -69,12 +70,21 @@ public class UserInfoDTO {
         this.modify_date = modify_date;
     }
 
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
     @Override
     public String toString() {
         return "UserInfoDTO{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", telno='" + telno + '\'' +
+                ", pwd='" + pwd + '\'' +
                 ", error_count=" + error_count +
                 ", status=" + status +
                 ", create_date=" + create_date +

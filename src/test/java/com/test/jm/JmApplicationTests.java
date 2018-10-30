@@ -5,9 +5,12 @@ import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
 import com.test.jm.service.TokenService;
 import com.test.jm.service.UserInfoService;
+import com.test.jm.util.CookieUtils;
+import com.test.jm.util.Md5Util;
 import com.test.jm.util.RedisUtil;
 import com.test.jm.util.TokenUtils;
 import io.jsonwebtoken.Claims;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -56,12 +60,13 @@ public class JmApplicationTests {
     }
 
     @Test
-    public void adduserinfo(){
+    public void adduserinfo() throws Exception {
 
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId(UUID.randomUUID().toString());
-        userInfoDTO.setUsername("linweili");
-        userInfoDTO.setTelno("18814288784");
+        userInfoDTO.setUsername("test_user");
+        userInfoDTO.setTelno("15866660001");
+        userInfoDTO.setPwd(Md5Util.encoder("pwd"));
         Integer status = userInfoService.addUserInfo(userInfoDTO);
         System.out.println("status:" + status);
     }
@@ -104,7 +109,7 @@ public class JmApplicationTests {
     @Test
     public void addToken(){
         UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setId("6455276a-6bbe-417a-a8e7-725ef5619d64");
+        userInfoDTO.setId("536afd10-1632-4d38-bd93-f75125f25333");
         String token = TokenUtils.createJwtToken(userInfoDTO.getId(),30);
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setUser_id(userInfoDTO.getId());
@@ -112,6 +117,7 @@ public class JmApplicationTests {
         Integer count = tokenService.addToken(userInfoDTO);
         System.out.println("count: " + count);
     }
+
 
 
 

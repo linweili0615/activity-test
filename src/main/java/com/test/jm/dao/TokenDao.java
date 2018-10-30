@@ -8,6 +8,6 @@ public interface TokenDao {
 
     Integer updateToken(TokenDTO tokenDTO);
 
-    TokenDTO findTokenByUserId(String userid);
+    TokenDTO findTokenByUserId(String user_id);
 
 }

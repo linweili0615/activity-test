@@ -19,13 +19,8 @@ public class TokenService {
         return tokenDao.findTokenByUserId(userid);
     }
 
-    public Integer addToken(UserInfoDTO userInfoDTO){
-        //过期时间(minutes)
-        long expirationdate = 60 ;
-        String token = TokenUtils.createJwtToken(userInfoDTO.getId(), expirationdate);
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setToken(token);
-        tokenDTO.setUser_id(userInfoDTO.getId());
+    public Integer addToken(TokenDTO tokenDTO, long expirationdate){
+        tokenDTO.setStatus("0");
         tokenDTO.setExpire_time(LocalDateTime.now().plusMinutes(expirationdate));
         return tokenDao.addToken(tokenDTO);
     }

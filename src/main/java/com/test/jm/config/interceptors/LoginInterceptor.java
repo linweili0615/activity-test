@@ -32,6 +32,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        logger.info("RequestURI: {}", request.getRequestURI());
+        if(request.getRequestURI().equals("/user/login") || request.getRequestURI().equals("/user/register") || request.getRequestURI().equals("/user/2login")){
+            logger.info("白名单页面");
+            return true;
+        }
         if(loginService.validToken(request)){
             return true;
         }

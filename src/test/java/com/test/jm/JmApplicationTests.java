@@ -98,7 +98,7 @@ public class JmApplicationTests {
     @Test
     public void getToken(){
 
-        String token = TokenUtils.createJwtToken("6455276a-6bbe-417a-a8e7-725ef5619d64",30);
+        String token = TokenUtils.createJwtToken("6455276a-6bbe-417a-a8e7-725ef5619d64",60);
         System.out.println("token: " + token);
         Claims claims = TokenUtils.parseJWTToken(token);
         String gettoken = claims.getId();
@@ -110,11 +110,11 @@ public class JmApplicationTests {
     public void addToken(){
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId("536afd10-1632-4d38-bd93-f75125f25333");
-        String token = TokenUtils.createJwtToken(userInfoDTO.getId(),30);
+        String token = TokenUtils.createJwtToken(userInfoDTO.getId(),60);
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setUser_id(userInfoDTO.getId());
         tokenDTO.setToken(token);
-        Integer count = tokenService.addToken(userInfoDTO);
+        Integer count = tokenService.addToken(tokenDTO,60);
         System.out.println("count: " + count);
     }
 

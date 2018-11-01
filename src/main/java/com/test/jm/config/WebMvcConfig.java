@@ -24,7 +24,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     // 这个方法用来注册拦截器，我们自己写好的拦截器需要通过这里添加注册才能生效
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**")
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/test")
                 .excludePathPatterns("/user/login", "/user/register","/user/2login");
         super.addInterceptors(registry);
     }

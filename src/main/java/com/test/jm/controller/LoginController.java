@@ -1,5 +1,6 @@
 package com.test.jm.controller;
 
+import com.test.jm.domain.TokenResult;
 import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
 import com.test.jm.service.LoginService;
@@ -47,27 +48,53 @@ public class LoginController {
         return "login test";
     }
 
-    @GetMapping("/2login")
+    @PostMapping("/2login")
     @ResponseBody
-    public String login2(HttpServletResponse response){
+    public TokenResult login2(HttpServletResponse response,
+                              @RequestBody UserInfoDTO  userInfoDTO){
+        TokenResult tokenResult = new TokenResult();
+        if(userInfoDTO.getTelno() != null && userInfoDTO.getPwd() != null){
+            userInfoDTO.setPwd(Md5Util.encoder(userInfoDTO.getPwd()));
+            logger.info(userInfoDTO.toString());
+            UserInfoDTO uu = userInfoService.getUserInfo(userInfoDTO);
+            if(uu != null){
+                long expirationdate = 60;
+                String token =  TokenUtils.createJwtToken(uu.getId(), expirationdate);
+                TokenDTO tokenDTO = new TokenDTO();
+                tokenDTO.setUser_id(uu.getId());
+                tokenDTO.setToken(token);
+                try {
+                    Integer count = tokenService.addToken(tokenDTO, expirationdate);
+                    if(count>0){
+//                    CookieUtils.writeCookie(response,"jm", token);
+                        tokenResult.setCode("200");
+                        tokenResult.setMsg("获取token成功");
+                        tokenResult.setToken(token);
+                        return tokenResult;
+                    }
+                } catch (Exception e) {
+                    logger.info("写入token异常");
+                    e.printStackTrace();
 
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setTelno("15866660001");
-        userInfoDTO.setPwd(Md5Util.encoder("pwd"));
-        UserInfoDTO uu = userInfoService.getUserInfo(userInfoDTO);
-        if(uu != null){
-            long expirationdate = 60;
-            String token =  TokenUtils.createJwtToken(uu.getId(), expirationdate);
-            TokenDTO tokenDTO = new TokenDTO();
-            tokenDTO.setUser_id(uu.getId());
-            tokenDTO.setToken(token);
-            Integer count = tokenService.addToken(tokenDTO, expirationdate);
-            CookieUtils.writeCookie(response,"jm", token);
-            return "ok,检查下cookie";
-        }else {
-            System.out.println("用户名或密码错误");
-            return "用户名或密码错误";
+                    tokenResult.setCode("201");
+                    tokenResult.setMsg("写入token异常");
+                    return tokenResult;
+
+                }
+
+            }else {
+                logger.info("用户名或密码错误");
+                tokenResult.setCode("202");
+                tokenResult.setMsg("用户名或密码错误");
+                return tokenResult;
+            }
+
         }
+        logger.info("用户名或密码不能为空");
+        tokenResult.setCode("203");
+        tokenResult.setMsg("用户名或密码不能为空");
+        return tokenResult;
+
 
     }
 

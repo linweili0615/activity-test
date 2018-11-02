@@ -6,6 +6,7 @@ public class TokenResult{
     private String code;
     private String msg;
     private String user_id;
+    private String user_name;
     private String token;
 
 
@@ -41,12 +42,21 @@ public class TokenResult{
         this.token = token;
     }
 
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
     @Override
     public String toString() {
         return "TokenResult{" +
                 "code='" + code + '\'' +
                 ", msg='" + msg + '\'' +
                 ", user_id='" + user_id + '\'' +
+                ", user_name='" + user_name + '\'' +
                 ", token='" + token + '\'' +
                 '}';
     }

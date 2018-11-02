@@ -55,7 +55,6 @@ public class LoginController {
         TokenResult tokenResult = new TokenResult();
         if(userInfoDTO.getTelno() != null && userInfoDTO.getPwd() != null){
             userInfoDTO.setPwd(Md5Util.encoder(userInfoDTO.getPwd()));
-            logger.info(userInfoDTO.toString());
             UserInfoDTO uu = userInfoService.getUserInfo(userInfoDTO);
             if(uu != null){
                 long expirationdate = 60;
@@ -70,6 +69,7 @@ public class LoginController {
                         tokenResult.setCode("200");
                         tokenResult.setMsg("获取token成功");
                         tokenResult.setUser_id(tokenDTO.getUser_id());
+                        tokenResult.setUser_name(uu.getUsername());
                         tokenResult.setToken(token);
                         return tokenResult;
                     }

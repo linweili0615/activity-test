@@ -69,6 +69,7 @@ public class LoginController {
 //                    CookieUtils.writeCookie(response,"jm", token);
                         tokenResult.setCode("200");
                         tokenResult.setMsg("获取token成功");
+                        tokenResult.setUser_id(tokenDTO.getUser_id());
                         tokenResult.setToken(token);
                         return tokenResult;
                     }

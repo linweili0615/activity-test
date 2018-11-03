@@ -29,10 +29,18 @@
             <if test="status != null">
                 status = #{status},
             </if>
-                modify_date = now(),
+            <if test="token != null">
+                token = #{token},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="expire_time != null">
+                expire_time = #{expire_time},
+            </if>
+            modify_time = now()
         </set>
-        WHERE user_id = #{user_id}
-        and token = #{token};
+        WHERE user_id = #{user_id};
     </update>
 
 </mapper>

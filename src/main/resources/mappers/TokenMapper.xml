@@ -40,7 +40,8 @@
             </if>
             modify_time = now()
         </set>
-        WHERE user_id = #{user_id};
+        WHERE user_id = #{user_id}
+        AND status = 0;
     </update>
 
 </mapper>

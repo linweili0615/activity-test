@@ -22,7 +22,7 @@ public class LoginService {
     @Autowired
     private TokenDao tokenDao;
 
-    public boolean validToken(HttpServletRequest request){
+    public TokenDTO validToken(HttpServletRequest request){
         String jm_cookie = CookieUtils.getCookie(request,"jm");
         Claims claims;
         if(StringUtils.isNotBlank(jm_cookie)){
@@ -33,32 +33,31 @@ public class LoginService {
                 //数据库没有token记录
                 if(null == tokenDTO){
                     logger.info("token信息不存在：userid:{}, token:{}", user_id, jm_cookie);
-                    return false;
+                    return null;
                 }
                 //数据库token与客户端token比较
                 if(!jm_cookie.equals(tokenDTO.getToken())){
                     logger.info("token信息不一致：userid{}, token:{}", user_id, jm_cookie);
-                    return false;
+                    return null;
                 }
                 //判断token过期
                 Date tokenDate = claims.getExpiration();
                 if(!tokenDate.after(new Date())){
                     logger.info("token信息已过期：userid{}, token:{}", user_id, jm_cookie);
-                    return false;
+                    return null;
                 }
 
                 logger.info("token信息验证通过: {}", jm_cookie);
-                return true;
-
-            }catch (Exception e){
-                logger.error("token信息校验异常: {}", jm_cookie);
-                e.printStackTrace();
-                return false;
+                return tokenDTO;
+            } catch (Exception e) {
+//                e.printStackTrace();
+                logger.error("token信息校验异常");
+                return null;
             }
 
         }
 
         logger.info("登录信息为空");
-        return false;
+        return null;
     }
 }

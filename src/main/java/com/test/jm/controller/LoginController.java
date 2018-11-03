@@ -34,12 +34,20 @@ public class LoginController {
     private TokenService tokenService;
 
     @RequestMapping("/login")
-    @ResponseBody
     public String login(HttpServletRequest request){
-        if(loginService.validToken(request)){
-            return "login ok le";
+        return "index.html";
+    }
+
+    @PostMapping("/validtoken")
+    @ResponseBody
+    public UserInfoDTO validtoken(HttpServletRequest request){
+        TokenDTO tokenDTO = loginService.validToken(request);
+        if( tokenDTO != null){
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setId(tokenDTO.getUser_id());
+            return userInfoService.getUserInfo(userInfoDTO);
         }
-        return "hao hao qu login ba";
+       return null;
     }
 
     @RequestMapping("/test")

@@ -21,6 +21,7 @@ public class TokenService {
 
     public Integer addToken(TokenDTO tokenDTO, long expirationdate){
         if(findTokenByUserId(tokenDTO.getUser_id())!=null){
+            tokenDTO.setExpire_time(LocalDateTime.now().plusMinutes(expirationdate));
             return tokenDao.updateToken(tokenDTO);
         }
         tokenDTO.setStatus("0");

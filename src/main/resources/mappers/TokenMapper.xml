@@ -30,9 +30,15 @@
                 status = #{status},
             </if>
             <if test="token != null">
-                token = #{token}
+                token = #{token},
             </if>
-                modify_date = now(),
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="expire_time != null">
+                expire_time = #{expire_time},
+            </if>
+            modify_time = now()
         </set>
         WHERE user_id = #{user_id};
     </update>

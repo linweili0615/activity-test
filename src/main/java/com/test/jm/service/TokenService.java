@@ -19,6 +19,14 @@ public class TokenService {
         return tokenDao.findTokenByUserId(userid);
     }
 
+    public Integer updateToken(String token){
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setToken(token);
+        tokenDTO.setStatus("1");
+        return tokenDao.updateToken(tokenDTO);
+    }
+
+
     public Integer addToken(TokenDTO tokenDTO, long expirationdate){
         if(findTokenByUserId(tokenDTO.getUser_id())!=null){
             tokenDTO.setExpire_time(LocalDateTime.now().plusMinutes(expirationdate));

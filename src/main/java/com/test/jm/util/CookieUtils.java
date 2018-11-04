@@ -15,6 +15,8 @@ public class CookieUtils {
         if(cookies != null){
             for(Cookie cookie : cookies){
                 if(cookie.getName().equals(cookieName)){
+                    System.out.println("cookieName:" + cookie.getName());
+                    System.out.println("cookieValue:" + cookie.getValue());
                     return cookie.getValue();
                 }
             }
@@ -28,6 +30,10 @@ public class CookieUtils {
         cookie.setPath("/");
         cookie.setMaxAge(60*60);
         response.addCookie(cookie);
+    }
+
+    public static void removeCookie(HttpServletResponse response, String cookieName){
+        response.addCookie(new Cookie(cookieName,""));
     }
 
 

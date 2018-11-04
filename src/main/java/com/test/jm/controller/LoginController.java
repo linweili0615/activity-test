@@ -9,6 +9,7 @@ import com.test.jm.service.UserInfoService;
 import com.test.jm.util.CookieUtils;
 import com.test.jm.util.Md5Util;
 import com.test.jm.util.TokenUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class LoginController {
     public TokenResult login2(HttpServletResponse response,
                               @RequestBody UserInfoDTO  userInfoDTO){
         TokenResult tokenResult = new TokenResult();
-        if(userInfoDTO.getTelno() != null && userInfoDTO.getPwd() != null){
+        if(StringUtils.isNotBlank(userInfoDTO.getTelno())&& StringUtils.isNotBlank(userInfoDTO.getPwd())){
             userInfoDTO.setPwd(Md5Util.encoder(userInfoDTO.getPwd()));
             UserInfoDTO uu = userInfoService.getUserInfo(userInfoDTO);
             if(uu != null){
@@ -107,6 +108,10 @@ public class LoginController {
 
     }
 
-
+    @GetMapping("/logout")
+    @ResponseBody
+    public void logout(HttpServletResponse response){
+        CookieUtils.removeCookie(response,"jm");
+    }
 
 }

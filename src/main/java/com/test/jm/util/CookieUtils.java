@@ -15,8 +15,6 @@ public class CookieUtils {
         if(cookies != null){
             for(Cookie cookie : cookies){
                 if(cookie.getName().equals(cookieName)){
-                    System.out.println("cookieName:" + cookie.getName());
-                    System.out.println("cookieValue:" + cookie.getValue());
                     return cookie.getValue();
                 }
             }

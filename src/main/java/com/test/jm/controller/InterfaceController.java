@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/interface")
 public class InterfaceController {
 
-    @PostMapping
+    @PostMapping("/test")
     public String test_interface(@RequestBody InterfaceDTO interfaceDTO){
-        return null;
+        System.out.println(interfaceDTO.toString());
+        return "ok";
     }
 
 

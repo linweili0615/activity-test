@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class InterfaceDTO {
     private String id;
+    private String url;
     private String headers;
     private String method;
     private String body;
@@ -76,10 +77,19 @@ public class InterfaceDTO {
         this.modify_time = modify_time;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public String toString() {
         return "InterfaceDTO{" +
                 "id='" + id + '\'' +
+                ", url='" + url + '\'' +
                 ", headers='" + headers + '\'' +
                 ", method='" + method + '\'' +
                 ", body='" + body + '\'' +

@@ -8,7 +8,14 @@ import com.test.jm.domain.TestResult;
 import com.test.jm.dto.test.InterfaceDTO;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import com.test.jm.service.InterfaceService;
+import com.test.jm.util.HttpClientUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,28 +28,36 @@ import java.util.Map;
 @RequestMapping("/interface")
 public class InterfaceController {
 
+    private Logger logger = LoggerFactory.getLogger(InterfaceController.class);
+
+    @Autowired
+    private InterfaceService interfaceService;
+
     @PostMapping("/test")
     public TestResult test_interface(@RequestBody InterfaceDTO interfaceDTO) throws IOException {
         TestResult testResult = new TestResult();
         if(StringUtils.isNotBlank(interfaceDTO.getMethod()) && StringUtils.isNotBlank(interfaceDTO.getUrl())){
-            System.out.println(interfaceDTO.getHeaders());
-//            new JsonObject().getAsJsonObject(interfaceDTO.getHeaders()).keySet();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode node = objectMapper.readTree(interfaceDTO.getHeaders());
-            Iterator<Entry<String, JsonNode>> elements = node.fields();
-            while (elements.hasNext()) {
-                Map.Entry<String, JsonNode> element = elements.next();
-                String key = element.getKey();
-                String value = element.getValue().toString();
-                System.out.println(new StringBuilder().append("key: ").append(key).append(" ,value: ").append(value));
+
+            try {
+                HttpResponse response = HttpClientUtils.post(interfaceDTO.getUrl(),interfaceDTO.getHeaders(),interfaceDTO.getBody());
+                String response_status_code = response.getStatusLine().toString();
+                String response_headers = HttpClientUtils.getResponseHeaders(response);
+                String response_body = HttpClientUtils.getResponseBody(response);
+
+                testResult.setStatus(response_status_code);
+                testResult.setResheaders(response_headers);
+                testResult.setResbody(response_body);
+                return testResult;
+            } catch (Exception e) {
+                e.printStackTrace();
+                testResult.setStatus("600");
+                testResult.setResbody("请求异常");
+                return testResult;
             }
-            testResult.setId("");
-            testResult.setStatus(200);
-            testResult.setTest_result("请求成功");
-            return testResult;
+
         }
-        testResult.setStatus(601);
-        testResult.setTest_result("请求方式或URL地址不能为空");
+        testResult.setStatus("601");
+        testResult.setResbody("请求方式或URL地址不能为空");
         return testResult;
     }
 
@@ -50,13 +65,33 @@ public class InterfaceController {
     public TestResult save_interface(@RequestBody InterfaceDTO interfaceDTO){
         TestResult testResult = new TestResult();
         if(StringUtils.isNotBlank(interfaceDTO.getMethod()) && StringUtils.isNotBlank(interfaceDTO.getUrl())){
-            testResult.setStatus(200);
-            testResult.setTest_result("保存成功");
+            InterfaceDTO info = new InterfaceDTO();
+            info.setMethod(interfaceDTO.getMethod());
+            info.setUrl(interfaceDTO.getUrl());
+            info.setHeaders(interfaceDTO.getHeaders());
+            info.setBody(interfaceDTO.getBody());
+
+            try {
+                String id = interfaceService.addInterface(info);
+                testResult.setId(id);
+                testResult.setStatus("200");
+                testResult.setResbody("保存成功");
+                return testResult;
+            } catch (Exception e) {
+                e.printStackTrace();
+                testResult.setStatus("600");
+                testResult.setResbody("保存异常");
+                return testResult;
+            }
+
+
         }
-        testResult.setStatus(601);
-        testResult.setTest_result("请求方式或URL地址不能为空");
+        testResult.setStatus("601");
+        testResult.setResbody("请求方式或URL地址不能为空");
         return testResult;
     }
+
+
 
 
 

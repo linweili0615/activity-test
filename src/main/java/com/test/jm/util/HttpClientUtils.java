@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -16,17 +17,7 @@ import javax.net.ssl.SSLHandshakeException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Consts;
-import org.apache.http.Header;
-import org.apache.http.HeaderIterator;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.NoHttpResponseException;
-import org.apache.http.ParseException;
-import org.apache.http.StatusLine;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -56,7 +47,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
@@ -88,20 +78,10 @@ public class HttpClientUtils {
     private static final String HTTPS = "https";
     private static final String CHAR_SET = "UTF-8";
 
-
-    // 代理IP   
-    // private String InetAddressStr;
-
-
-    // 代理端口   
-    // private int InetPort;
-
-
     /**
-     * 连接池的最大连接数400 
+     * 连接池的最大连接数400
      */
-    private static int MAX_CONNECTION_NUM = 400;
-
+    private static int MAX_CONNECTION_NUM = 1000;
 
     /**
      * 单路由最大连接数80 
@@ -109,34 +89,31 @@ public class HttpClientUtils {
     /// private static int MAX_PER_ROUTE = 100;
 
     /**
-     * 默认的每个路由的最大连接数80 
+     * 默认的每个路由的最大连接数80
      */
     private static int DEFALUT_MAX_PER_ROUTE = 40;
 
-
     /**
-     * 向服务端请求超时时间设置(单位:毫秒) 
+     * 向服务端请求超时时间设置(单位:毫秒)
      * 读超时时间（等待数据超时时间）setSocketTimeout
      */
     private static int SOCKET_TIME_OUT = 60000;
 
-
     /**
-     * 向服务端请求超时时间设置(单位:毫秒) 
+     * 向服务端请求超时时间设置(单位:毫秒)
      * 接收数据的等待超时时间，单位ms setSoTimeout
      */
     private static int SO_TIME_OUT = 60000;
 
-
     /**
-     * 向服务端请求超时时间设置(单位:毫秒) 
+     * 向服务端请求超时时间设置(单位:毫秒)
      * 关闭Socket时，要么发送完所有数据，要么等待60s后，就关闭连接，此时socket.close()是阻塞的
      */
     private static int SO_LINGER = 60;
 
 
     /**
-     * 从池中获取连接超时时间(单位:毫秒)  
+     * 从池中获取连接超时时间(单位:毫秒)
      */
     private static int CONNECT_REQUEST_TIME_OUT = 60000;
 
@@ -180,17 +157,17 @@ public class HttpClientUtils {
 
     //认证证书相关信息
     /**
-     * 私钥证书 文件存放路径 
+     * 私钥证书 文件存放路径
      */
     private static String keyStoreFilePath;
 
     /**
-     * 私钥证书 密钥 
+     * 私钥证书 密钥
      */
     private static String keyStorePass;
 
     /**
-     * 信任证书库 文件存放路径 
+     * 信任证书库 文件存放路径
      */
     private static String trustStoreFilePath;
 
@@ -317,6 +294,7 @@ public class HttpClientUtils {
 
     /**
      * 初始化证书
+     *
      * @param builder
      * @throws IOException
      */
@@ -353,6 +331,7 @@ public class HttpClientUtils {
 
     /**
      * 线程安全并支持懒加载功能
+     *
      * @return
      */
     public static CloseableHttpClient getConnectionInsatance() {
@@ -365,10 +344,10 @@ public class HttpClientUtils {
      * @return
      */
     public static CloseableHttpClient getHttpClient() {
-        if(httpClient == null){
-            synchronized (syncLock){
-                if (httpClient == null){
-                    httpClient =HttpClients.custom()
+        if (httpClient == null) {
+            synchronized (syncLock) {
+                if (httpClient == null) {
+                    httpClient = HttpClients.custom()
                             .setConnectionManager(cm) //连接池管理器
                             //.setProxy(new HttpHost("myproxy", 8080))       //设置代理
                             .setDefaultCookieStore(cookieStore) // Cookie存储
@@ -385,7 +364,8 @@ public class HttpClientUtils {
 
     /**
      * 设置请求配置
-     * 创建一个Get请求，并重新设置请求参数，覆盖默认 
+     * 创建一个Get请求，并重新设置请求参数，覆盖默认
+     *
      * @param httpget
      */
     private static void requestConfig(HttpRequestBase httpget) {
@@ -407,19 +387,19 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public static Map<String,String> getCookie(String url){
+    public static Map<String, String> getCookie(String url) {
         //getHttpClient();
         HttpRequest httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
-        try{
-            response =httpClient.execute((HttpGet)httpGet);
+        try {
+            response = httpClient.execute((HttpGet) httpGet);
             Header[] headers = response.getAllHeaders();
-            Map<String,String> cookies=new HashMap<String, String>();
-            for(Header header:headers){
-                cookies.put(header.getName(),header.getValue());
+            Map<String, String> cookies = new HashMap<String, String>();
+            for (Header header : headers) {
+                cookies.put(header.getName(), header.getValue());
             }
             return cookies;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         } finally {
@@ -432,83 +412,74 @@ public class HttpClientUtils {
 
     /**
      * httpClient post请求
+     *
      * @param url 请求url
-     * @param header 头部信息
-     * @param param 请求参数 form提交适用
-     * @param entity 请求实体 json/xml提交适用
      * @return 可能为空 需要处理
      * @throws Exception
-     *
      */
-    public static String post(String  url, String headers, String params) throws Exception {
-        String result = "";
-        CloseableHttpResponse response = null;
-        try {
-            HttpPost httpPost = new HttpPost(url);
-            //设置请求头部
-            if (StringUtils.isNotEmpty(headers)) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode node = objectMapper.readTree(headers);
-                Iterator<Map.Entry<String, JsonNode>> elements = node.fields();
-                while (elements.hasNext()) {
-                    Map.Entry<String, JsonNode> element = elements.next();
-                    httpPost.addHeader(element.getKey(), element.getValue().toString());
-                }
-            }
-            // 设置请求参数
-            if (StringUtils.isNotEmpty(params)) {
+    public static HttpResponse post(String url, String headers, String params) throws Exception {
+        HttpPost httpPost = new HttpPost(url);
 
-//                UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(formparams, Consts.UTF_8);
-//                httpPost.setEntity(urlEncodedFormEntity);
+        //设置请求头部
+        if (StringUtils.isNotEmpty(headers)) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode node = objectMapper.readTree(headers);
+            Iterator<Map.Entry<String, JsonNode>> elements = node.fields();
+            while (elements.hasNext()) {
+                Map.Entry<String, JsonNode> element = elements.next();
+                httpPost.addHeader(element.getKey(), element.getValue().toString());
             }
-
-            //设置请求配置
-            requestConfig(httpPost);
-
-            response = httpClient.execute(httpPost);
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode == HttpStatus.SC_OK) {
-                HttpEntity resEntity = response.getEntity();
-                result = EntityUtils.toString(resEntity);
-            } else {
-                readHttpResponse(response);
-            }
-        } catch (Exception e) {throw e;
-        } finally {
-            closeResponse(response);
-            //closeHttpClient(httpClient);
         }
-        return result;
+        // 设置请求参数
+        if (StringUtils.isNotEmpty(params)) {
+            StringEntity entity = new StringEntity(params, Charset.forName("UTF-8"));
+            entity.setContentEncoding("UTF-8");
+//                entity.setContentType("application/json");
+            httpPost.setEntity(entity);
+        }
+
+        //设置请求配置
+        requestConfig(httpPost);
+
+        HttpResponse response = httpClient.execute(httpPost);
+        return response;
     }
 
     /**
-     * 读请求响应
-     *
-     * @param httpResponse
+     * 读请求响应body
      * @return
      * @throws ParseException
      * @throws IOException
      */
-    public static String readHttpResponse(CloseableHttpResponse httpResponse)
+    public static String getResponseBody(HttpResponse response)
             throws ParseException, IOException {
-        StringBuilder builder = new StringBuilder();
         // 获取响应消息实体
-        HttpEntity entity = httpResponse.getEntity();
-        // 响应状态
-        builder.append("status:" + httpResponse.getStatusLine());
-        builder.append("headers:");
-        HeaderIterator iterator = httpResponse.headerIterator();
-        while (iterator.hasNext()) {
-            builder.append("\t" + iterator.next());
-        }
+        HttpEntity entity = response.getEntity();
         // 判断响应实体是否为空
         if (entity != null) {
-            String responseString = EntityUtils.toString(entity);
-            builder.append("response length:" + responseString.length());
-            builder.append("response content:" + responseString.replace("\r\n", ""));
+            return EntityUtils.toString(entity, "UTF-8");
+        }
+        return null;
+    }
+
+    /**
+     * 读请求相应headers
+     * @param response
+     * @return
+     * @throws ParseException
+     * @throws IOException
+     */
+    public static String getResponseHeaders(HttpResponse response)
+            throws ParseException, IOException {
+        StringBuilder builder = new StringBuilder();
+        HeaderIterator iterator = response.headerIterator();
+        while (iterator.hasNext()) {
+            builder.append(iterator.next() + "\t");
         }
         return builder.toString();
     }
+
+
 
 
 

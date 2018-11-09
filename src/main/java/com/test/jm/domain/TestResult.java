@@ -2,8 +2,9 @@ package com.test.jm.domain;
 
 public class TestResult {
     private String id;
-    private Integer status;
-    private String test_result;
+    private String status;
+    private String resheaders;
+    private String resbody;
 
     public String getId() {
         return id;
@@ -13,20 +14,28 @@ public class TestResult {
         this.id = id;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getTest_result() {
-        return test_result;
+    public String getResheaders() {
+        return resheaders;
     }
 
-    public void setTest_result(String test_result) {
-        this.test_result = test_result;
+    public void setResheaders(String resheaders) {
+        this.resheaders = resheaders;
+    }
+
+    public String getResbody() {
+        return resbody;
+    }
+
+    public void setResbody(String resbody) {
+        this.resbody = resbody;
     }
 
     @Override
@@ -34,7 +43,8 @@ public class TestResult {
         return "TestResult{" +
                 "id='" + id + '\'' +
                 ", status=" + status +
-                ", test_result='" + test_result + '\'' +
+                ", resheaders='" + resheaders + '\'' +
+                ", resbody='" + resbody + '\'' +
                 '}';
     }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.jm.dao.TokenDao">
+
+    <insert id="addInterface" parameterType="com.test.jm.dto.test.InterfaceDTO">
+          INSERT INTO
+          interface
+          (id, url, headers, method, body, author, update_author, create_time, modify_time)
+          VALUES
+          (#{id}, #{url}, #{headers}, #{method}, #{body}, #{author}, #{update_author}, now(), now());
+    </insert>
+
+
+    <select id="selectInterfaceById" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM interface
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </trim>
+    </select>
+
+    <update id="editInterface" parameterType="com.test.jm.dto.TokenDTO">
+        UPDATE interface
+        <set>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="headers != null">
+                headers = #{headers},
+            </if>
+            <if test="method != null">
+                method = #{method},
+            </if>
+            <if test="body != null">
+                body = #{body},
+            </if>
+            <if test="update_author != null">
+                update_author = #{update_author},
+            </if>
+            modify_time = now()
+        </set>
+        WHERE id = #{id};
+    </update>
+
+</mapper>

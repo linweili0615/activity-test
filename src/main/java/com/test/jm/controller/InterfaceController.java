@@ -91,6 +91,52 @@ public class InterfaceController {
         return testResult;
     }
 
+    @PostMapping("/edit")
+    public TestResult edit_interface(@RequestBody InterfaceDTO interfaceDTO){
+        TestResult testResult = new TestResult();
+        if(StringUtils.isNotBlank(interfaceDTO.getId())){
+            Integer res = interfaceService.selectInterfaceById(interfaceDTO.getId());
+            if(res > 0){
+                if(StringUtils.isNotBlank(interfaceDTO.getMethod()) && StringUtils.isNotBlank(interfaceDTO.getUrl())){
+                    InterfaceDTO info = new InterfaceDTO();
+                    info.setId(interfaceDTO.getId());
+                    info.setMethod(interfaceDTO.getMethod());
+                    info.setUrl(interfaceDTO.getUrl());
+                    info.setHeaders(interfaceDTO.getHeaders());
+                    info.setBody(interfaceDTO.getBody());
+
+                    try {
+                        Integer result = interfaceService.editInterface(info);
+                        if(result > 0 ){
+                            testResult.setId(interfaceDTO.getId());
+                            testResult.setStatus("200");
+                            testResult.setResbody("保存成功");
+                            return testResult;
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        testResult.setStatus("600");
+                        testResult.setResbody("保存异常");
+                        return testResult;
+                    }
+
+
+                }
+                testResult.setStatus("601");
+                testResult.setResbody("请求方式或URL地址不能为空");
+                return testResult;
+            }
+            testResult.setStatus("601");
+            testResult.setResbody("请求接口id不存在");
+            return testResult;
+
+        }
+        testResult.setStatus("601");
+        testResult.setResbody("请求接口id不能为空");
+        return testResult;
+
+    }
 
 
 

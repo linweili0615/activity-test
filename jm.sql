@@ -45,3 +45,16 @@ CREATE TABLE `user_token` (
   `modify_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `interface` (
+  `id` varchar(255) NOT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `headers` varchar(255) DEFAULT NULL,
+  `method` varchar(255) DEFAULT NULL,
+  `body` varchar(255) DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `update_author` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `modify_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

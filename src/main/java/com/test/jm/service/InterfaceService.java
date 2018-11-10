@@ -17,9 +17,26 @@ public class InterfaceService {
         String uid = UUID.randomUUID().toString();
         interfaceDTO.setId(uid);
         interfaceDTO.setAuthor("linweili");
-        interfaceDao.addInterface(interfaceDTO);
-        return uid;
+        try {
+            interfaceDao.addInterface(interfaceDTO);
+            return uid;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
     };
+
+    public Integer delInterfaceById(String id) {
+        try {
+            Integer res = interfaceDao.deleteInterfaceById(id);
+            return res;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
 
     public Integer editInterface(InterfaceDTO info) {
         try {
@@ -41,4 +58,5 @@ public class InterfaceService {
         }
 
     }
+
 }

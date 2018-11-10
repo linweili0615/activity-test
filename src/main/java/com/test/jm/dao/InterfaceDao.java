@@ -9,4 +9,6 @@ public interface InterfaceDao {
     Integer editInterface(InterfaceDTO interfaceDTO);
 
     Integer selectInterfaceById(String id);
+
+    Integer deleteInterfaceById(String id);
 }

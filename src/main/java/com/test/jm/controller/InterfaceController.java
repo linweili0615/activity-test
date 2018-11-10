@@ -16,10 +16,7 @@ import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Map;
@@ -73,9 +70,14 @@ public class InterfaceController {
 
             try {
                 String id = interfaceService.addInterface(info);
-                testResult.setId(id);
-                testResult.setStatus("200");
-                testResult.setResbody("保存成功");
+                if(StringUtils.isNotBlank(id)){
+                    testResult.setId(id);
+                    testResult.setStatus("200");
+                    testResult.setResbody("保存成功");
+                    return testResult;
+                }
+                testResult.setStatus("600");
+                testResult.setResbody("保存失败");
                 return testResult;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -136,6 +138,31 @@ public class InterfaceController {
         testResult.setResbody("请求接口id不能为空");
         return testResult;
 
+    }
+
+    @PostMapping("/del")
+    public TestResult removerInterfaceById(@RequestParam(value = "id",required = true) String id){
+        TestResult testResult = new TestResult();
+        if(StringUtils.isNotBlank(id)) {
+            if (interfaceService.selectInterfaceById(id) > 0) {
+                if(interfaceService.delInterfaceById(id) > 0){
+                    testResult.setId(id);
+                    testResult.setStatus("200");
+                    testResult.setResbody("接口删除成功");
+                    return testResult;
+                };
+                testResult.setId(id);
+                testResult.setStatus("600");
+                testResult.setResbody("接口删除失败");
+                return testResult;
+            }
+            testResult.setStatus("601");
+            testResult.setResbody("请求接口id不存在");
+            return testResult;
+        }
+        testResult.setStatus("601");
+        testResult.setResbody("请求接口id不能为空");
+        return testResult;
     }
 
 

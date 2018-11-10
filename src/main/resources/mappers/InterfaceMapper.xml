@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.test.jm.dao.TokenDao">
+<mapper namespace="com.test.jm.dao.InterfaceDao">
 
     <insert id="addInterface" parameterType="com.test.jm.dto.test.InterfaceDTO">
           INSERT INTO
@@ -22,7 +22,7 @@
         </trim>
     </select>
 
-    <update id="editInterface" parameterType="com.test.jm.dto.TokenDTO">
+    <update id="editInterface" parameterType="com.test.jm.dto.test.InterfaceDTO">
         UPDATE interface
         <set>
             <if test="url != null">
@@ -44,5 +44,8 @@
         </set>
         WHERE id = #{id};
     </update>
+    <delete id="deleteInterfaceById" parameterType="java.lang.String">
+        DELETE FROM interface WHERE id = #{id};
+    </delete>
 
 </mapper>

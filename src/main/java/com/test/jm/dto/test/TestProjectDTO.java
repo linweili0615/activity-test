@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 public class TestProjectDTO {
     private String id;
     private String project_name;
-    private String project_list;
     private Integer status;
     private String author;
     private String update_author;
@@ -26,14 +25,6 @@ public class TestProjectDTO {
 
     public void setProject_name(String project_name) {
         this.project_name = project_name;
-    }
-
-    public String getProject_list() {
-        return project_list;
-    }
-
-    public void setProject_list(String project_list) {
-        this.project_list = project_list;
     }
 
     public String getAuthor() {
@@ -81,7 +72,6 @@ public class TestProjectDTO {
         return "TestProjectDTO{" +
                 "id='" + id + '\'' +
                 ", project_name='" + project_name + '\'' +
-                ", project_list='" + project_list + '\'' +
                 ", status=" + status +
                 ", author='" + author + '\'' +
                 ", update_author='" + update_author + '\'' +

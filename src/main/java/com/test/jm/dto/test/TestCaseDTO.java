@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 
 public class TestCaseDTO {
 
-    private String id;
+    private Integer id;
+    private String project_id;
     private String case_name;
     private String case_list;
     private Integer status;
@@ -13,12 +14,20 @@ public class TestCaseDTO {
     private LocalDateTime create_time;
     private LocalDateTime modify_time;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getProject_id() {
+        return project_id;
+    }
+
+    public void setProject_id(String project_id) {
+        this.project_id = project_id;
     }
 
     public String getCase_name() {
@@ -81,6 +90,7 @@ public class TestCaseDTO {
     public String toString() {
         return "TestCaseDTO{" +
                 "id='" + id + '\'' +
+                ", project_id='" + project_id + '\'' +
                 ", case_name='" + case_name + '\'' +
                 ", case_list='" + case_list + '\'' +
                 ", status=" + status +

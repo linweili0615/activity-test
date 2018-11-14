@@ -1,15 +1,9 @@
 package com.test.jm.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonObject;
 import com.test.jm.domain.TestResult;
-import com.test.jm.dto.test.InterfaceDTO;
-import java.util.Iterator;
-import java.util.Map.Entry;
+import com.test.jm.dto.test.ApiDTO;
 
-import com.test.jm.service.InterfaceService;
+import com.test.jm.service.ApiService;
 import com.test.jm.util.HttpClientUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
@@ -19,24 +13,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/interface")
-public class InterfaceController {
+public class ApiController {
 
-    private Logger logger = LoggerFactory.getLogger(InterfaceController.class);
+    private Logger logger = LoggerFactory.getLogger(ApiController.class);
 
     @Autowired
-    private InterfaceService interfaceService;
+    private ApiService apiService;
 
     @PostMapping("/test")
-    public TestResult test_interface(@RequestBody InterfaceDTO interfaceDTO) throws IOException {
+    public TestResult test_interface(@RequestBody ApiDTO apiDTO) throws IOException {
         TestResult testResult = new TestResult();
-        if(StringUtils.isNotBlank(interfaceDTO.getMethod()) && StringUtils.isNotBlank(interfaceDTO.getUrl())){
+        if(StringUtils.isNotBlank(apiDTO.getMethod()) && StringUtils.isNotBlank(apiDTO.getUrl())){
 
             try {
-                HttpResponse response = HttpClientUtils.post(interfaceDTO.getUrl(),interfaceDTO.getHeaders(),interfaceDTO.getBody());
+                HttpResponse response = HttpClientUtils.post(apiDTO.getUrl(), apiDTO.getHeaders(), apiDTO.getBody());
                 String response_status_code = response.getStatusLine().toString();
                 String response_headers = HttpClientUtils.getResponseHeaders(response);
                 String response_body = HttpClientUtils.getResponseBody(response);
@@ -59,17 +52,17 @@ public class InterfaceController {
     }
 
     @PostMapping("/save")
-    public TestResult save_interface(@RequestBody InterfaceDTO interfaceDTO){
+    public TestResult save_interface(@RequestBody ApiDTO apiDTO){
         TestResult testResult = new TestResult();
-        if(StringUtils.isNotBlank(interfaceDTO.getMethod()) && StringUtils.isNotBlank(interfaceDTO.getUrl())){
-            InterfaceDTO info = new InterfaceDTO();
-            info.setMethod(interfaceDTO.getMethod());
-            info.setUrl(interfaceDTO.getUrl());
-            info.setHeaders(interfaceDTO.getHeaders());
-            info.setBody(interfaceDTO.getBody());
+        if(StringUtils.isNotBlank(apiDTO.getMethod()) && StringUtils.isNotBlank(apiDTO.getUrl())){
+            ApiDTO info = new ApiDTO();
+            info.setMethod(apiDTO.getMethod());
+            info.setUrl(apiDTO.getUrl());
+            info.setHeaders(apiDTO.getHeaders());
+            info.setBody(apiDTO.getBody());
 
             try {
-                String id = interfaceService.addInterface(info);
+                String id = apiService.addInterface(info);
                 if(StringUtils.isNotBlank(id)){
                     testResult.setId(id);
                     testResult.setStatus("200");
@@ -94,23 +87,23 @@ public class InterfaceController {
     }
 
     @PostMapping("/edit")
-    public TestResult edit_interface(@RequestBody InterfaceDTO interfaceDTO){
+    public TestResult edit_interface(@RequestBody ApiDTO apiDTO){
         TestResult testResult = new TestResult();
-        if(StringUtils.isNotBlank(interfaceDTO.getId())){
-            Integer res = interfaceService.selectInterfaceById(interfaceDTO.getId());
+        if(StringUtils.isNotBlank(apiDTO.getId())){
+            Integer res = apiService.selectInterfaceById(apiDTO.getId());
             if(res > 0){
-                if(StringUtils.isNotBlank(interfaceDTO.getMethod()) && StringUtils.isNotBlank(interfaceDTO.getUrl())){
-                    InterfaceDTO info = new InterfaceDTO();
-                    info.setId(interfaceDTO.getId());
-                    info.setMethod(interfaceDTO.getMethod());
-                    info.setUrl(interfaceDTO.getUrl());
-                    info.setHeaders(interfaceDTO.getHeaders());
-                    info.setBody(interfaceDTO.getBody());
+                if(StringUtils.isNotBlank(apiDTO.getMethod()) && StringUtils.isNotBlank(apiDTO.getUrl())){
+                    ApiDTO info = new ApiDTO();
+                    info.setId(apiDTO.getId());
+                    info.setMethod(apiDTO.getMethod());
+                    info.setUrl(apiDTO.getUrl());
+                    info.setHeaders(apiDTO.getHeaders());
+                    info.setBody(apiDTO.getBody());
 
                     try {
-                        Integer result = interfaceService.editInterface(info);
+                        Integer result = apiService.editInterface(info);
                         if(result > 0 ){
-                            testResult.setId(interfaceDTO.getId());
+                            testResult.setId(apiDTO.getId());
                             testResult.setStatus("200");
                             testResult.setResbody("保存成功");
                             return testResult;
@@ -144,8 +137,8 @@ public class InterfaceController {
     public TestResult removerInterfaceById(@RequestParam(value = "id",required = true) String id){
         TestResult testResult = new TestResult();
         if(StringUtils.isNotBlank(id)) {
-            if (interfaceService.selectInterfaceById(id) > 0) {
-                if(interfaceService.delInterfaceById(id) > 0){
+            if (apiService.selectInterfaceById(id) > 0) {
+                if(apiService.delInterfaceById(id) > 0){
                     testResult.setId(id);
                     testResult.setStatus("200");
                     testResult.setResbody("接口删除成功");

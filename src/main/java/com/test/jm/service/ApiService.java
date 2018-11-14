@@ -1,24 +1,24 @@
 package com.test.jm.service;
 
-import com.test.jm.dao.InterfaceDao;
-import com.test.jm.dto.test.InterfaceDTO;
+import com.test.jm.dao.ApiDao;
+import com.test.jm.dto.test.ApiDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class InterfaceService {
+public class ApiService {
 
     @Autowired
-    private InterfaceDao interfaceDao;
+    private ApiDao apiDao;
 
-    public String addInterface(InterfaceDTO interfaceDTO){
+    public String addInterface(ApiDTO apiDTO){
         String uid = UUID.randomUUID().toString();
-        interfaceDTO.setId(uid);
-        interfaceDTO.setAuthor("linweili");
+        apiDTO.setId(uid);
+        apiDTO.setAuthor("linweili");
         try {
-            interfaceDao.addInterface(interfaceDTO);
+            apiDao.addInterface(apiDTO);
             return uid;
         }catch (Exception e){
             e.printStackTrace();
@@ -29,7 +29,7 @@ public class InterfaceService {
 
     public Integer delInterfaceById(String id) {
         try {
-            Integer res = interfaceDao.deleteInterfaceById(id);
+            Integer res = apiDao.deleteInterfaceById(id);
             return res;
         }catch (Exception e){
             e.printStackTrace();
@@ -38,9 +38,9 @@ public class InterfaceService {
 
     }
 
-    public Integer editInterface(InterfaceDTO info) {
+    public Integer editInterface(ApiDTO info) {
         try {
-            Integer res = interfaceDao.editInterface(info);
+            Integer res = apiDao.editInterface(info);
             return res;
         }catch (Exception e){
             e.printStackTrace();
@@ -50,7 +50,7 @@ public class InterfaceService {
 
     public Integer selectInterfaceById(String id) {
         try {
-            Integer res = interfaceDao.selectInterfaceById(id);
+            Integer res = apiDao.selectInterfaceById(id);
             return res;
         }catch (Exception e){
             e.printStackTrace();

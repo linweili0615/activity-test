@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.test.jm.dao.InterfaceDao">
+<mapper namespace="com.test.jm.dao.ApiDao">
 
-    <insert id="addInterface" parameterType="com.test.jm.dto.test.InterfaceDTO">
+    <insert id="addInterface" parameterType="com.test.jm.dto.test.ApiDTO">
           INSERT INTO
           interface
           (id, url, headers, method, body, author, update_author, create_time, modify_time)
@@ -22,7 +22,7 @@
         </trim>
     </select>
 
-    <update id="editInterface" parameterType="com.test.jm.dto.test.InterfaceDTO">
+    <update id="editInterface" parameterType="com.test.jm.dto.test.ApiDTO">
         UPDATE interface
         <set>
             <if test="url != null">

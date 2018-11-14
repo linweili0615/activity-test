@@ -2,7 +2,7 @@ package com.test.jm.dto.test;
 
 import java.time.LocalDateTime;
 
-public class InterfaceDTO {
+public class ApiDTO {
     private String id;
     private String url;
     private String headers;
@@ -87,7 +87,7 @@ public class InterfaceDTO {
 
     @Override
     public String toString() {
-        return "InterfaceDTO{" +
+        return "ApiDTO{" +
                 "id='" + id + '\'' +
                 ", url='" + url + '\'' +
                 ", headers='" + headers + '\'' +

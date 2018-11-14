@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.jm.dao.ProjectDao">
+
+    <resultMap id="ProjectList" type="com.test.jm.dto.test.ProjectDTO">
+        <result column="id" property="id"/>
+        <result column="project_name" property="project_name"/>
+        <result column="status" property="status"/>
+        <result column="author" property="author"/>
+        <result column="update_author" property="update_author"/>
+        <result column="modify_time" property="modify_time"/>
+    </resultMap>
+
+    <insert id="addProject" parameterType="com.test.jm.dto.test.ProjectDTO">
+          INSERT INTO
+          project
+          (id,project_name, status, author, update_author, create_time, modify_time)
+          VALUES
+          (#{id},#{project_name}, #{status}, #{author}, #{update_author}, now(), now());
+    </insert>
+
+    <delete id="deleteProjectById" parameterType="java.lang.String">
+        DELETE FROM project WHERE id = #{id};
+    </delete>
+
+    <update id="editProject" parameterType="com.test.jm.dto.test.ProjectDTO">
+        UPDATE project
+        <set>
+            <if test="project_name != null">
+                project_name = #{project_name},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="update_author != null">
+                update_author = #{update_author},
+            </if>
+            modify_time = now()
+        </set>
+        WHERE id = #{id};
+    </update>
+
+    <select id="selectProjectById" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        SELECT project_name, status, author, update_author, create_time, modify_time FROM project
+        <trim prefix="WHERE">
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </trim>
+    </select>
+
+
+    <select id="getProjectList" resultMap="ProjectList">
+        SELECT  * FROM project;
+    </select>
+
+
+
+
+</mapper>

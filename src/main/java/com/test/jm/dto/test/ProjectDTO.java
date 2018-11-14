@@ -2,7 +2,7 @@ package com.test.jm.dto.test;
 
 import java.time.LocalDateTime;
 
-public class TestProjectDTO {
+public class ProjectDTO {
     private String id;
     private String project_name;
     private Integer status;
@@ -69,7 +69,7 @@ public class TestProjectDTO {
 
     @Override
     public String toString() {
-        return "TestProjectDTO{" +
+        return "ProjectDTO{" +
                 "id='" + id + '\'' +
                 ", project_name='" + project_name + '\'' +
                 ", status=" + status +

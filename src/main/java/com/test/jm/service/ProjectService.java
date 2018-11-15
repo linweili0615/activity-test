@@ -13,8 +13,8 @@ public class ProjectService {
     @Autowired
     private ProjectDao projectDao;
 
-    public List<ProjectDTO> getProjectList(){
-        return projectDao.getProjectList();
+    public List<ProjectDTO> getProjectList(ProjectDTO projectDTO){
+        return projectDao.getProjectList(projectDTO);
     }
 
     public ProjectDTO selectProjectById(String id){

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProjectDao {
 
-    List<ProjectDTO> getProjectList();
+    List<ProjectDTO> getProjectList(ProjectDTO projectDTO);
 
     ProjectDTO selectProjectById(String id);
 

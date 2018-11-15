@@ -40,11 +40,15 @@ public class ProjectController {
         ProjectResult result = new ProjectResult();
         try {
             PageHelper.startPage(pageNo,pageSize);
-            List<ProjectDTO> projectDTOList = projectService.getProjectList();
-            if(pageNo > projectDTOList.size()/pageSize){
-                pageNo = projectDTOList.size()%pageSize==0 ? projectDTOList.size()/pageSize : projectDTOList.size()/pageSize + 1;
-            }
+            ProjectDTO projectDTO = new ProjectDTO();
+            projectDTO.setId(page.getId());
+            projectDTO.setProject_name(page.getProject_name());
+            List<ProjectDTO> projectDTOList = projectService.getProjectList(projectDTO);
             PageInfo<ProjectDTO> pageInfo = new PageInfo<>(projectDTOList);
+//            int row_count = (int) pageInfo.getTotal();
+//            if(pageNo >= row_count / pageSize){
+//                pageNo = row_count % pageSize==0 ? row_count/pageSize : row_count/pageSize + 1;
+//            }
             result.setProjectDTOList(pageInfo.getList());
             result.setTotal(pageInfo.getTotal());
             result.setPageSize(pageSize);

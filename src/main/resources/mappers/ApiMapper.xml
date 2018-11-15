@@ -38,7 +38,7 @@
                 body = #{body},
             </if>
             <if test="update_author != null">
-                update_author = #{update_author},
+                pdate_author = #{update_author},
             </if>
             modify_time = now()
         </set>

@@ -55,8 +55,17 @@
     </select>
 
 
-    <select id="getProjectList" resultMap="ProjectList">
+    <select id="getProjectList" parameterType="com.test.jm.dto.test.ProjectDTO" resultMap="ProjectList">
         SELECT  * FROM project
+        <bind name="pattern" value="'%' + project_name + '%'" />
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test='id != ""'>
+                id = #{id}
+            </if>
+            <if test='project_name != ""'>
+                AND project_name LIKE #{pattern}
+            </if>
+        </trim>
     </select>
 
 

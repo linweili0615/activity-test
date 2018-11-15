@@ -40,9 +40,9 @@
                 status = #{status},
             </if>
             <if test="pwd != null">
-                pwd = #{pwd}
+                pwd = #{pwd},
             </if>
-                modify_date = now(),
+                modify_date = now()
         </set>
         WHERE id = #{id}
     </update>

@@ -8,7 +8,7 @@
           user_info
           (id, username, telno, pwd, error_count, status, create_date, modify_date)
           VALUES
-          (#{id}, #{username}, #{telno}, #{pwd}, 0, 0, now(), now());
+          (#{id}, #{username}, #{telno}, #{pwd}, 0, 0, now(), now())
     </insert>
 
     <select id="getUserInfo" parameterType="com.test.jm.dto.UserInfoDTO"
@@ -44,7 +44,7 @@
             </if>
                 modify_date = now(),
         </set>
-        WHERE id = #{id};
+        WHERE id = #{id}
     </update>
 
 </mapper>

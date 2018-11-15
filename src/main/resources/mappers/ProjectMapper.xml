@@ -4,7 +4,7 @@
 <mapper namespace="com.test.jm.dao.ProjectDao">
 
     <resultMap id="ProjectList" type="com.test.jm.dto.test.ProjectDTO">
-        <result column="id" property="id"/>
+        <id column="id" property="id"/>
         <result column="project_name" property="project_name"/>
         <result column="status" property="status"/>
         <result column="author" property="author"/>
@@ -17,11 +17,11 @@
           project
           (id,project_name, status, author, update_author, create_time, modify_time)
           VALUES
-          (#{id},#{project_name}, #{status}, #{author}, #{update_author}, now(), now());
+          (#{id},#{project_name}, #{status}, #{author}, #{update_author}, now(), now())
     </insert>
 
     <delete id="deleteProjectById" parameterType="java.lang.String">
-        DELETE FROM project WHERE id = #{id};
+        DELETE FROM project WHERE id = #{id}
     </delete>
 
     <update id="editProject" parameterType="com.test.jm.dto.test.ProjectDTO">
@@ -41,7 +41,7 @@
             </if>
             modify_time = now()
         </set>
-        WHERE id = #{id};
+        WHERE id = #{id}
     </update>
 
     <select id="selectProjectById" parameterType="java.lang.String"
@@ -56,7 +56,7 @@
 
 
     <select id="getProjectList" resultMap="ProjectList">
-        SELECT  * FROM project;
+        SELECT  * FROM project
     </select>
 
 

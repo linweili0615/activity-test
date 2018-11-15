@@ -8,25 +8,26 @@
           user_token
           (user_id, token, status, expire_time, create_time, modify_time)
           VALUES
-          (#{user_id}, #{token},0 , #{expire_time}, now(), now());
+          (#{user_id}, #{token},0 , #{expire_time}, now(), now())
     </insert>
 
-    <select id="findTokenByUserId" parameterType="java.lang.String"
-            resultType="com.test.jm.dto.TokenDTO">
-        SELECT user_id, token, expire_time, modify_time FROM user_token
+    <select id="findTokenByUserId" parameterType="java.lang.String" resultType="com.test.jm.dto.TokenDTO">
+        SELECT user_id, user_name, token, expire_time, modify_time FROM user_token
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="_parameter != null">
                 user_id = #{_parameter}
             </if>
-            AND status = "0"
+            AND status = 0
         </trim>
         ORDER BY  modify_time DESC
-        LIMIT 1;
     </select>
 
     <update id="updateToken" parameterType="com.test.jm.dto.TokenDTO">
         UPDATE user_token
         <set>
+            <if test="user_name != null">
+                user_name = #{user_name},
+            </if>
             <if test="status != null">
                 status = #{status},
             </if>
@@ -42,7 +43,7 @@
             modify_time = now()
         </set>
         WHERE user_id = #{user_id}
-        AND status = 0;
+        AND status = 0
     </update>
 
 </mapper>

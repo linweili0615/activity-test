@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class TokenDTO {
 
     private Integer id;
+    private String user_name;
     private String user_id;
     private String token;
     private String status;
@@ -18,6 +19,14 @@ public class TokenDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getUser_id() {
@@ -72,6 +81,7 @@ public class TokenDTO {
     public String toString() {
         return "TokenDTO{" +
                 "id=" + id +
+                ", user_name='" + user_name + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", token='" + token + '\'' +
                 ", status='" + status + '\'' +

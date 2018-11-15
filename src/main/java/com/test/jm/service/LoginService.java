@@ -50,7 +50,7 @@ public class LoginService {
                 logger.info("token信息验证通过: {}", jm_cookie);
                 return tokenDTO;
             } catch (Exception e) {
-//                e.printStackTrace();
+                e.printStackTrace();
                 logger.error("token信息校验异常");
                 return null;
             }

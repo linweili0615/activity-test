@@ -41,12 +41,10 @@ public class LoginController {
 
     @PostMapping("/validtoken")
     @ResponseBody
-    public UserInfoDTO validtoken(HttpServletRequest request){
+    public TokenDTO validtoken(HttpServletRequest request){
         TokenDTO tokenDTO = loginService.validToken(request);
         if( tokenDTO != null){
-            UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setId(tokenDTO.getUser_id());
-            return userInfoService.getUserInfo(userInfoDTO);
+            return tokenDTO;
         }
        return null;
     }
@@ -69,6 +67,7 @@ public class LoginController {
                 long expirationdate = 60;
                 String token =  TokenUtils.createJwtToken(uu.getId(), expirationdate);
                 TokenDTO tokenDTO = new TokenDTO();
+                tokenDTO.setUser_name(uu.getUsername());
                 tokenDTO.setUser_id(uu.getId());
                 tokenDTO.setToken(token);
                 try {

@@ -8,7 +8,10 @@ public class ProjectResult {
 
     private String status;
     private String msg;
-    private Integer total;
+    private long total;
+    private long pageSize;
+    private long pageNo;
+
     private List<ProjectDTO> projectDTOList;
 
     public String getStatus() {
@@ -23,12 +26,28 @@ public class ProjectResult {
         return msg;
     }
 
-    public Integer getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(long total) {
         this.total = total;
+    }
+
+    public long getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(long pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public long getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(long pageNo) {
+        this.pageNo = pageNo;
     }
 
     public void setMsg(String msg) {
@@ -49,6 +68,8 @@ public class ProjectResult {
                 "status='" + status + '\'' +
                 ", msg='" + msg + '\'' +
                 ", total=" + total +
+                ", pageSize=" + pageSize +
+                ", pageNo=" + pageNo +
                 ", projectDTOList=" + projectDTOList +
                 '}';
     }

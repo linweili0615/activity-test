@@ -8,7 +8,7 @@
           interface
           (id, url, headers, method, body, author, update_author, create_time, modify_time)
           VALUES
-          (#{id}, #{url}, #{headers}, #{method}, #{body}, #{author}, #{update_author}, now(), now());
+          (#{id}, #{url}, #{headers}, #{method}, #{body}, #{author}, #{update_author}, now(), now())
     </insert>
 
 
@@ -42,10 +42,10 @@
             </if>
             modify_time = now()
         </set>
-        WHERE id = #{id};
+        WHERE id = #{id}
     </update>
     <delete id="deleteInterfaceById" parameterType="java.lang.String">
-        DELETE FROM interface WHERE id = #{id};
+        DELETE FROM interface WHERE id = #{id}
     </delete>
 
 </mapper>

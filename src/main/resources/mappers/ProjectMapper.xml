@@ -59,10 +59,10 @@
         SELECT  * FROM project
         <bind name="pattern" value="'%' + project_name + '%'" />
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test='id != ""'>
+            <if test='id != "" and id != null'>
                 id = #{id}
             </if>
-            <if test='project_name != ""'>
+            <if test='project_name != "" and project_name != null'>
                 AND project_name LIKE #{pattern}
             </if>
         </trim>

@@ -39,12 +39,11 @@ public class ProjectController {
         }
         ProjectResult result = new ProjectResult();
         try {
-
+            PageHelper.startPage(pageNo,pageSize);
             List<ProjectDTO> projectDTOList = projectService.getProjectList();
             if(pageNo > projectDTOList.size()/pageSize){
                 pageNo = projectDTOList.size()%pageSize==0 ? projectDTOList.size()/pageSize : projectDTOList.size()/pageSize + 1;
             }
-            PageHelper.startPage(pageNo,pageSize);
             PageInfo<ProjectDTO> pageInfo = new PageInfo<>(projectDTOList);
             result.setProjectDTOList(pageInfo.getList());
             result.setTotal(pageInfo.getTotal());

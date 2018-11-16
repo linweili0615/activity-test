@@ -15,10 +15,7 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
@@ -69,9 +66,9 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
-public class HttpClientUtils {
+public class HttpClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpClient.class);
 
     //报文压缩协议类型
     private static final String GZIP = "gzip";
@@ -136,49 +133,37 @@ public class HttpClientUtils {
      * 重试次数，重试多少次放弃重试
      */
     private static int EXECUTION_COUNT = 5;
-
     private static RequestConfig requestConfig;
     //HttpClient连接
     private static CloseableHttpClient httpClient;
-
     //SSL连接工厂类
     private static SSLConnectionSocketFactory sslsf;
-
     //连接池管理器
     private static PoolingHttpClientConnectionManager cm;
-
     //SSL上下文创建器
     private static SSLContextBuilder builder;
-
     private final static Object syncLock = new Object();
-
     // 请求重试处理
     private static HttpRequestRetryHandler httpRequestRetryHandler;
-
     //会话存储
     private static CookieStore cookieStore;
-
     //认证证书相关信息
     /**
      * 私钥证书 文件存放路径
      */
     private static String keyStoreFilePath;
-
     /**
      * 私钥证书 密钥
      */
     private static String keyStorePass;
-
     /**
      * 信任证书库 文件存放路径
      */
     private static String trustStoreFilePath;
-
     /**
      * 信任证书库  密钥
      */
     private static String trustStorePass;
-
     /**
      * 创建httpclient连接池并初始化
      */
@@ -265,7 +250,6 @@ public class HttpClientUtils {
                     .register(HTTPS, sslsf)
                     .build();
             cm = new PoolingHttpClientConnectionManager(registry);
-
             //设置连接池的最大连接数
             cm.setMaxTotal(MAX_CONNECTION_NUM);//max connection
             /**
@@ -274,8 +258,7 @@ public class HttpClientUtils {
             //默认的每个路由的最大连接数
             cm.setDefaultMaxPerRoute(DEFALUT_MAX_PER_ROUTE);
             //设置到某个路由的最大连接数，会覆盖defaultMaxPerRoute
-            //cm.setMaxPerRoute(new HttpRoute(new HttpHost("somehost", 80)), MAX_PER_ROUTE); 
-
+            //cm.setMaxPerRoute(new HttpRoute(new HttpHost("somehost", 80)), MAX_PER_ROUTE);
             /**
              * socket配置（默认配置 和 某个host的配置）
              */
@@ -289,7 +272,6 @@ public class HttpClientUtils {
             cm.setDefaultSocketConfig(socketConfig);
             //cm.setSocketConfig(new HttpHost("somehost", 80), socketConfig);
             getHttpClient();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -391,7 +373,6 @@ public class HttpClientUtils {
      * @return
      */
     public static Map<String, String> getCookie(String url) {
-        //getHttpClient();
         HttpRequest httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
         try {
@@ -407,11 +388,37 @@ public class HttpClientUtils {
 
         } finally {
             closeResponse(response);
-            //closeHttpClient(httpClient);
         }
         return null;
     }
 
+
+    /**
+     * GET 请求
+     * @param url - 请求路径
+     * @param params - 请求参数
+     * @param headers - 请求头
+     * @return
+     * @throws Exception
+     */
+    public static CloseableHttpResponse get(String url, String headers) {
+        CloseableHttpResponse response = null;
+        String encode = "utf-8";
+        HttpGet httpGet = new HttpGet(url);
+        setHeaders(httpGet, headers);
+        requestConfig(httpGet);
+        try {
+            response = httpClient.execute(httpGet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            closeResponse(response);
+        }
+        if(null != response){
+            return response;
+        }
+        return null;
+    }
 
     /**
      * httpClient post请求
@@ -420,29 +427,33 @@ public class HttpClientUtils {
      * @return 可能为空 需要处理
      * @throws Exception
      */
-    public static HttpResponse post(String url, String headers, String params) throws Exception {
+    public static CloseableHttpResponse post(String url, String headers, String params) throws Exception {
+        logger.info("进行POST请求：｛｝", url);
         HttpPost httpPost = new HttpPost(url);
-
         //设置请求头部
-        if (StringUtils.isNotEmpty(headers)) {
-            JSONObject jsonObj = JSON.parseObject(headers);
-            for (Map.Entry<String, Object> entry : jsonObj.entrySet()) {
-                System.out.println(entry.getKey() + ":" + entry.getValue());
-                httpPost.addHeader(entry.getKey(), entry.getValue().toString());
-            }
-        }
+        setHeaders(httpPost, headers);
         // 设置请求参数
         if (StringUtils.isNotEmpty(params)) {
+            logger.info("请求参数: {}", params);
             StringEntity entity = new StringEntity(params, Charset.forName("UTF-8"));
             entity.setContentEncoding("UTF-8");
-//                entity.setContentType("application/json");
+//          entity.setContentType("application/json");
             httpPost.setEntity(entity);
         }
-
         //设置请求配置
         requestConfig(httpPost);
-
-        HttpResponse response = httpClient.execute(httpPost);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpPost);
+        } catch (IOException e) {
+            logger.info("请求失败");
+            e.printStackTrace();
+        } finally {
+            closeResponse(response);
+        }
+        if (response == null) {
+            return null;
+        }
         return response;
     }
 
@@ -457,7 +468,7 @@ public class HttpClientUtils {
         // 获取响应消息实体
         HttpEntity entity = response.getEntity();
         // 判断响应实体是否为空
-        if (entity != null) {
+        if (null != entity) {
             return EntityUtils.toString(entity, "UTF-8");
         }
         return null;
@@ -471,69 +482,14 @@ public class HttpClientUtils {
      * @throws IOException
      */
     public static String getResponseHeaders(HttpResponse response)
-            throws ParseException, IOException {
+            throws ParseException{
         StringBuilder builder = new StringBuilder();
         HeaderIterator iterator = response.headerIterator();
         while (iterator.hasNext()) {
             builder.append(iterator.next() + "\t");
         }
-        return builder.toString();
-    }
-
-
-
-
-
-    /**
-     * post请求,使用json格式传参
-     * @param url
-     * @param headers
-     * @param data
-     * @return
-     */
-    public static HttpEntity postJson(String url,Map<String,Object> headers,String data){
-        HttpRequest request = new HttpPost(url);
-        if(headers!=null&&!headers.isEmpty()){
-            request = setHeaders(headers,request);
-        }
-        CloseableHttpResponse response = null;
-        try {
-            HttpPost httpPost = (HttpPost) request;
-            httpPost.setEntity(new StringEntity(data, ContentType.create("application/json", CHAR_SET)));//解决中文乱码问题 
-            response=httpClient.execute(httpPost);
-            HttpEntity entity = response.getEntity();
-            return entity;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            closeResponse(response);
-        }
-        return null;
-    }
-
-    /**
-     * post请求,使用json格式传参
-     * @param url
-     * @param headers
-     * @param data
-     * @return
-     */
-    public static String postJsonToString(String url,Map<String,Object> headers,String data){
-        HttpRequest request = new HttpPost(url);
-        if(headers!=null&&!headers.isEmpty()){
-            request = setHeaders(headers,request);
-        }
-        CloseableHttpResponse response = null;
-        try {
-            HttpPost httpPost = (HttpPost) request;
-            httpPost.setEntity(new StringEntity(data, ContentType.create("application/json", CHAR_SET)));//解决中文乱码问题 
-            response=httpClient.execute(httpPost);
-            HttpEntity entity = response.getEntity();
-            return EntityUtils.toString(entity);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            closeResponse(response);
+        if(null != builder){
+            return builder.toString();
         }
         return null;
     }
@@ -545,55 +501,14 @@ public class HttpClientUtils {
      * @param request
      * @return
      */
-    private static HttpRequest setHeaders(Map<String,Object> headers, HttpRequest request) {
-        for (Map.Entry<String, Object> entry : headers.entrySet()) {
-            //如果设置的协议头不是Cookies
-            if (!entry.getKey().equals("Cookie")) {
-                request.addHeader((String) entry.getKey(), (String) entry.getValue());
-            } else {
-                Map<String, Object> Cookies = (Map<String, Object>) entry.getValue();
-                for (Map.Entry<String, Object> entry1 : Cookies.entrySet()) {
-                    request.addHeader(new BasicHeader("Cookie", (String) entry1.getValue()));
-                }
+    private static void setHeaders(HttpRequest request, String headers) {
+        if (StringUtils.isNotEmpty(headers)) {
+            logger.info("请求头部: {}", headers);
+            JSONObject jsonObj = JSON.parseObject(headers);
+            for (Map.Entry<String, Object> entry : jsonObj.entrySet()) {
+                request.addHeader(entry.getKey(), entry.getValue().toString());
             }
         }
-        return request;
-    }
-
-    /**
-     * 使用表单键值对传参
-     * @param url
-     * @param headers
-     * @param data
-     * @return
-     */
-    public static HttpEntity postForm(String url,Map<String,Object> headers,List<NameValuePair> data){
-        CloseableHttpClient httpClient = getHttpClient();
-        HttpRequest request = new HttpPost(url);
-
-
-        //设置请求配置
-        requestConfig((HttpPost)request);
-
-        if(headers!=null&&!headers.isEmpty()){
-            request = setHeaders(headers,request);
-        }
-        CloseableHttpResponse response = null;
-        try {
-            HttpPost httpPost = (HttpPost) request;
-            UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(data,CHAR_SET);
-            httpPost.setEntity(uefEntity);
-            // httpPost.setEntity(new StringEntity(data, ContentType.create("application/json", "UTF-8")));
-            response=httpClient.execute(httpPost);
-            HttpEntity entity = response.getEntity();
-            return entity;
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        } finally {
-            closeResponse(response);
-        }
-        return null;
     }
 
     /**
@@ -626,151 +541,6 @@ public class HttpClientUtils {
     }
 
     /**
-     * 获取HTTP的响应
-     * @param url
-     * @param headers
-     * @return
-     */
-    public static CloseableHttpResponse getResponse(String url, Map<String, String> headers) {
-        //1.创建客户端访问服务器的httpclient对象   打开浏览器
-        getHttpClient();
-        //2.以请求的连接地址创建get请求对象     浏览器中输入网址
-        HttpGet httpget = new HttpGet(url);
-
-        //设置请求头
-        if (headers != null && !headers.isEmpty()) {
-            for (Map.Entry<String, String> entry : headers.entrySet()) {
-                httpget.setHeader(entry.getKey(), entry.getValue());
-            }
-        }
-
-        //设置请求配置
-        requestConfig(httpget);
-
-        //3.向服务器端发送请求 并且获取响应对象  浏览器中输入网址点击回车
-        CloseableHttpResponse response = null;
-
-
-        try {
-            response = httpClient.execute(httpget);
-            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                //释放资源直接中止这次连接 否则服务将会出现大量的CLOSE_WAIT
-                httpget.abort();
-                return response;
-            }
-        } catch (ClientProtocolException e) {
-            httpget.abort();
-            //logger.error(e.getMessage());
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            httpget.abort();
-            //logger.error(e.getMessage());
-            e.printStackTrace();
-            return response;
-        } finally {
-        }
-        return response;
-    }
-
-    /**
-     * GET 请求
-     *
-     * @param url - 请求路径 
-     * @param params - 请求参数
-     * @param headers - 请求头
-     * @return
-     * @throws Exception
-     */
-    public static HttpEntity get(String url, Map<String, String> params, Map<String, String> headers) {
-        //1.拼装URL
-        String tempUrl = assemblyGetRequestUrlAndParams(url, params);
-
-        //2.向服务器端发送请求 并且获取响应对象  浏览器中输入网址点击回车
-        CloseableHttpResponse response = getResponse(tempUrl, headers);
-
-        if (response == null) {
-            logger.error("CloseableHttpResponse  Object Is Not Null");
-            return null;
-        }
-
-        //3.获取响应实体
-        HttpEntity entity = response.getEntity();
-        try{
-            //4.获取响应对象中的响应码
-            StatusLine statusLine = response.getStatusLine();//获取请求对象中的响应行对象
-            int responseCode = statusLine.getStatusCode();//从状态行中获取状态码
-            if (responseCode == 200) {
-                System.out.println("响应成功!");
-                System.out.println("信息----------------------------------------");
-                System.out.println(response.getStatusLine());
-                System.out.println("----------------------------------------");
-            } else {
-                System.out.println("响应失败!");
-                System.out.println("错误信息----------------------------------------");
-                System.out.println(response.getStatusLine());
-                System.out.println("----------------------------------------");
-            }
-
-            EntityUtils.consume(entity);
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            closeResponse(response);
-            //closeHttpClient(httpClient);
-        }
-
-        return entity;
-    }
-
-    /**
-     * 返回字符串，适合于返回结果为JSON XML格式
-     *
-     * @param url
-     * @param params
-     * @param headers
-     * @return
-     * @throws Exception
-     */
-    public static String getString(String url, Map<String, String> params, Map<String, String> headers){
-        //1.拼装URL
-        String tempUrl = assemblyGetRequestUrlAndParams(url, params);
-
-        //2.向服务器端发送请求 并且获取响应对象  浏览器中输入网址点击回车
-        CloseableHttpResponse response = getResponse(tempUrl, headers);
-
-        //3.获取响应实体
-        if (response == null) {
-            logger.error("CloseableHttpResponse  Object Is Not Null");
-            return null;
-        }
-
-        HttpEntity entity = response.getEntity();  ;
-        if (entity != null) {
-            try {
-
-                // 判断返回报文是否压缩
-                if (entity.getContentEncoding() != null && GZIP.equalsIgnoreCase(entity.getContentEncoding().getName())) {
-                    entity = new GzipDecompressingEntity(entity);
-                }
-
-                String temp = EntityUtils.toString(entity);
-                EntityUtils.consume(entity);
-                return temp;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                closeResponse(response);
-                //closeHttpClient(httpClient);
-            }
-        }
-        return null;
-    }
-
-
-    /**
      * 关闭请求资源，
      * @param response
      */
@@ -799,7 +569,6 @@ public class HttpClientUtils {
             }
         }
     }
-
 
     /**
      * 单例模式

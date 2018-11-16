@@ -4,7 +4,7 @@ import com.test.jm.domain.TestResult;
 import com.test.jm.dto.test.ApiDTO;
 
 import com.test.jm.service.ApiService;
-import com.test.jm.util.HttpClientUtils;
+import com.test.jm.util.HttpClient;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
@@ -29,13 +29,10 @@ public class ApiController {
         if(StringUtils.isNotBlank(apiDTO.getMethod()) && StringUtils.isNotBlank(apiDTO.getUrl())){
 
             try {
-                System.out.println("url: " + apiDTO.getUrl());
-                System.out.println("headers: " + apiDTO.getHeaders());
-                System.out.println("body: " + apiDTO.getBody());
-                HttpResponse response = HttpClientUtils.post(apiDTO.getUrl(), apiDTO.getHeaders(), apiDTO.getBody());
+                HttpResponse response = HttpClient.post(apiDTO.getUrl(), apiDTO.getHeaders(), apiDTO.getBody());
                 String response_status_code = response.getStatusLine().toString();
-                String response_headers = HttpClientUtils.getResponseHeaders(response);
-                String response_body = HttpClientUtils.getResponseBody(response);
+                String response_headers = HttpClient.getResponseHeaders(response);
+                String response_body = HttpClient.getResponseBody(response);
 
                 testResult.setStatus(response_status_code);
                 testResult.setResheaders(response_headers);

@@ -14,6 +14,9 @@ import java.util.*;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -422,12 +425,10 @@ public class HttpClientUtils {
 
         //设置请求头部
         if (StringUtils.isNotEmpty(headers)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode node = objectMapper.readTree(headers);
-            Iterator<Map.Entry<String, JsonNode>> elements = node.fields();
-            while (elements.hasNext()) {
-                Map.Entry<String, JsonNode> element = elements.next();
-                httpPost.addHeader(element.getKey(), element.getValue().toString());
+            JSONObject jsonObj = JSON.parseObject(headers);
+            for (Map.Entry<String, Object> entry : jsonObj.entrySet()) {
+                System.out.println(entry.getKey() + ":" + entry.getValue());
+                httpPost.addHeader(entry.getKey(), entry.getValue().toString());
             }
         }
         // 设置请求参数

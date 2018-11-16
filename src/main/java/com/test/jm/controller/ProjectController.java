@@ -45,13 +45,12 @@ public class ProjectController {
             projectDTO.setProject_name(page.getProject_name());
             List<ProjectDTO> projectDTOList = projectService.getProjectList(projectDTO);
             PageInfo<ProjectDTO> pageInfo = new PageInfo<>(projectDTOList);
-//            int row_count = (int) pageInfo.getTotal();
-//            if(pageNo >= row_count / pageSize){
-//                pageNo = row_count % pageSize==0 ? row_count/pageSize : row_count/pageSize + 1;
-//            }
+            int row_count = (int) pageInfo.getTotal();
+            int pageCount = row_count % pageSize==0 ? row_count/pageSize : row_count/pageSize + 1;
             result.setProjectDTOList(pageInfo.getList());
             result.setTotal(pageInfo.getTotal());
             result.setPageSize(pageSize);
+            result.setPageCount(pageCount);
             result.setPageNo(pageNo);
             result.setStatus("success");
             result.setMsg("获取项目列表成功");

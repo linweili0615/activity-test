@@ -10,6 +10,7 @@ public class ProjectResult {
     private String msg;
     private long total;
     private long pageSize;
+    private long pageCount;
     private long pageNo;
 
     private List<ProjectDTO> projectDTOList;
@@ -32,6 +33,14 @@ public class ProjectResult {
 
     public void setTotal(long total) {
         this.total = total;
+    }
+
+    public long getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(long pageCount) {
+        this.pageCount = pageCount;
     }
 
     public long getPageSize() {
@@ -69,6 +78,7 @@ public class ProjectResult {
                 ", msg='" + msg + '\'' +
                 ", total=" + total +
                 ", pageSize=" + pageSize +
+                ", pageCount=" + pageCount +
                 ", pageNo=" + pageNo +
                 ", projectDTOList=" + projectDTOList +
                 '}';

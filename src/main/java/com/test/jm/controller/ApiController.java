@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/interface")
+@RequestMapping("/api")
 public class ApiController {
 
     private Logger logger = LoggerFactory.getLogger(ApiController.class);
@@ -29,6 +29,9 @@ public class ApiController {
         if(StringUtils.isNotBlank(apiDTO.getMethod()) && StringUtils.isNotBlank(apiDTO.getUrl())){
 
             try {
+                System.out.println("url: " + apiDTO.getUrl());
+                System.out.println("headers: " + apiDTO.getHeaders());
+                System.out.println("body: " + apiDTO.getBody());
                 HttpResponse response = HttpClientUtils.post(apiDTO.getUrl(), apiDTO.getHeaders(), apiDTO.getBody());
                 String response_status_code = response.getStatusLine().toString();
                 String response_headers = HttpClientUtils.getResponseHeaders(response);

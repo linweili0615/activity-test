@@ -4,15 +4,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.test.jm.domain.Page;
 import com.test.jm.domain.ProjectResult;
+import com.test.jm.domain.Result;
 import com.test.jm.dto.test.ProjectDTO;
 import com.test.jm.service.ProjectService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,6 +57,26 @@ public class ProjectController {
             result.setStatus("fail");
             result.setMsg("获取项目列表失败");
         }
+        return result;
+    }
+
+    @PostMapping("/add")
+    public Result addProject(@RequestBody ProjectDTO projectDTO){
+        Result result = new Result();
+        if(StringUtils.isNotBlank(projectDTO.getProject_name())){
+            String p_id = projectService.addProject(projectDTO.getProject_name());
+            if(StringUtils.isNotBlank(p_id)){
+                result.setId(p_id);
+                result.setStatus("success");
+                result.setMsg("添加项目成功");
+                return result;
+            }
+            result.setStatus("fail");
+            result.setStatus("添加项目失败");
+            return result;
+        }
+        result.setStatus("fail");
+        result.setStatus("项目名称不能为空");
         return result;
     }
 }

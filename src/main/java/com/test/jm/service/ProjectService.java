@@ -26,7 +26,7 @@ public class ProjectService {
         String uid = UUID.randomUUID().toString();
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setProject_name(project_name);
-        projectDTO.setStatus(0);
+        projectDTO.setStatus(1);
         projectDTO.setAuthor("linweili");
         projectDTO.setId(uid);
         try {
@@ -43,11 +43,25 @@ public class ProjectService {
     }
 
     public Integer editProject(ProjectDTO projectDTO){
-        return projectDao.editProject(projectDTO);
+        Integer count = 0;
+        try {
+            count = projectDao.editProject(projectDTO);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return count;
+        }
     }
 
     public Integer deleteProjectById(String id){
-        return projectDao.deleteProjectById(id);
+        Integer count = 0;
+        try {
+            count = projectDao.deleteProjectById(id);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return count;
+        }
     }
 
 

@@ -61,10 +61,10 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public Result addProject(@RequestBody ProjectDTO projectDTO){
+    public Result addProject(@RequestBody String project_name){
         Result result = new Result();
-        if(StringUtils.isNotBlank(projectDTO.getProject_name())){
-            String p_id = projectService.addProject(projectDTO.getProject_name());
+        if(StringUtils.isNotBlank(project_name)){
+            String p_id = projectService.addProject(project_name);
             if(StringUtils.isNotBlank(p_id)){
                 result.setId(p_id);
                 result.setStatus("success");
@@ -79,4 +79,71 @@ public class ProjectController {
         result.setStatus("项目名称不能为空");
         return result;
     }
+
+    @PostMapping("/del")
+    public Result delProject(@RequestBody String id){
+        Result result = new Result();
+        if(StringUtils.isNotBlank(id)){
+            Integer count = projectService.deleteProjectById(id);
+            if(count > 0){
+                result.setId(id);
+                result.setStatus("success");
+                result.setMsg("删除项目成功");
+                return result;
+            }
+            result.setId(id);
+            result.setStatus("fail");
+            result.setMsg("删除项目失败");
+        }
+        result.setStatus("fail");
+        result.setStatus("项目id不能为空");
+        return result;
+    }
+
+    @PostMapping("/handle")
+    public Result handleProject(@RequestBody ProjectDTO projectDTO){
+        Result result = new Result();
+        if(StringUtils.isNotBlank(projectDTO.getId()) && StringUtils.isNotBlank(projectDTO.getStatus().toString())){
+            System.out.println(projectDTO.toString());
+            ProjectDTO projectDTO1 = new ProjectDTO();
+            projectDTO1.setId(projectDTO.getId());
+            projectDTO1.setStatus(projectDTO.getStatus() * -1);
+            Integer count = projectService.editProject(projectDTO1);
+            if(count > 0){
+                result.setId(projectDTO1.getId());
+                result.setStatus("success");
+                result.setMsg("修改项目状态成功");
+                return result;
+            }
+            result.setId(projectDTO.getId());
+            result.setStatus("fail");
+            result.setMsg("修改项目状态失败");
+        }
+        result.setStatus("fail");
+        result.setStatus("参数不能为空");
+        return result;
+    }
+
+    @PostMapping("/update")
+    public Result updateProject(@RequestBody ProjectDTO projectDTO){
+        Result result = new Result();
+        if(StringUtils.isNotBlank(projectDTO.getId())){
+            Integer count = projectService.editProject(projectDTO);
+            if(count > 0){
+                result.setId(projectDTO.getId());
+                result.setStatus("success");
+                result.setMsg("修改项目成功");
+                return result;
+            }
+            result.setId(projectDTO.getId());
+            result.setStatus("fail");
+            result.setMsg("修改项目失败");
+        }
+        result.setStatus("fail");
+        result.setStatus("项目id不能为空");
+        return result;
+    }
+
+
+
 }

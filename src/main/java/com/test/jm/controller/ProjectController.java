@@ -104,7 +104,6 @@ public class ProjectController {
     public Result handleProject(@RequestBody ProjectDTO projectDTO){
         Result result = new Result();
         if(StringUtils.isNotBlank(projectDTO.getId()) && StringUtils.isNotBlank(projectDTO.getStatus().toString())){
-            System.out.println(projectDTO.toString());
             ProjectDTO projectDTO1 = new ProjectDTO();
             projectDTO1.setId(projectDTO.getId());
             projectDTO1.setStatus(projectDTO.getStatus() * -1);
@@ -127,7 +126,7 @@ public class ProjectController {
     @PostMapping("/update")
     public Result updateProject(@RequestBody ProjectDTO projectDTO){
         Result result = new Result();
-        if(StringUtils.isNotBlank(projectDTO.getId())){
+        if(StringUtils.isNotBlank(projectDTO.getId()) && StringUtils.isNotBlank(projectDTO.getStatus().toString())){
             Integer count = projectService.editProject(projectDTO);
             if(count > 0){
                 result.setId(projectDTO.getId());

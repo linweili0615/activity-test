@@ -1,8 +1,11 @@
 package com.test.jm;
 
+import com.test.jm.dao.CaseDao;
 import com.test.jm.dao.TokenDao;
 import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
+import com.test.jm.dto.test.CaseDTO;
+import com.test.jm.service.CaseService;
 import com.test.jm.service.TokenService;
 import com.test.jm.service.UserInfoService;
 import com.test.jm.util.CookieUtils;
@@ -20,8 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,7 +38,8 @@ public class JmApplicationTests {
     @Autowired
     private UserInfoService userInfoService;
 
-
+    @Autowired
+    private CaseService caseService;
     @Autowired
     private TokenDao tokenDao;
 
@@ -116,6 +119,20 @@ public class JmApplicationTests {
         tokenDTO.setToken(token);
         Integer count = tokenService.addToken(tokenDTO,60);
         System.out.println("count: " + count);
+    }
+
+    @Test
+    public void addCase(){
+        CaseDTO caseDTO = new CaseDTO();
+        caseDTO.setName("测试集一");
+        caseDTO.setProject_id("2a6dfe5a-e80d-11e8-9ff0-0242ac110002");
+        List<String> list = new ArrayList();
+        list.add("5cacb0e4-a9db-4f0b-b012-1f3e1542c43d");
+        list.add("d84cff70-a533-4027-a427-399c73bc4a2d");
+        caseDTO.setCase_list(list.toString());
+        caseDTO.setAuthor("linweili");
+        String count = caseService.addCase(caseDTO);
+        System.out.println(count);
     }
 
 

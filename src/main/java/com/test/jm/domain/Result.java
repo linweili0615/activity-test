@@ -4,6 +4,7 @@ public class Result {
     private String id;
     private String status;
     private String msg;
+    private String data;
 
     public String getId() {
         return id;
@@ -25,6 +26,14 @@ public class Result {
         return msg;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
     public void setMsg(String msg) {
         this.msg = msg;
     }
@@ -35,6 +44,7 @@ public class Result {
                 "id='" + id + '\'' +
                 ", status='" + status + '\'' +
                 ", msg='" + msg + '\'' +
+                ", data='" + data + '\'' +
                 '}';
     }
 }

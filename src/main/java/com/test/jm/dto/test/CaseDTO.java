@@ -4,22 +4,28 @@ import java.time.LocalDateTime;
 
 public class CaseDTO {
 
-    private Integer id;
+    private String id;
     private String project_id;
-    private String case_name;
+    private String name;
     private String case_list;
-    private Integer status;
     private String author;
-    private String update_author;
     private LocalDateTime create_time;
     private LocalDateTime modify_time;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProject_id() {
@@ -28,14 +34,6 @@ public class CaseDTO {
 
     public void setProject_id(String project_id) {
         this.project_id = project_id;
-    }
-
-    public String getCase_name() {
-        return case_name;
-    }
-
-    public void setCase_name(String case_name) {
-        this.case_name = case_name;
     }
 
     public String getCase_list() {
@@ -54,14 +52,6 @@ public class CaseDTO {
         this.author = author;
     }
 
-    public String getUpdate_author() {
-        return update_author;
-    }
-
-    public void setUpdate_author(String update_author) {
-        this.update_author = update_author;
-    }
-
     public LocalDateTime getCreate_time() {
         return create_time;
     }
@@ -78,24 +68,14 @@ public class CaseDTO {
         this.modify_time = modify_time;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         return "CaseDTO{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", project_id='" + project_id + '\'' +
-                ", case_name='" + case_name + '\'' +
+                ", name='" + name + '\'' +
                 ", case_list='" + case_list + '\'' +
-                ", status=" + status +
                 ", author='" + author + '\'' +
-                ", update_author='" + update_author + '\'' +
                 ", create_time=" + create_time +
                 ", modify_time=" + modify_time +
                 '}';

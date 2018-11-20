@@ -156,3 +156,13 @@ CREATE TABLE `user_token` (
 -- Records of user_token
 -- ----------------------------
 INSERT INTO `user_token` VALUES ('9', 'dd7863e5-eac9-41d4-bf67-b846f3fa8a90', 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZDc4NjNlNS1lYWM5LTQxZDQtYmY2Ny1iODQ2ZjNmYThhOTAiLCJpYXQiOjE1NDIyMDczNTgsInN1YiI6ImFjdGl2aXR5IiwiaXNzIjoiMjk1Mjg3NzY1QHFxLmNvbSIsImV4cCI6MTU0MjIxMDk1OH0.GfgqOhtgwrzflDizductcq9v8k0HjHSBcsi4cZ8ZG1s', '0', '2018-11-14 23:55:58', '2018-11-07 13:27:18', '2018-11-14 14:53:27');
+CREATE TABLE `test_case` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `project_id` varchar(255) DEFAULT NULL,
+  `case_list` varchar(255) DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `modify_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -16,10 +16,10 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
-@Configuration
+//@Configuration
 public class OkHttpConfiguration {
 
-    @Bean
+    /*@Bean
     public ConnectionPool pool(){
         return new ConnectionPool(200, 5, TimeUnit.MINUTES);
     }
@@ -69,6 +69,6 @@ public class OkHttpConfiguration {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
 }

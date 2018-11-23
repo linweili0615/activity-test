@@ -7,7 +7,6 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
-import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -47,11 +46,11 @@ public class HttpClientUtils {
         return cookieStore.getCookies();
     }
 
-    public static void setCookies(CloseableHttpResponse httpResponse, Map<String, String> cookies){
+    public static void setCookies(CloseableHttpResponse httpResponse, String cookies){
         if (cookies != null) {
-            Set<Map.Entry<String, String>> entrySet = cookies.entrySet();
-            for (Map.Entry<String, String> entry : entrySet) {
-                BasicClientCookie cookie = new BasicClientCookie(entry.getKey(), entry.getValue());
+            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(cookies).entrySet();
+            for (Map.Entry<String, Object> entry : entrySet) {
+                BasicClientCookie cookie = new BasicClientCookie(entry.getKey(), String.valueOf(entry.getValue()));
 //                cookie.setDomain("domain");
 //                cookie.setExpiryDate(new Date());
                 cookieStore.addCookie(cookie);
@@ -82,7 +81,7 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doGet(String url, Map<String, String> params) throws Exception {
+    public static HttpClientResult doGet(String url, String params) throws Exception {
         return doGet(url, null, params);
     }
 
@@ -95,13 +94,13 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doGet(String url, Map<String, String> headers, Map<String, String> params) throws Exception {
+    public static HttpClientResult doGet(String url, String headers, String params) throws Exception {
         // 创建访问的地址
         URIBuilder uriBuilder = new URIBuilder(url);
         if (params != null) {
-            Set<Map.Entry<String, String>> entrySet = params.entrySet();
-            for (Map.Entry<String, String> entry : entrySet) {
-                uriBuilder.setParameter(entry.getKey(), entry.getValue());
+            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
+            for (Map.Entry<String, Object> entry : entrySet) {
+                uriBuilder.setParameter(entry.getKey(), String.valueOf(entry.getValue()));
             }
         }
 
@@ -150,7 +149,7 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPost(String url, Map<String, String> params) throws Exception {
+    public static HttpClientResult doPost(String url, String params) throws Exception {
         return doPost(url, null, params);
     }
 
@@ -163,7 +162,7 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPost(String url, Map<String, String> headers, Map<String, String> params) throws Exception {
+    public static HttpClientResult doPost(String url, String headers, String params) throws Exception {
         // 创建http对象
         HttpPost httpPost = new HttpPost(url);
         /**
@@ -175,17 +174,9 @@ public class HttpClientUtils {
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPost.setConfig(requestConfig);
         // 设置请求头
-        /*httpPost.setHeader("Cookie", "");
-        httpPost.setHeader("Connection", "keep-alive");
-        httpPost.setHeader("Accept", "application/json");
-        httpPost.setHeader("Accept-Language", "zh-CN,zh;q=0.9");
-        httpPost.setHeader("Accept-Encoding", "gzip, deflate, br");
-        httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");*/
         packageHeader(headers, httpPost);
-
         // 封装请求参数
         packageParam(params, httpPost);
-
         // 创建httpResponse对象
         CloseableHttpResponse httpResponse = null;
 
@@ -218,7 +209,7 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPut(String url, Map<String, String> params) throws Exception {
+    public static HttpClientResult doPut(String url, String params) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPut httpPut = new HttpPut(url);
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
@@ -265,12 +256,9 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doDelete(String url, Map<String, String> params) throws Exception {
-        if (params == null) {
-            params = new HashMap<String, String>();
-        }
-
-        params.put("_method", "delete");
+    public static HttpClientResult doDelete(String url, String params) throws Exception {
+        Map<String, Object> map = CommonUtils.strToMap(params);
+        map.put("_method", "delete");
         return doPost(url, params);
     }
 
@@ -279,13 +267,13 @@ public class HttpClientUtils {
      * @param params
      * @param httpMethod
      */
-    public static void packageHeader(Map<String, String> params, HttpRequestBase httpMethod) {
+    public static void packageHeader(String params, HttpRequestBase httpMethod) {
         // 封装请求头
         if (params != null) {
-            Set<Map.Entry<String, String>> entrySet = params.entrySet();
-            for (Map.Entry<String, String> entry : entrySet) {
+            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
+            for (Map.Entry<String, Object> entry : entrySet) {
                 // 设置到请求头到HttpRequestBase对象中
-                httpMethod.setHeader(entry.getKey(), entry.getValue());
+                httpMethod.setHeader(entry.getKey(), String.valueOf(entry.getValue()));
             }
         }
     }
@@ -297,14 +285,14 @@ public class HttpClientUtils {
      * @param httpMethod
      * @throws UnsupportedEncodingException
      */
-    public static void packageParam(Map<String, String> params, HttpEntityEnclosingRequestBase httpMethod)
+    public static void packageParam(String params, HttpEntityEnclosingRequestBase httpMethod)
             throws UnsupportedEncodingException {
         // 封装请求参数
         if (params != null) {
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            Set<Map.Entry<String, String>> entrySet = params.entrySet();
-            for (Map.Entry<String, String> entry : entrySet) {
-                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
+            for (Map.Entry<String, Object> entry : entrySet) {
+                nvps.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
 
             // 设置到请求的http对象中

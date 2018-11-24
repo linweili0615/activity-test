@@ -60,49 +60,43 @@ public class LoginController {
     public TokenResult login2(HttpServletResponse response,
                               @RequestBody UserInfoDTO  userInfoDTO){
         TokenResult tokenResult = new TokenResult();
-        if(StringUtils.isNotBlank(userInfoDTO.getTelno())&& StringUtils.isNotBlank(userInfoDTO.getPwd())){
-            userInfoDTO.setPwd(Md5Util.encoder(userInfoDTO.getPwd()));
-            UserInfoDTO uu = userInfoService.getUserInfo(userInfoDTO);
-            if(uu != null){
-                long expirationdate = 60;
-                String token =  TokenUtils.createJwtToken(uu.getId(), expirationdate);
-                TokenDTO tokenDTO = new TokenDTO();
-                tokenDTO.setUser_name(uu.getUsername());
-                tokenDTO.setUser_id(uu.getId());
-                tokenDTO.setToken(token);
-                try {
-                    Integer count = tokenService.addToken(tokenDTO, expirationdate);
-                    if(count>0){
-//                    CookieUtils.writeCookie(response,"jm", token);
-                        tokenResult.setCode("200");
-                        tokenResult.setMsg("获取token成功");
-                        tokenResult.setUser_id(tokenDTO.getUser_id());
-                        tokenResult.setUser_name(uu.getUsername());
-                        tokenResult.setToken(token);
-                        return tokenResult;
-                    }
-                } catch (Exception e) {
-                    logger.info("写入token异常");
-                    e.printStackTrace();
+        if(StringUtils.isBlank(userInfoDTO.getTelno())&& StringUtils.isBlank(userInfoDTO.getPwd())) {
+            tokenResult.setCode("203");
+            tokenResult.setMsg("用户名或密码不能为空");
+            return tokenResult;
+        }
 
-                    tokenResult.setCode("201");
-                    tokenResult.setMsg("写入token异常");
-                    return tokenResult;
+        userInfoDTO.setPwd(Md5Util.encoder(userInfoDTO.getPwd()));
+        UserInfoDTO uu = userInfoService.getUserInfo(userInfoDTO);
+        if(uu == null){
+            tokenResult.setCode("202");
+            tokenResult.setMsg("用户名或密码错误");
+            return tokenResult;
+        }
 
-                }
-
-            }else {
-                logger.info("用户名或密码错误");
-                tokenResult.setCode("202");
-                tokenResult.setMsg("用户名或密码错误");
-                return tokenResult;
-            }
+        long expirationdate = 60;
+        String token =  TokenUtils.createJwtToken(uu.getId(), expirationdate);
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setUser_name(uu.getUsername());
+        tokenDTO.setUser_id(uu.getId());
+        tokenDTO.setToken(token);
+        try {
+            Integer count = tokenService.addToken(tokenDTO, expirationdate);
+            tokenResult.setCode("200");
+            tokenResult.setMsg("获取token成功");
+            tokenResult.setUser_id(tokenDTO.getUser_id());
+            tokenResult.setUser_name(uu.getUsername());
+            tokenResult.setToken(token);
+            return tokenResult;
+        } catch (Exception e) {
+            logger.info("写入token异常");
+            e.printStackTrace();
+            tokenResult.setCode("201");
+            tokenResult.setMsg("写入token异常");
+            return tokenResult;
 
         }
-        logger.info("用户名或密码不能为空");
-        tokenResult.setCode("203");
-        tokenResult.setMsg("用户名或密码不能为空");
-        return tokenResult;
+
 
 
     }

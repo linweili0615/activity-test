@@ -2,6 +2,7 @@ package com.test.jm.service;
 
 import com.test.jm.dao.ProjectDao;
 import com.test.jm.dto.test.ProjectDTO;
+import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,41 +28,20 @@ public class ProjectService {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setProject_name(project_name);
         projectDTO.setStatus(1);
-        projectDTO.setAuthor("linweili");
+        projectDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
         projectDTO.setId(uid);
-        try {
-            int count = projectDao.addProject(projectDTO);
-            if(count > 0){
-                return uid;
-            }
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        int count = projectDao.addProject(projectDTO);
+        return uid;
 
     }
 
     public Integer editProject(ProjectDTO projectDTO){
-        Integer count = 0;
-        try {
-            count = projectDao.editProject(projectDTO);
-            return count;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return count;
-        }
+        projectDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
+        return projectDao.editProject(projectDTO);
     }
 
     public Integer deleteProjectById(String id){
-        Integer count = 0;
-        try {
-            count = projectDao.deleteProjectById(id);
-            return count;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return count;
-        }
+            return projectDao.deleteProjectById(id);
     }
 
 

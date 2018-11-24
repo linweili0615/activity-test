@@ -32,11 +32,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        System.out.println("request"+ request.getServletPath());
         if(loginService.validToken(request) != null){
             return true;
         }
-        logger.info("尚未登录，跳转到登录界面");
 //        response.sendRedirect(request.getContextPath() + "/user/login");
         response.sendRedirect("http://localhost:9528/#/login");
         return false;

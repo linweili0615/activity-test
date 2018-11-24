@@ -2,6 +2,7 @@ package com.test.jm.service;
 
 import com.test.jm.dao.CaseDao;
 import com.test.jm.dto.test.CaseDTO;
+import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class CaseService {
     public String addCase(CaseDTO caseDTO){
         String id = UUID.randomUUID().toString();
         caseDTO.setId(id);
+        caseDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
         Integer count = caseDao.addCase(caseDTO);
         if(count > 0 ){
             return id;

@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class TokenUtils {
 
-    private Logger logger = LoggerFactory.getLogger(TokenUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(TokenUtils.class);
 
     private static final String SECRET = "linweili";
     private static final String issuer = "295287765@qq.com";
@@ -69,22 +69,24 @@ public class TokenUtils {
      */
     public static Claims parseJWTToken(String token) {
 
-        Claims claims ;
+        Claims claims = null;
         try{
             claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET))
                     .parseClaimsJws(token)
                     .getBody();
+            return claims;
         }catch (Exception e){
-            claims = null;
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.info("token：{}，已失效", token);
+            return claims;
         }
-        return claims;
+
     }
 
     /**
      * 校验token是否过期
-     */
+
     public static boolean validTokenExpiration(String token){
         Date tokenDate = parseJWTToken(token).getExpiration();
         int expirationdate=(int)(new Date().getTime()-tokenDate.getTime())/1000;
@@ -92,7 +94,7 @@ public class TokenUtils {
             return false;
         }
         return true;
-    }
+    }*/
 
 
 

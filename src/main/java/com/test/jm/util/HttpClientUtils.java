@@ -29,18 +29,25 @@ public class HttpClientUtils {
     // 编码格式。发送编码格式统一用UTF-8
     private static final String ENCODING = "UTF-8";
     // 设置连接超时时间，单位毫秒。
-    private static final int CONNECT_TIMEOUT = 3000;
+    private static final int CONNECT_TIMEOUT = 1500;
     // 请求获取数据的超时时间(即响应时间)，单位毫秒。
-    private static final int SOCKET_TIMEOUT = 3000;
+    private static final int SOCKET_TIMEOUT = 1500;
     // 创建CookieStore实例
     private static CookieStore cookieStore = null;
     private static CloseableHttpClient httpClient = null;
 
 
     static {
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(1000)
+                .setConnectionRequestTimeout(1000)
+                .setSocketTimeout(1000)
+                .build();
         cookieStore =  new BasicCookieStore();
         httpClient = HttpClients.custom()
                 .setDefaultCookieStore(cookieStore)
+                .setDefaultRequestConfig(requestConfig)
                 .build();
     }
 
@@ -111,8 +118,12 @@ public class HttpClientUtils {
          * 超时时间，单位毫秒。这个属性是新加的属性，因为目前版本是可以共享连接池的。
          * setSocketTimeout：请求获取数据的超时时间(即响应时间)，单位毫秒。 如果访问一个接口，多少时间内无法返回数据，就直接放弃此次调用。
          */
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
-        httpGet.setConfig(requestConfig);
+        /*RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(1000)
+                .setConnectionRequestTimeout(1000)
+                .setSocketTimeout(1000)
+                .build();
+        httpGet.setConfig(requestConfig);*/
 
         // 设置请求头
         packageHeader(headers, httpGet);

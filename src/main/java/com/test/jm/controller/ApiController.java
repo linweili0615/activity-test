@@ -41,7 +41,8 @@ public class ApiController {
             return new TestResult("", ResultType.SUCCESS, "", result);
         } catch (Exception e) {
             e.printStackTrace();
-            return new TestResult("", ResultType.ERROR, "请求异常", null);
+            System.out.println(e.getMessage());
+            return new TestResult("", ResultType.ERROR, e.getMessage(), null);
         }
 
 

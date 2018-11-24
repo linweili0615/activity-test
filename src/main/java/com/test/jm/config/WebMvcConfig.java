@@ -27,6 +27,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/user/test")
                 .addPathPatterns("/api/**")
+                .addPathPatterns("/project/**")
                 .excludePathPatterns("/user/login", "/user/register","/user/2login");
         super.addInterceptors(registry);
     }

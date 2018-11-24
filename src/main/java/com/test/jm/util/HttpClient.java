@@ -396,12 +396,30 @@ public class HttpClient {
     /**
      * GET 请求
      * @param url - 请求路径
-     * @param params - 请求参数
      * @param headers - 请求头
      * @return
      * @throws Exception
      */
     public static CloseableHttpResponse get(String url, String headers) {
+        CloseableHttpResponse response = null;
+        String encode = "utf-8";
+        HttpGet httpGet = new HttpGet(url);
+        setHeaders(httpGet, headers);
+        requestConfig(httpGet);
+        try {
+            response = httpClient.execute(httpGet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            closeResponse(response);
+        }
+        if(null != response){
+            return response;
+        }
+        return null;
+    }
+
+    public static CloseableHttpResponse get(String url, String headers, String params) {
         CloseableHttpResponse response = null;
         String encode = "utf-8";
         HttpGet httpGet = new HttpGet(url);

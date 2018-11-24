@@ -8,7 +8,7 @@ public interface ApiDao {
 
     Integer editInterface(ApiDTO apiDTO);
 
-    Integer selectInterfaceById(String id);
+    ApiDTO selectInterfaceById(String id);
 
     Integer deleteInterfaceById(String id);
 }

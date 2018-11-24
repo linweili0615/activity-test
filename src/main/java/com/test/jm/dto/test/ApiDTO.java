@@ -6,6 +6,7 @@ public class ApiDTO {
     private String id;
     private String url;
     private String headers;
+    private String cookies;
     private String method;
     private String body;
     private String author;
@@ -27,6 +28,14 @@ public class ApiDTO {
 
     public void setHeaders(String headers) {
         this.headers = headers;
+    }
+
+    public String getCookies() {
+        return cookies;
+    }
+
+    public void setCookies(String cookies) {
+        this.cookies = cookies;
     }
 
     public String getMethod() {
@@ -91,6 +100,7 @@ public class ApiDTO {
                 "id='" + id + '\'' +
                 ", url='" + url + '\'' +
                 ", headers='" + headers + '\'' +
+                ", cookies='" + cookies + '\'' +
                 ", method='" + method + '\'' +
                 ", body='" + body + '\'' +
                 ", author='" + author + '\'' +

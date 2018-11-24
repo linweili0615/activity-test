@@ -1,6 +1,7 @@
 package com.test.jm.util;
 
 import com.test.jm.domain.HttpClientResult;
+import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -9,6 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -18,6 +20,8 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.*;
 
 public class HttpClientUtils {
@@ -25,12 +29,11 @@ public class HttpClientUtils {
     // 编码格式。发送编码格式统一用UTF-8
     private static final String ENCODING = "UTF-8";
     // 设置连接超时时间，单位毫秒。
-    private static final int CONNECT_TIMEOUT = 6000;
+    private static final int CONNECT_TIMEOUT = 3000;
     // 请求获取数据的超时时间(即响应时间)，单位毫秒。
-    private static final int SOCKET_TIMEOUT = 6000;
+    private static final int SOCKET_TIMEOUT = 3000;
     // 创建CookieStore实例
     private static CookieStore cookieStore = null;
-
     private static CloseableHttpClient httpClient = null;
 
 
@@ -42,26 +45,6 @@ public class HttpClientUtils {
     }
 
 
-    public static List<Cookie> getCookies(){
-        return cookieStore.getCookies();
-    }
-
-    public static void setCookies(CloseableHttpResponse httpResponse, String cookies){
-        if (cookies != null) {
-            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(cookies).entrySet();
-            for (Map.Entry<String, Object> entry : entrySet) {
-                BasicClientCookie cookie = new BasicClientCookie(entry.getKey(), String.valueOf(entry.getValue()));
-//                cookie.setDomain("domain");
-//                cookie.setExpiryDate(new Date());
-                cookieStore.addCookie(cookie);
-            }
-        }
-    }
-
-    public static void clearCookies(){
-        cookieStore.clear();
-    }
-
     /**
      * 发送get请求；不带请求头和请求参数
      *
@@ -70,7 +53,7 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static HttpClientResult doGet(String url) throws Exception {
-        return doGet(url, null, null);
+        return doGet(url, null, null, null);
     }
 
     /**
@@ -82,7 +65,7 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static HttpClientResult doGet(String url, String params) throws Exception {
-        return doGet(url, null, params);
+        return doGet(url, null,null, params);
     }
 
     /**
@@ -95,8 +78,23 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static HttpClientResult doGet(String url, String headers, String params) throws Exception {
+        return doGet(url, headers,null, params);
+    }
+
+    /**
+     * 发送get请求；带请求头和请求参数
+     *
+     * @param url 请求地址
+     * @param headers 请求头集合
+     * @param cookies 请求cookie集合
+     * @param params 请求参数集合
+     * @return
+     * @throws Exception
+     */
+    public static HttpClientResult doGet(String url, String headers,String cookies, String params) throws Exception {
         // 创建访问的地址
         URIBuilder uriBuilder = new URIBuilder(url);
+        //组装参数
         if (params != null) {
             Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
             for (Map.Entry<String, Object> entry : entrySet) {
@@ -106,6 +104,7 @@ public class HttpClientUtils {
 
         // 创建http对象
         HttpGet httpGet = new HttpGet(uriBuilder.build());
+//        httpGet.setURI(URI.create(params));
         /**
          * setConnectTimeout：设置连接超时时间，单位毫秒。
          * setConnectionRequestTimeout：设置从connect Manager(连接池)获取Connection
@@ -118,6 +117,9 @@ public class HttpClientUtils {
         // 设置请求头
         packageHeader(headers, httpGet);
 
+        //设置cookies
+        setCookies(cookies);
+
         // 创建httpResponse对象
         CloseableHttpResponse httpResponse = null;
 
@@ -129,6 +131,7 @@ public class HttpClientUtils {
             release(httpResponse, httpClient);
         }
     }
+
 
     /**
      * 发送post请求；不带请求头和请求参数
@@ -154,6 +157,18 @@ public class HttpClientUtils {
     }
 
     /**
+     * 发送post请求；带请求参数
+     *
+     * @param url 请求地址
+     * @param params 参数集合
+     * @return
+     * @throws Exception
+     */
+    public static HttpClientResult doPost(String url, String headers,String params) throws Exception {
+        return doPost(url, headers, null, params);
+    }
+
+    /**
      * 发送post请求；带请求头和请求参数
      *
      * @param url 请求地址
@@ -162,7 +177,7 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPost(String url, String headers, String params) throws Exception {
+    public static HttpClientResult doPost(String url, String headers,String cookies, String params) throws Exception {
         // 创建http对象
         HttpPost httpPost = new HttpPost(url);
         /**
@@ -175,6 +190,8 @@ public class HttpClientUtils {
         httpPost.setConfig(requestConfig);
         // 设置请求头
         packageHeader(headers, httpPost);
+        // 设置请求cookies
+        setCookies(cookies);
         // 封装请求参数
         packageParam(params, httpPost);
         // 创建httpResponse对象
@@ -193,7 +210,6 @@ public class HttpClientUtils {
      * 发送put请求；不带请求参数
      *
      * @param url 请求地址
-     * @param params 参数集合
      * @return
      * @throws Exception
      */
@@ -230,7 +246,6 @@ public class HttpClientUtils {
      * 发送delete请求；不带请求参数
      *
      * @param url 请求地址
-     * @param params 参数集合
      * @return
      * @throws Exception
      */
@@ -278,6 +293,26 @@ public class HttpClientUtils {
         }
     }
 
+    public static List<Cookie> getCookies(){
+        return cookieStore.getCookies();
+    }
+
+    public static void setCookies(String cookies){
+        if (cookies != null) {
+            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(cookies).entrySet();
+            for (Map.Entry<String, Object> entry : entrySet) {
+                BasicClientCookie cookie = new BasicClientCookie(entry.getKey(), String.valueOf(entry.getValue()));
+                cookie.setDomain("domain");
+                cookie.setExpiryDate(new Date());
+                cookieStore.addCookie(cookie);
+            }
+        }
+    }
+
+    public static void clearCookies(){
+        cookieStore.clear();
+    }
+
     /**
      * Description: 封装请求参数
      *
@@ -289,14 +324,18 @@ public class HttpClientUtils {
             throws UnsupportedEncodingException {
         // 封装请求参数
         if (params != null) {
-            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            /*List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
             for (Map.Entry<String, Object> entry : entrySet) {
                 nvps.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
 
             // 设置到请求的http对象中
-            httpMethod.setEntity(new UrlEncodedFormEntity(nvps, ENCODING));
+            httpMethod.setEntity(new UrlEncodedFormEntity(nvps, ENCODING));*/
+
+
+            StringEntity entity = new StringEntity(params, ENCODING);
+            httpMethod.setEntity(entity);
         }
     }
 
@@ -310,19 +349,30 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static HttpClientResult getHttpClientResult(CloseableHttpResponse httpResponse,
-                                                       CloseableHttpClient httpClient, HttpRequestBase httpMethod) throws Exception {
+                                                       CloseableHttpClient httpClient, HttpRequestBase httpMethod){
         // 执行请求
-        httpResponse = httpClient.execute(httpMethod);
-
-        // 获取返回结果
-        if (httpResponse != null && httpResponse.getStatusLine() != null) {
-            String content = "";
-            if (httpResponse.getEntity() != null) {
-                content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
+        try {
+            httpResponse = httpClient.execute(httpMethod);
+            // 获取返回结果
+            if (httpResponse != null && httpResponse.getStatusLine() != null) {
+                if (httpResponse.getEntity() != null) {
+                    String content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
+                    Header[] headers= httpResponse.getAllHeaders();
+                    List<Header> hh = Arrays.asList(headers);
+                    String header = hh.toString();
+                    String cookies = getCookies().toString();
+                    return new HttpClientResult(httpResponse.getStatusLine().getStatusCode(), header, content, cookies);
+                }
+                return new HttpClientResult(httpResponse.getStatusLine().getStatusCode(),"","请求失败","");
             }
-            return new HttpClientResult(httpResponse.getStatusLine().getStatusCode(), content);
+            return new HttpClientResult(400,"","请求无响应","");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new HttpClientResult(500,"",e.getMessage(),"");
         }
-        return new HttpClientResult(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+
+
     }
 
     /**
@@ -337,9 +387,10 @@ public class HttpClientUtils {
         if (httpResponse != null) {
             httpResponse.close();
         }
-        if (httpClient != null) {
+        //连接池使用的时候不能关闭连接，否则下次使用会抛异常
+        /*if (httpClient != null) {
             httpClient.close();
-        }
+        }*/
     }
 
 }

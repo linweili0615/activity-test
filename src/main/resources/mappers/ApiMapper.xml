@@ -14,7 +14,7 @@
 
     <select id="selectInterfaceById" parameterType="java.lang.String"
             resultType="java.lang.Integer">
-        SELECT COUNT(1) FROM interface
+        SELECT * FROM interface
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="id != null">
                 id = #{id}

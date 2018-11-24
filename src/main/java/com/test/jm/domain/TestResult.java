@@ -3,8 +3,19 @@ package com.test.jm.domain;
 public class TestResult {
     private String id;
     private String status;
-    private String resheaders;
-    private String resbody;
+    private String msg;
+    private Object data;
+
+
+    public TestResult(String id, String status, String msg, Object data) {
+        this.id = id;
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
+    }
+
+    public TestResult() {
+    }
 
     public String getId() {
         return id;
@@ -12,6 +23,14 @@ public class TestResult {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public String getStatus() {
@@ -22,29 +41,11 @@ public class TestResult {
         this.status = status;
     }
 
-    public String getResheaders() {
-        return resheaders;
+    public Object getData() {
+        return data;
     }
 
-    public void setResheaders(String resheaders) {
-        this.resheaders = resheaders;
-    }
-
-    public String getResbody() {
-        return resbody;
-    }
-
-    public void setResbody(String resbody) {
-        this.resbody = resbody;
-    }
-
-    @Override
-    public String toString() {
-        return "TestResult{" +
-                "id='" + id + '\'' +
-                ", status=" + status +
-                ", resheaders='" + resheaders + '\'' +
-                ", resbody='" + resbody + '\'' +
-                '}';
+    public void setData(Object data) {
+        this.data = data;
     }
 }

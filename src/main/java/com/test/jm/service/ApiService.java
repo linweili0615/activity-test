@@ -17,45 +17,22 @@ public class ApiService {
         String uid = UUID.randomUUID().toString();
         apiDTO.setId(uid);
         apiDTO.setAuthor("linweili");
-        try {
-            apiDao.addInterface(apiDTO);
-            return uid;
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+        apiDao.addInterface(apiDTO);
+        return uid;
 
     };
 
     public Integer delInterfaceById(String id) {
-        try {
-            Integer res = apiDao.deleteInterfaceById(id);
-            return res;
-        }catch (Exception e){
-            e.printStackTrace();
-            return 0;
-        }
+        return apiDao.deleteInterfaceById(id);
 
     }
 
     public Integer editInterface(ApiDTO info) {
-        try {
-            Integer res = apiDao.editInterface(info);
-            return res;
-        }catch (Exception e){
-            e.printStackTrace();
-            return 0;
-        }
+      return apiDao.editInterface(info);
     }
 
-    public Integer selectInterfaceById(String id) {
-        try {
-            Integer res = apiDao.selectInterfaceById(id);
-            return res;
-        }catch (Exception e){
-            e.printStackTrace();
-            return 0;
-        }
+    public ApiDTO selectInterfaceById(String id) {
+        return apiDao.selectInterfaceById(id);
 
     }
 

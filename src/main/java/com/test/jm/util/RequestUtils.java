@@ -1,56 +1,178 @@
 package com.test.jm.util;
 
 import com.test.jm.domain.HttpClientResult;
-import org.apache.http.Header;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.nio.charset.Charset;
+import java.net.UnknownHostException;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class HttpClientUtils {
+public class RequestUtils {
 
-    // 编码格式。发送编码格式统一用UTF-8
+    private static Logger logger = LoggerFactory.getLogger(RequestUtils.class);
+
     private static final String ENCODING = "UTF-8";
-    // 设置连接超时时间，单位毫秒。
-    private static final int CONNECT_TIMEOUT = 1500;
-    // 请求获取数据的超时时间(即响应时间)，单位毫秒。
-    private static final int SOCKET_TIMEOUT = 1500;
-    // 创建CookieStore实例
-    private static CookieStore cookieStore = null;
-    private static CloseableHttpClient httpClient = null;
+    private static final int CONNECT_TIMEOUT = 3000;// 设置连接建立的超时时间为10s
+    private static final int SOCKET_TIMEOUT = 3000;
+    private static final int MAX_CONN = 1000; // 最大连接数
+    private static final int Max_PRE_ROUTE = 400;
+//    private static final int MAX_ROUTE = 80;
+    private static CloseableHttpClient httpClient; // 发送请求的客户端单例
+    private static CookieStore cookieStore;       // 创建CookieStore实例
+    private static PoolingHttpClientConnectionManager manager; //连接池管理类
+    private static ScheduledExecutorService monitorExecutor;
+    private final static Object syncLock = new Object(); // 相当于线程锁,用于线程安全
 
-
-    static {
-
+    /**
+     * 对http请求进行基本设置
+     * @param httpRequestBase http请求
+     */
+    private static void setRequestConfig(HttpRequestBase httpRequestBase){
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(1000)
-                .setConnectionRequestTimeout(1000)
-                .setSocketTimeout(1000)
+                .setConnectionRequestTimeout(CONNECT_TIMEOUT)
+                .setConnectTimeout(CONNECT_TIMEOUT)
+                .setSocketTimeout(SOCKET_TIMEOUT)
                 .build();
-        cookieStore =  new BasicCookieStore();
-        httpClient = HttpClients.custom()
-                .setDefaultCookieStore(cookieStore)
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+
+        httpRequestBase.setConfig(requestConfig);
     }
 
+    /**
+     * 获取httpclient实例
+     * @return
+     */
+    public static CloseableHttpClient getHttpClient(){
+        if (httpClient == null){
+            //多线程下多个线程同时调用getHttpClient容易导致重复创建httpClient对象的问题,所以加上了同步锁
+            synchronized (syncLock){
+                if (httpClient == null){
+                    httpClient = createHttpClient();
+                    //开启监控线程,对异常和空闲线程进行关闭
+                    monitorExecutor = Executors.newScheduledThreadPool(1);
+                    monitorExecutor.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            //关闭异常连接
+                            manager.closeExpiredConnections();
+                            //关闭5s空闲的连接
+                            manager.closeIdleConnections(10, TimeUnit.SECONDS);
+                            logger.info("close expired and idle for over 5s connection");
+                        }
+                    }, 10, 10, TimeUnit.SECONDS);
+                }
+            }
+        }
+        return httpClient;
+    }
+
+    /**
+     * 构建httpclient实例
+     * @return
+     */
+    public static CloseableHttpClient createHttpClient(){
+        cookieStore =  new BasicCookieStore();
+        ConnectionSocketFactory plainSocketFactory = PlainConnectionSocketFactory.getSocketFactory();
+        LayeredConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactory.getSocketFactory();
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory> create()
+                .register("http", plainSocketFactory)
+                .register("https", sslSocketFactory)
+                .build();
+
+        manager = new PoolingHttpClientConnectionManager(registry);
+        //设置连接参数
+        manager.setMaxTotal(MAX_CONN); // 最大连接数
+        manager.setDefaultMaxPerRoute(Max_PRE_ROUTE); // 路由最大连接数
+
+//        HttpHost httpHost = new HttpHost(host, port);
+//        manager.setMaxPerRoute(new HttpRoute(httpHost), MAX_ROUTE);
+
+        //请求失败时,进行请求重试
+        HttpRequestRetryHandler handler = new HttpRequestRetryHandler() {
+            @Override
+            public boolean retryRequest(IOException e, int i, HttpContext httpContext) {
+                if (i > 3){
+                    //重试超过3次,放弃请求
+                    logger.error("retry has more than 3 time, give up request");
+                    return false;
+                }
+                if (e instanceof NoHttpResponseException){
+                    //服务器没有响应,可能是服务器断开了连接,应该重试
+                    logger.error("receive no response from server, retry");
+                    return true;
+                }
+                if (e instanceof SSLHandshakeException){
+                    // SSL握手异常
+                    logger.error("SSL hand shake exception");
+                    return false;
+                }
+                if (e instanceof InterruptedIOException){
+                    //超时
+                    logger.error("InterruptedIOException");
+                    return false;
+                }
+                if (e instanceof UnknownHostException){
+                    // 服务器不可达
+                    logger.error("server host unknown");
+                    return false;
+                }
+                if (e instanceof ConnectTimeoutException){
+                    // 连接超时
+                    logger.error("Connection Time out");
+                    return false;
+                }
+                if (e instanceof SSLException){
+                    logger.error("SSLException");
+                    return false;
+                }
+
+                HttpClientContext context = HttpClientContext.adapt(httpContext);
+                HttpRequest request = context.getRequest();
+                if (!(request instanceof HttpEntityEnclosingRequest)){
+                    //如果请求不是关闭连接的请求
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).setRetryHandler(handler).build();
+        return client;
+    }
 
     /**
      * 发送get请求；不带请求头和请求参数
@@ -108,41 +230,12 @@ public class HttpClientUtils {
                 uriBuilder.setParameter(entry.getKey(), String.valueOf(entry.getValue()));
             }
         }
-
-        // 创建http对象
         HttpGet httpGet = new HttpGet(uriBuilder.build());
-//        httpGet.setURI(URI.create(params));
-        /**
-         * setConnectTimeout：设置连接超时时间，单位毫秒。
-         * setConnectionRequestTimeout：设置从connect Manager(连接池)获取Connection
-         * 超时时间，单位毫秒。这个属性是新加的属性，因为目前版本是可以共享连接池的。
-         * setSocketTimeout：请求获取数据的超时时间(即响应时间)，单位毫秒。 如果访问一个接口，多少时间内无法返回数据，就直接放弃此次调用。
-         */
-        /*RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(1000)
-                .setConnectionRequestTimeout(1000)
-                .setSocketTimeout(1000)
-                .build();
-        httpGet.setConfig(requestConfig);*/
-
-        // 设置请求头
+        setRequestConfig(httpGet);
         packageHeader(headers, httpGet);
-
-        //设置cookies
         setCookies(cookies);
-
-        // 创建httpResponse对象
-        CloseableHttpResponse httpResponse = null;
-
-        try {
-            // 执行请求并获得响应结果
-            return getHttpClientResult(httpResponse, httpClient, httpGet);
-        } finally {
-            // 释放资源
-            release(httpResponse, httpClient);
-        }
+        return getHttpClientResult(httpGet);
     }
-
 
     /**
      * 发送post请求；不带请求头和请求参数
@@ -189,32 +282,12 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static HttpClientResult doPost(String url, String headers,String cookies, String params) throws Exception {
-        // 创建http对象
         HttpPost httpPost = new HttpPost(url);
-        /**
-         * setConnectTimeout：设置连接超时时间，单位毫秒。
-         * setConnectionRequestTimeout：设置从connect Manager(连接池)获取Connection
-         * 超时时间，单位毫秒。这个属性是新加的属性，因为目前版本是可以共享连接池的。
-         * setSocketTimeout：请求获取数据的超时时间(即响应时间)，单位毫秒。 如果访问一个接口，多少时间内无法返回数据，就直接放弃此次调用。
-         */
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
-        httpPost.setConfig(requestConfig);
-        // 设置请求头
+        setRequestConfig(httpPost);
         packageHeader(headers, httpPost);
-        // 设置请求cookies
         setCookies(cookies);
-        // 封装请求参数
         packageParam(params, httpPost);
-        // 创建httpResponse对象
-        CloseableHttpResponse httpResponse = null;
-
-        try {
-            // 执行请求并获得响应结果
-            return getHttpClientResult(httpResponse, httpClient, httpPost);
-        } finally {
-            // 释放资源
-            release(httpResponse, httpClient);
-        }
+        return getHttpClientResult(httpPost);
     }
 
     /**
@@ -241,16 +314,8 @@ public class HttpClientUtils {
         HttpPut httpPut = new HttpPut(url);
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPut.setConfig(requestConfig);
-
         packageParam(params, httpPut);
-
-        CloseableHttpResponse httpResponse = null;
-
-        try {
-            return getHttpClientResult(httpResponse, httpClient, httpPut);
-        } finally {
-            release(httpResponse, httpClient);
-        }
+        return getHttpClientResult(httpPut);
     }
 
     /**
@@ -265,13 +330,7 @@ public class HttpClientUtils {
         HttpDelete httpDelete = new HttpDelete(url);
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpDelete.setConfig(requestConfig);
-
-        CloseableHttpResponse httpResponse = null;
-        try {
-            return getHttpClientResult(httpResponse, httpClient, httpDelete);
-        } finally {
-            release(httpResponse, httpClient);
-        }
+        return getHttpClientResult(httpDelete);
     }
 
     /**
@@ -340,11 +399,8 @@ public class HttpClientUtils {
             for (Map.Entry<String, Object> entry : entrySet) {
                 nvps.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
-
             // 设置到请求的http对象中
             httpMethod.setEntity(new UrlEncodedFormEntity(nvps, ENCODING));*/
-
-
             StringEntity entity = new StringEntity(params, ENCODING);
             httpMethod.setEntity(entity);
         }
@@ -352,56 +408,49 @@ public class HttpClientUtils {
 
     /**
      * Description: 获得响应结果
-     *
-     * @param httpResponse
-     * @param httpClient
      * @param httpMethod
      * @return
      * @throws Exception
      */
-    public static HttpClientResult getHttpClientResult(CloseableHttpResponse httpResponse,
-                                                       CloseableHttpClient httpClient, HttpRequestBase httpMethod){
+    public static HttpClientResult getHttpClientResult(HttpRequestBase httpMethod){
+        CloseableHttpResponse httpResponse = null;
         // 执行请求
         try {
-            httpResponse = httpClient.execute(httpMethod);
-            // 获取返回结果
-            if (httpResponse != null && httpResponse.getStatusLine() != null) {
-                if (httpResponse.getEntity() != null) {
-                    String content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
-                    Header[] headers= httpResponse.getAllHeaders();
-                    List<Header> hh = Arrays.asList(headers);
-                    String header = hh.toString();
-                    String cookies = getCookies().toString();
-                    return new HttpClientResult(httpResponse.getStatusLine().getStatusCode(), header, content, cookies);
-                }
-                return new HttpClientResult(httpResponse.getStatusLine().getStatusCode(),"","请求失败","");
+            httpResponse = getHttpClient().execute(httpMethod, HttpClientContext.create());
+            HttpEntity entity = httpResponse.getEntity();
+            if (entity != null) {
+                String content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
+                Header[] headers= httpResponse.getAllHeaders();
+                List<Header> hh = Arrays.asList(headers);
+                String header = hh.toString();
+                String cookies = getCookies().toString();
+                return new HttpClientResult(httpResponse.getStatusLine().getStatusCode(), header, content, cookies);
             }
-            return new HttpClientResult(400,"","请求无响应","");
-
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            return new HttpClientResult(500,"",e.getMessage(),"");
+        }finally {
+            try {
+                if (httpResponse != null) {
+                    httpResponse.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-
+        return null;
     }
 
     /**
-     * Description: 释放资源
-     *
-     * @param httpResponse
-     * @param httpClient
-     * @throws IOException
+     * 关闭连接池
      */
-    public static void release(CloseableHttpResponse httpResponse, CloseableHttpClient httpClient) throws IOException {
-        // 释放资源
-        if (httpResponse != null) {
-            httpResponse.close();
-        }
-        //连接池使用的时候不能关闭连接，否则下次使用会抛异常
-        /*if (httpClient != null) {
+    public static void closeConnectionPool(){
+        try {
             httpClient.close();
-        }*/
+            manager.close();
+            monitorExecutor.shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -35,7 +36,6 @@ public class ApiController {
             return new TestResult("", ResultType.FAIL, "请求URL不能为空", null);
         }
 
-
         try {
             HttpClientResult result = requestService.request(apiDTO);
             return new TestResult("", ResultType.SUCCESS, "", result);
@@ -50,13 +50,16 @@ public class ApiController {
 
     @PostMapping("/save")
     public TestResult save_interface(@RequestBody ApiDTO apiDTO) {
+        apiDTO.setProject_id(UUID.randomUUID().toString());
+        if (StringUtils.isBlank(apiDTO.getProject_id())) {
+            return new TestResult("", ResultType.FAIL, "项目ID不能为空", null);
+        }
         if (StringUtils.isBlank(apiDTO.getMethod())) {
             return new TestResult("", ResultType.FAIL, "请求方法不能为空", null);
         }
         if (StringUtils.isBlank(apiDTO.getUrl())) {
             return new TestResult("", ResultType.FAIL, "请求URL不能为空", null);
         }
-
 
         try {
             String id = apiService.addInterface(apiDTO);
@@ -71,9 +74,11 @@ public class ApiController {
 
     @PostMapping("/edit")
     public TestResult edit_interface(@RequestBody ApiDTO apiDTO) {
-
         if (StringUtils.isBlank(apiDTO.getId())) {
             return new TestResult("", ResultType.FAIL, "接口ID不能为空", null);
+        }
+        if (StringUtils.isBlank(apiDTO.getProject_id())) {
+            return new TestResult("", ResultType.FAIL, "项目ID不能为空", null);
         }
         if (StringUtils.isBlank(apiDTO.getMethod())) {
             return new TestResult("", ResultType.FAIL, "请求方法不能为空", null);

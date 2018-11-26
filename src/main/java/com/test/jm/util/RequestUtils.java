@@ -90,7 +90,7 @@ public class RequestUtils {
                             //关闭异常连接
                             manager.closeExpiredConnections();
                             //关闭5s空闲的连接
-                            manager.closeIdleConnections(10, TimeUnit.SECONDS);
+//                            manager.closeIdleConnections(10, TimeUnit.SECONDS);
                             logger.info("close expired and idle for over 5s connection");
                         }
                     }, 10, 10, TimeUnit.SECONDS);
@@ -170,44 +170,12 @@ public class RequestUtils {
             }
         };
 
-        CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).setRetryHandler(handler).build();
+        CloseableHttpClient client = HttpClients.custom()
+                .setConnectionManager(manager)
+                .setRetryHandler(handler)
+                .setDefaultCookieStore(cookieStore)
+                .build();
         return client;
-    }
-
-    /**
-     * 发送get请求；不带请求头和请求参数
-     *
-     * @param url 请求地址
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doGet(String url) throws Exception {
-        return doGet(url, null, null, null);
-    }
-
-    /**
-     * 发送get请求；带请求参数
-     *
-     * @param url 请求地址
-     * @param params 请求参数集合
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doGet(String url, String params) throws Exception {
-        return doGet(url, null,null, params);
-    }
-
-    /**
-     * 发送get请求；带请求头和请求参数
-     *
-     * @param url 请求地址
-     * @param headers 请求头集合
-     * @param params 请求参数集合
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doGet(String url, String headers, String params) throws Exception {
-        return doGet(url, headers,null, params);
     }
 
     /**
@@ -220,11 +188,11 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doGet(String url, String headers,String cookies, String params) throws Exception {
+    public static HttpClientResult doGet(String url, String headers,String cookies, String params, String paramstype) throws Exception {
         // 创建访问的地址
         URIBuilder uriBuilder = new URIBuilder(url);
         //组装参数
-        if (params != null) {
+        if (params != null && paramstype =="form") {
             Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
             for (Map.Entry<String, Object> entry : entrySet) {
                 uriBuilder.setParameter(entry.getKey(), String.valueOf(entry.getValue()));
@@ -238,41 +206,6 @@ public class RequestUtils {
     }
 
     /**
-     * 发送post请求；不带请求头和请求参数
-     *
-     * @param url 请求地址
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doPost(String url) throws Exception {
-        return doPost(url, null, null);
-    }
-
-    /**
-     * 发送post请求；带请求参数
-     *
-     * @param url 请求地址
-     * @param params 参数集合
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doPost(String url, String params) throws Exception {
-        return doPost(url, null, params);
-    }
-
-    /**
-     * 发送post请求；带请求参数
-     *
-     * @param url 请求地址
-     * @param params 参数集合
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doPost(String url, String headers,String params) throws Exception {
-        return doPost(url, headers, null, params);
-    }
-
-    /**
      * 发送post请求；带请求头和请求参数
      *
      * @param url 请求地址
@@ -281,24 +214,13 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPost(String url, String headers,String cookies, String params) throws Exception {
+    public static HttpClientResult doPost(String url, String headers,String cookies, String params, String paramstype) throws Exception {
         HttpPost httpPost = new HttpPost(url);
         setRequestConfig(httpPost);
         packageHeader(headers, httpPost);
         setCookies(cookies);
-        packageParam(params, httpPost);
+        packageParam(params, paramstype, httpPost);
         return getHttpClientResult(httpPost);
-    }
-
-    /**
-     * 发送put请求；不带请求参数
-     *
-     * @param url 请求地址
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doPut(String url) throws Exception {
-        return doPut(url);
     }
 
     /**
@@ -309,28 +231,13 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPut(String url, String params) throws Exception {
+    public static HttpClientResult doPut(String url, String headers,String cookies, String params, String paramstype) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPut httpPut = new HttpPut(url);
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPut.setConfig(requestConfig);
-        packageParam(params, httpPut);
+        packageParam(params,paramstype, httpPut);
         return getHttpClientResult(httpPut);
-    }
-
-    /**
-     * 发送delete请求；不带请求参数
-     *
-     * @param url 请求地址
-     * @return
-     * @throws Exception
-     */
-    public static HttpClientResult doDelete(String url) throws Exception {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpDelete httpDelete = new HttpDelete(url);
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
-        httpDelete.setConfig(requestConfig);
-        return getHttpClientResult(httpDelete);
     }
 
     /**
@@ -341,10 +248,10 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doDelete(String url, String params) throws Exception {
+    public static HttpClientResult doDelete(String url, String headers,String cookies, String params, String paramstype) throws Exception {
         Map<String, Object> map = CommonUtils.strToMap(params);
         map.put("_method", "delete");
-        return doPost(url, params);
+        return doPost(url, headers, cookies, params,paramstype);
     }
 
     /**
@@ -390,19 +297,26 @@ public class RequestUtils {
      * @param httpMethod
      * @throws UnsupportedEncodingException
      */
-    public static void packageParam(String params, HttpEntityEnclosingRequestBase httpMethod)
+    public static void packageParam(String params, String paramstype, HttpEntityEnclosingRequestBase httpMethod)
             throws UnsupportedEncodingException {
         // 封装请求参数
         if (params != null) {
-            /*List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
-            for (Map.Entry<String, Object> entry : entrySet) {
-                nvps.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
+            switch (paramstype){
+                case "raw":
+                    httpMethod.setEntity(new StringEntity(params, ENCODING));
+                    break;
+                case "from":
+                    List<BasicNameValuePair> pair =new ArrayList<>();
+                    Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
+                    for (Map.Entry<String, Object> entry : entrySet) {
+                        pair.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
+                    }
+                    httpMethod.setEntity(new UrlEncodedFormEntity(pair, ENCODING));
+                    break;
+                default:
+                    httpMethod.setEntity(new StringEntity(params, ENCODING));
+                    break;
             }
-            // 设置到请求的http对象中
-            httpMethod.setEntity(new UrlEncodedFormEntity(nvps, ENCODING));*/
-            StringEntity entity = new StringEntity(params, ENCODING);
-            httpMethod.setEntity(entity);
         }
     }
 
@@ -414,6 +328,7 @@ public class RequestUtils {
      */
     public static HttpClientResult getHttpClientResult(HttpRequestBase httpMethod){
         CloseableHttpResponse httpResponse = null;
+        HttpClientResult result = null;
         // 执行请求
         try {
             httpResponse = getHttpClient().execute(httpMethod, HttpClientContext.create());
@@ -424,10 +339,12 @@ public class RequestUtils {
                 List<Header> hh = Arrays.asList(headers);
                 String header = hh.toString();
                 String cookies = getCookies().toString();
-                return new HttpClientResult(httpResponse.getStatusLine().getStatusCode(), header, content, cookies);
+                result =  new HttpClientResult(httpResponse.getStatusLine().getStatusCode(), header, content, cookies);
             }
         }catch (Exception e){
             e.printStackTrace();
+            result = new HttpClientResult(500, null, e.getMessage(), null);
+
         }finally {
             try {
                 if (httpResponse != null) {
@@ -436,8 +353,8 @@ public class RequestUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return result;
         }
-        return null;
     }
 
     /**

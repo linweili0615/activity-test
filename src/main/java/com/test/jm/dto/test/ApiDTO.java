@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 
 public class ApiDTO {
     private String id;
+    private String project_id;
+    private String case_id;
     private String url;
     private String headers;
     private String cookies;
     private String method;
     private String body;
+    private String paramstype;
     private String author;
     private String update_author;
     private LocalDateTime create_time;
@@ -20,6 +23,22 @@ public class ApiDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getProject_id() {
+        return project_id;
+    }
+
+    public void setProject_id(String project_id) {
+        this.project_id = project_id;
+    }
+
+    public String getCase_id() {
+        return case_id;
+    }
+
+    public void setCase_id(String case_id) {
+        this.case_id = case_id;
     }
 
     public String getHeaders() {
@@ -48,6 +67,14 @@ public class ApiDTO {
 
     public String getBody() {
         return body;
+    }
+
+    public String getParamstype() {
+        return paramstype;
+    }
+
+    public void setParamstype(String paramstype) {
+        this.paramstype = paramstype;
     }
 
     public void setBody(String body) {
@@ -98,11 +125,14 @@ public class ApiDTO {
     public String toString() {
         return "ApiDTO{" +
                 "id='" + id + '\'' +
+                ", project_id='" + project_id + '\'' +
+                ", case_id='" + case_id + '\'' +
                 ", url='" + url + '\'' +
                 ", headers='" + headers + '\'' +
                 ", cookies='" + cookies + '\'' +
                 ", method='" + method + '\'' +
                 ", body='" + body + '\'' +
+                ", paramstype='" + paramstype + '\'' +
                 ", author='" + author + '\'' +
                 ", update_author='" + update_author + '\'' +
                 ", create_time=" + create_time +

@@ -6,9 +6,9 @@
     <insert id="addInterface" parameterType="com.test.jm.dto.test.ApiDTO">
           INSERT INTO
           interface
-          (id, url, headers, method, body, author, update_author, create_time, modify_time)
+          (id, project_id, case_id, url, headers, method, body, paramstype, author, update_author, create_time, modify_time)
           VALUES
-          (#{id}, #{url}, #{headers}, #{method}, #{body}, #{author}, #{update_author}, now(), now())
+          (#{id}, #{project_id}, #{case_id}, #{url}, #{headers}, #{method}, #{body}, #{paramstype}, #{author}, #{update_author}, now(), now())
     </insert>
 
 
@@ -25,6 +25,12 @@
     <update id="editInterface" parameterType="com.test.jm.dto.test.ApiDTO">
         UPDATE interface
         <set>
+            <if test="project_id != null">
+                project_id = #{project_id},
+            </if>
+            <if test="case_id != null">
+                project_id = #{case_id},
+            </if>
             <if test="url != null">
                 url = #{url},
             </if>
@@ -37,8 +43,11 @@
             <if test="body != null">
                 body = #{body},
             </if>
+            <if test="paramstype != null">
+                paramstype = #{paramstype},
+            </if>
             <if test="update_author != null">
-                pdate_author = #{update_author},
+                update_author = #{update_author},
             </if>
             modify_time = now()
         </set>

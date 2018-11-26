@@ -18,19 +18,23 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for interface
 -- ----------------------------
-DROP TABLE IF EXISTS `interface`;
 CREATE TABLE `interface` (
   `id` varchar(255) NOT NULL,
+  `project_id` varchar(255) DEFAULT NULL,
+  `case_id` varchar(255) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   `headers` varchar(255) DEFAULT NULL,
+  `cookies` varchar(255) DEFAULT NULL,
   `method` varchar(255) DEFAULT NULL,
   `body` varchar(255) DEFAULT NULL,
+  `paramstype` varchar(255) DEFAULT NULL,
   `author` varchar(255) DEFAULT NULL,
   `update_author` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 -- Records of interface

@@ -90,8 +90,8 @@ public class RequestUtils {
                             //关闭异常连接
                             manager.closeExpiredConnections();
                             //关闭5s空闲的连接
-//                            manager.closeIdleConnections(10, TimeUnit.SECONDS);
-                            logger.info("close expired and idle for over 5s connection");
+                            manager.closeIdleConnections(5, TimeUnit.SECONDS);
+//                            logger.info("close expired and idle for over 5s connection");
                         }
                     }, 10, 10, TimeUnit.SECONDS);
                 }

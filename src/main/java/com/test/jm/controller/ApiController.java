@@ -50,7 +50,7 @@ public class ApiController {
 
     @PostMapping("/save")
     public TestResult save_interface(@RequestBody ApiDTO apiDTO) {
-        apiDTO.setProject_id(UUID.randomUUID().toString());
+//        apiDTO.setProject_id(UUID.randomUUID().toString());
         if (StringUtils.isBlank(apiDTO.getProject_id())) {
             return new TestResult("", ResultType.FAIL, "项目ID不能为空", null);
         }

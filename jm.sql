@@ -84,13 +84,10 @@ INSERT INTO `project` VALUES ('85c5a2b4-e81a-11e8-9ff0-0242ac110002', '用户服
 -- ----------------------------
 -- Table structure for testcase
 -- ----------------------------
-DROP TABLE IF EXISTS `testcase`;
-CREATE TABLE `testcase` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `test_case` (
+  `id` varchar(255) NOT NULL,
   `project_id` varchar(255) DEFAULT NULL,
-  `case_name` varchar(255) DEFAULT NULL,
-  `case_list` varchar(255) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `author` varchar(255) DEFAULT NULL,
   `update_author` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
@@ -100,27 +97,7 @@ CREATE TABLE `testcase` (
 
 -- ----------------------------
 -- Records of testcase
--- ----------------------------
-
--- ----------------------------
--- Table structure for testproject
--- ----------------------------
-DROP TABLE IF EXISTS `testproject`;
-CREATE TABLE `testproject` (
-  `id` varchar(255) NOT NULL,
-  `project_name` varchar(255) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `author` varchar(255) DEFAULT NULL,
-  `update_author` varchar(255) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `modify_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of testproject
--- ----------------------------
-
+-- ---------------------------
 -- ----------------------------
 -- Table structure for user_info
 -- ----------------------------

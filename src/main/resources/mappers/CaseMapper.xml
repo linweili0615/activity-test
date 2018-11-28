@@ -6,9 +6,9 @@
     <insert id="addCase" parameterType="com.test.jm.dto.test.CaseDTO">
           INSERT INTO
           test_case
-          (id,name,project_id,case_list,author,create_time,modify_time)
+          (id, project_id, name, author, update_author, create_time, modify_time)
           VALUES
-          (#{id},#{name},#{project_id},#{case_list},#{author},now(),now())
+          (#{id}, #{project_id}, #{name}, #{author}, #{update_author}, now(), now())
     </insert>
 
 

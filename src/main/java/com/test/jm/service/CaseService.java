@@ -24,4 +24,11 @@ public class CaseService {
         }
         return null;
     }
+
+    public Integer modifyCase(CaseDTO caseDTO){
+        caseDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
+        return caseDao.editCase(caseDTO);
+    }
+
+
 }

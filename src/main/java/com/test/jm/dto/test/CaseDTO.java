@@ -7,8 +7,8 @@ public class CaseDTO {
     private String id;
     private String project_id;
     private String name;
-    private String case_list;
     private String author;
+    private String update_author;
     private LocalDateTime create_time;
     private LocalDateTime modify_time;
 
@@ -36,12 +36,12 @@ public class CaseDTO {
         this.project_id = project_id;
     }
 
-    public String getCase_list() {
-        return case_list;
+    public String getUpdate_author() {
+        return update_author;
     }
 
-    public void setCase_list(String case_list) {
-        this.case_list = case_list;
+    public void setUpdate_author(String update_author) {
+        this.update_author = update_author;
     }
 
     public String getAuthor() {
@@ -71,11 +71,11 @@ public class CaseDTO {
     @Override
     public String toString() {
         return "CaseDTO{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", project_id='" + project_id + '\'' +
                 ", name='" + name + '\'' +
-                ", case_list='" + case_list + '\'' +
                 ", author='" + author + '\'' +
+                ", update_author='" + update_author + '\'' +
                 ", create_time=" + create_time +
                 ", modify_time=" + modify_time +
                 '}';

@@ -18,6 +18,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for interface
 -- ----------------------------
+DROP TABLE IF EXISTS `interface`;
 CREATE TABLE `interface` (
   `id` varchar(255) NOT NULL,
   `project_id` varchar(255) DEFAULT NULL,

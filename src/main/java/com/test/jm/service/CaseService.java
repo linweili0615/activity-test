@@ -1,11 +1,13 @@
 package com.test.jm.service;
 
 import com.test.jm.dao.CaseDao;
+import com.test.jm.dto.CaseExtend;
 import com.test.jm.dto.test.CaseDTO;
 import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -13,6 +15,10 @@ public class CaseService {
 
     @Autowired
     private CaseDao caseDao;
+
+    public List<CaseExtend> getCaseList(String id){
+        return caseDao.selCaseByProjectId(id);
+    }
 
     public String addCase(CaseDTO caseDTO){
         String id = UUID.randomUUID().toString();

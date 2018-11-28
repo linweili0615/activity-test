@@ -11,7 +11,6 @@
           (#{id}, #{project_id}, #{case_id}, #{url}, #{headers}, #{method}, #{body}, #{paramstype}, #{author}, #{update_author}, now(), now())
     </insert>
 
-
     <select id="selectInterfaceById" parameterType="java.lang.String"
             resultType="java.lang.Integer">
         SELECT * FROM interface
@@ -53,6 +52,8 @@
         </set>
         WHERE id = #{id}
     </update>
+
+
     <delete id="deleteInterfaceById" parameterType="java.lang.String">
         DELETE FROM interface WHERE id = #{id}
     </delete>

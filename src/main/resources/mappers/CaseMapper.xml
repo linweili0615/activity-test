@@ -4,6 +4,7 @@
 <mapper namespace="com.test.jm.dao.CaseDao">
 
     <resultMap id="case_extend_list" type="com.test.jm.dto.CaseExtend">
+        <id column="pid" property="pid"></id>
         <result column="project_name" property="project_name"/>
         <collection property="caseExtends" ofType="com.test.jm.dto.test.CaseDTO">
             <id column="id" property="id"/>
@@ -22,7 +23,7 @@
 
     <select id="selCaseByProjectId" parameterType="java.lang.String"
             resultMap="case_extend_list">
-        SELECT p.project_name,c.id,c.name FROM project p
+        SELECT p.id as pid,p.project_name,c.id,c.name FROM project p
         LEFT JOIN test_case c
         ON p.id = c.project_id
         <trim prefix="WHERE" prefixOverrides="AND | OR">

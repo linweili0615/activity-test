@@ -1,14 +1,17 @@
 package com.test.jm.controller;
 
 import com.test.jm.domain.CaseResult;
+import com.test.jm.domain.CaseTree;
 import com.test.jm.domain.Result;
 import com.test.jm.dto.CaseExtend;
 import com.test.jm.dto.test.CaseDTO;
 import com.test.jm.service.CaseService;
+import com.test.jm.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/case")
@@ -18,9 +21,8 @@ public class CaseController {
     @Autowired
     private CaseService caseService;
 
-    @GetMapping("/list")
-    public CaseResult getCaseList(){
-        String id = "2616319c-b48a-404e-b82e-2c683eea6b0c";
+    @PostMapping("/list")
+    public CaseResult getCaseList(@RequestBody String id){
         if(StringUtils.isBlank(id)){
             return new CaseResult("fail", "项目id不能为空", null);
         }
@@ -30,7 +32,7 @@ public class CaseController {
             if(null == caseExtends){
                 return new CaseResult("fail", "项目ID不存在", null);
             }
-            return new CaseResult("success", "获取测试集成功", caseExtends);
+            return new CaseResult("success", "获取测试集成功", CommonUtils.changeTree(caseExtends));
         } catch (Exception e) {
             e.printStackTrace();
             return new CaseResult("fail", "获取测试集异常", null);

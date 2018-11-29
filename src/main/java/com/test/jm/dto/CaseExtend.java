@@ -5,8 +5,17 @@ import com.test.jm.dto.test.CaseDTO;
 import java.util.List;
 
 public class CaseExtend {
+    private String pid;
     private String project_name;
     private List<CaseDTO> caseExtends;
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
 
     public String getProject_name() {
         return project_name;
@@ -27,7 +36,8 @@ public class CaseExtend {
     @Override
     public String toString() {
         return "CaseExtend{" +
-                "project_name='" + project_name + '\'' +
+                "pid='" + pid + '\'' +
+                ", project_name='" + project_name + '\'' +
                 ", caseExtends=" + caseExtends +
                 '}';
     }

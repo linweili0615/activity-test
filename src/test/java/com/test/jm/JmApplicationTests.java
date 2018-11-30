@@ -129,7 +129,6 @@ public class JmApplicationTests {
         List<String> list = new ArrayList();
         list.add("5cacb0e4-a9db-4f0b-b012-1f3e1542c43d");
         list.add("d84cff70-a533-4027-a427-399c73bc4a2d");
-        caseDTO.setCase_list(list.toString());
         caseDTO.setAuthor("linweili");
         String count = caseService.addCase(caseDTO);
         System.out.println(count);

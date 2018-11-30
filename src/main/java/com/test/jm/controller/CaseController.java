@@ -1,7 +1,6 @@
 package com.test.jm.controller;
 
 import com.test.jm.domain.CaseResult;
-import com.test.jm.domain.CaseTree;
 import com.test.jm.domain.Result;
 import com.test.jm.dto.CaseExtend;
 import com.test.jm.dto.test.CaseDTO;

@@ -5,12 +5,26 @@ import com.test.jm.dto.test.CaseDTO;
 import java.util.List;
 
 public class CaseExtend {
+    private String pid;
     private String project_name;
     private List<CaseDTO> caseExtends;
 
-    public CaseExtend(String project_name, List<CaseDTO> caseExtends) {
+
+    public CaseExtend() {
+    }
+
+    public CaseExtend(String pid, String project_name, List<CaseDTO> caseExtends) {
+        this.pid = pid;
         this.project_name = project_name;
         this.caseExtends = caseExtends;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     public String getProject_name() {

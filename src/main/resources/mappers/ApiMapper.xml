@@ -6,9 +6,9 @@
     <insert id="addInterface" parameterType="com.test.jm.dto.test.ApiDTO">
           INSERT INTO
           interface
-          (id, project_id, case_id, url, headers, method, body, paramstype, author, update_author, create_time, modify_time)
+          (id, project_id, case_id, name, url, headers, method, body, paramstype, author, update_author, create_time, modify_time)
           VALUES
-          (#{id}, #{project_id}, #{case_id}, #{url}, #{headers}, #{method}, #{body}, #{paramstype}, #{author}, #{update_author}, now(), now())
+          (#{id}, #{project_id}, #{case_id}, #{name}, #{url}, #{headers}, #{method}, #{body}, #{paramstype}, #{author}, #{update_author}, now(), now())
     </insert>
 
     <select id="selectInterfaceById" parameterType="java.lang.String"
@@ -30,6 +30,10 @@
             <if test="case_id != null">
                 project_id = #{case_id},
             </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+
             <if test="url != null">
                 url = #{url},
             </if>

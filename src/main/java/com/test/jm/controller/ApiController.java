@@ -29,6 +29,12 @@ public class ApiController {
 
     @PostMapping("/test")
     public TestResult test_interface(@RequestBody ApiDTO apiDTO) throws IOException {
+        if(StringUtils.isBlank(apiDTO.getProject_id())){
+            return new TestResult("", ResultType.FAIL, "所属项目ID不能为空", null);
+        }
+        if(StringUtils.isBlank(apiDTO.getName())){
+            return new TestResult("", ResultType.FAIL, "接口名称不能为空", null);
+        }
         if (StringUtils.isBlank(apiDTO.getMethod())) {
             return new TestResult("", ResultType.FAIL, "请求方法不能为空", null);
         }

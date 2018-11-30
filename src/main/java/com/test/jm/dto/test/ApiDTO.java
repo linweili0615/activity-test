@@ -6,6 +6,7 @@ public class ApiDTO {
     private String id;
     private String project_id;
     private String case_id;
+    private String name;
     private String url;
     private String headers;
     private String cookies;
@@ -121,12 +122,21 @@ public class ApiDTO {
         this.url = url;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "ApiDTO{" +
                 "id='" + id + '\'' +
                 ", project_id='" + project_id + '\'' +
                 ", case_id='" + case_id + '\'' +
+                ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", headers='" + headers + '\'' +
                 ", cookies='" + cookies + '\'' +

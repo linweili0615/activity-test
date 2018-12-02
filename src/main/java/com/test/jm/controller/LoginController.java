@@ -74,7 +74,7 @@ public class LoginController {
             return tokenResult;
         }
 
-        long expirationdate = 60;
+        long expirationdate = 120;
         String token =  TokenUtils.createJwtToken(uu.getId(), expirationdate);
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setUser_name(uu.getUsername());

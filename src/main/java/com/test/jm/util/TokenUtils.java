@@ -34,20 +34,15 @@ public class TokenUtils {
      * @return
      */
     public static String createJwtToken(String userid, long expirationdate){
-
         long ttlMillis = expirationdate * 60 * 1000;
-
         // 签名算法 ，将对token进行签名
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
         // 生成签发时间
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
-
         // 通过秘钥签名JWT
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-
         JwtBuilder builder = Jwts.builder().setId(userid)
                 .setIssuedAt(now)
                 .setSubject(subject)
@@ -83,19 +78,5 @@ public class TokenUtils {
         }
 
     }
-
-    /**
-     * 校验token是否过期
-
-    public static boolean validTokenExpiration(String token){
-        Date tokenDate = parseJWTToken(token).getExpiration();
-        int expirationdate=(int)(new Date().getTime()-tokenDate.getTime())/1000;
-        if(expirationdate > 60*60*24*3){
-            return false;
-        }
-        return true;
-    }*/
-
-
 
 }

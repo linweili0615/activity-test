@@ -1,11 +1,16 @@
 package com.test.jm.domain;
 
-import java.util.List;
-
-public class CaseTree {
+public class Case {
     private String id;
     private String label;
-    private List children;
+
+    public Case() {
+    }
+
+    public Case(String id, String label) {
+        this.id = id;
+        this.label = label;
+    }
 
     public String getId() {
         return id;
@@ -23,20 +28,11 @@ public class CaseTree {
         this.label = label;
     }
 
-    public List getChildren() {
-        return children;
-    }
-
-    public void setChildren(List children) {
-        this.children = children;
-    }
-
     @Override
     public String toString() {
-        return "CaseTree{" +
+        return "Case{" +
                 "id='" + id + '\'' +
                 ", label='" + label + '\'' +
-                ", children=" + children +
                 '}';
     }
 }

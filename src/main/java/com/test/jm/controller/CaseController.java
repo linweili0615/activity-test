@@ -20,12 +20,8 @@ public class CaseController {
     @Autowired
     private CaseService caseService;
 
-    @PostMapping("/list")
-    public CaseResult getCaseList(@RequestBody String id){
-        if(StringUtils.isBlank(id)){
-            return new CaseResult("fail", "项目id不能为空", null);
-        }
-
+    @RequestMapping("/list")
+    public CaseResult getCaseList(@RequestBody(required = false) String id){
         try {
             List<CaseExtend> caseExtends = caseService.getCaseList(id);
             if(null == caseExtends){

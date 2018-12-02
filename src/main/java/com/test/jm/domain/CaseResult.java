@@ -6,9 +6,9 @@ import java.util.List;
 public class CaseResult {
     private String status;
     private String msg;
-    private CaseTree data;
+    private List data;
 
-    public CaseResult(String status, String msg, CaseTree data) {
+    public CaseResult(String status, String msg, List data) {
         this.status = status;
         this.msg = msg;
         this.data = data;
@@ -30,11 +30,11 @@ public class CaseResult {
         this.msg = msg;
     }
 
-    public CaseTree getData() {
+    public List getData() {
         return data;
     }
 
-    public void setData(CaseTree data) {
+    public void setData(List data) {
         this.data = data;
     }
 

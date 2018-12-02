@@ -27,7 +27,10 @@ public class CaseController {
             if(null == caseExtends){
                 return new CaseResult("fail", "项目ID不存在", null);
             }
-            return new CaseResult("success", "获取测试集成功", CommonUtils.changeTree(caseExtends));
+            if(StringUtils.isBlank(id)){
+                return new CaseResult("success", "获取测试集成功", CommonUtils.apiTree(caseExtends));
+            }
+            return new CaseResult("success", "获取测试集成功", CommonUtils.caseTree(caseExtends));
         } catch (Exception e) {
             e.printStackTrace();
             return new CaseResult("fail", "获取测试集异常", null);

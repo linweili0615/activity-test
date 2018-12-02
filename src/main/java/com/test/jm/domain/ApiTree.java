@@ -1,17 +1,18 @@
 package com.test.jm.domain;
+
 import java.util.List;
 
-public class CaseTree {
-    private String id;
+public class ApiTree {
+    private String value;
     private String label;
     private List children;
 
-    public String getId() {
-        return id;
+    public String getValue() {
+        return value;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getLabel() {
@@ -32,8 +33,8 @@ public class CaseTree {
 
     @Override
     public String toString() {
-        return "CaseTree{" +
-                "id='" + id + '\'' +
+        return "ApiTree{" +
+                "value='" + value + '\'' +
                 ", label='" + label + '\'' +
                 ", children=" + children +
                 '}';

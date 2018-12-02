@@ -2,6 +2,8 @@ package com.test.jm.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.test.jm.domain.ApiCase;
+import com.test.jm.domain.ApiTree;
 import com.test.jm.domain.Case;
 import com.test.jm.domain.CaseTree;
 import com.test.jm.dto.CaseExtend;
@@ -33,7 +35,7 @@ public class CommonUtils {
         return map;
     }
 
-    public static List changeTree(List<CaseExtend> caseExtends){
+    public static List caseTree(List<CaseExtend> caseExtends){
         List all = new LinkedList();
         for (int i = 0; i < caseExtends.size(); i++) {
             CaseExtend cc = caseExtends.get(i);
@@ -49,6 +51,27 @@ public class CommonUtils {
             }
             caseTree.setChildren(cd);
             all.add(caseTree);
+        }
+
+        return all;
+    }
+
+    public static List apiTree(List<CaseExtend> caseExtends){
+        List all = new LinkedList();
+        for (int i = 0; i < caseExtends.size(); i++) {
+            CaseExtend cc = caseExtends.get(i);
+            ApiTree apiTree = new ApiTree();
+            apiTree.setValue(cc.getPid());
+            apiTree.setLabel(cc.getProject_name());
+            List cd = new ArrayList<>();
+            for (CaseDTO caseDTO:cc.getCaseExtends()) {
+                ApiCase c = new ApiCase();
+                c.setValue(caseDTO.getId());
+                c.setLabel(caseDTO.getName());
+                cd.add(c);
+            }
+            apiTree.setChildren(cd);
+            all.add(apiTree);
         }
 
         return all;

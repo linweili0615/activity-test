@@ -28,13 +28,7 @@ public class ApiController {
     private RequestService requestService;
 
     @PostMapping("/test")
-    public TestResult test_interface(@RequestBody ApiDTO apiDTO) throws IOException {
-        if(StringUtils.isBlank(apiDTO.getProject_id())){
-            return new TestResult("", ResultType.FAIL, "所属项目ID不能为空", null);
-        }
-        if(StringUtils.isBlank(apiDTO.getName())){
-            return new TestResult("", ResultType.FAIL, "接口名称不能为空", null);
-        }
+    public TestResult test_interface(@RequestBody ApiDTO apiDTO){
         if (StringUtils.isBlank(apiDTO.getMethod())) {
             return new TestResult("", ResultType.FAIL, "请求方法不能为空", null);
         }
@@ -56,7 +50,6 @@ public class ApiController {
 
     @PostMapping("/save")
     public TestResult save_interface(@RequestBody ApiDTO apiDTO) {
-//        apiDTO.setProject_id(UUID.randomUUID().toString());
         if (StringUtils.isBlank(apiDTO.getProject_id())) {
             return new TestResult("", ResultType.FAIL, "项目ID不能为空", null);
         }

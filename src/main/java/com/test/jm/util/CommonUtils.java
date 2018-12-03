@@ -9,8 +9,11 @@ import com.test.jm.domain.CaseTree;
 import com.test.jm.dto.CaseExtend;
 import com.test.jm.dto.test.CaseDTO;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.cookie.Cookie;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommonUtils {
 
@@ -33,6 +36,36 @@ public class CommonUtils {
         }
         Map<String, Object> map = new HashMap<String, Object>();
         return map;
+    }
+
+    public static String HeaderListToMap(List<Header> lists){
+        Map<String, Object> m = new HashMap<>();
+        try {
+            for (Header header: lists) {
+                m.put(header.getName(), header.getValue());
+            }
+            JSONObject json = new JSONObject(m);
+            return json.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return lists.toString();
+        }
+
+    }
+
+    public static String CookieListToMap(List<Cookie> lists){
+        Map<String, Object> m = new HashMap<>();
+        try {
+            for (Cookie cookie: lists) {
+                m.put(cookie.getName(), cookie.getValue());
+            }
+            JSONObject json = new JSONObject(m);
+            return json.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return lists.toString();
+        }
+
     }
 
     public static List caseTree(List<CaseExtend> caseExtends){

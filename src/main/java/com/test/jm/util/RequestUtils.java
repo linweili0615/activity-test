@@ -337,8 +337,8 @@ public class RequestUtils {
                 String content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
                 Header[] headers= httpResponse.getAllHeaders();
                 List<Header> hh = Arrays.asList(headers);
-                String header = hh.toString();
-                String cookies = getCookies().toString();
+                String header = CommonUtils.HeaderListToMap(hh);
+                String cookies = CommonUtils.CookieListToMap(getCookies());
                 result =  new HttpClientResult(httpResponse.getStatusLine().getStatusCode(), header, content, cookies);
             }
         }catch (Exception e){

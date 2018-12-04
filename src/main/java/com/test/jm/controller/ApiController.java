@@ -1,6 +1,8 @@
 package com.test.jm.controller;
 
+import com.test.jm.domain.ApiResult;
 import com.test.jm.domain.HttpClientResult;
+import com.test.jm.domain.Result;
 import com.test.jm.domain.TestResult;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.keys.ResultType;
@@ -26,6 +28,14 @@ public class ApiController {
 
     @Autowired
     private RequestService requestService;
+    @PostMapping("/list")
+    public ApiResult getApiList(@RequestBody ApiDTO apiDTO){
+        if (StringUtils.isBlank(apiDTO.getProject_id())) {
+            return new ApiResult(ResultType.FAIL, "请求方法不能为空", null);
+        }
+
+        return null;
+    }
 
     @PostMapping("/test")
     public TestResult test_interface(@RequestBody ApiDTO apiDTO){

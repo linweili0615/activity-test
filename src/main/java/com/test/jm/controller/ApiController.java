@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,13 +29,22 @@ public class ApiController {
 
     @Autowired
     private RequestService requestService;
+
     @PostMapping("/list")
     public ApiResult getApiList(@RequestBody ApiDTO apiDTO){
         if (StringUtils.isBlank(apiDTO.getProject_id())) {
             return new ApiResult(ResultType.FAIL, "请求方法不能为空", null);
         }
-
-        return null;
+        try {
+            List<ApiDTO> apiDTOList = apiService.getApiList(apiDTO);
+            if(null != apiDTOList){
+                return new ApiResult(ResultType.SUCCESS, "获取api列表成功", apiDTOList);
+            }
+            return new ApiResult(ResultType.SUCCESS, "获取api列表为空", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResult(ResultType.FAIL, "获取api列表异常", null);
+        }
     }
 
     @PostMapping("/test")

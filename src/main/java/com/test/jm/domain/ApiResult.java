@@ -41,4 +41,13 @@ public class ApiResult {
     public void setApiDTOList(List<ApiDTO> apiDTOList) {
         this.apiDTOList = apiDTOList;
     }
+
+    @Override
+    public String toString() {
+        return "ApiResult{" +
+                "status='" + status + '\'' +
+                ", msg='" + msg + '\'' +
+                ", apiDTOList=" + apiDTOList +
+                '}';
+    }
 }

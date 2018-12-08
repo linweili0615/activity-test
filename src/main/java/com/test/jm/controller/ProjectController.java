@@ -2,7 +2,7 @@ package com.test.jm.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.test.jm.domain.Page;
+import com.test.jm.domain.ProjectPage;
 import com.test.jm.domain.ProjectResult;
 import com.test.jm.domain.Result;
 import com.test.jm.dto.test.ProjectDTO;
@@ -25,11 +25,11 @@ public class ProjectController {
     private ProjectService projectService;
 
     @PostMapping("/list")
-    public ProjectResult getProjectList(@RequestBody Page page){
-        Integer pageSize = page.getPageSize();
-        Integer pageNo = page.getPageNo();
+    public ProjectResult getProjectList(@RequestBody ProjectPage projectPage){
+        Integer pageSize = projectPage.getPageSize();
+        Integer pageNo = projectPage.getPageNo();
         if(null == pageSize){
-            pageSize = 10;
+            pageSize = 15;
         }
         if(null == pageNo){
             pageNo = 1;
@@ -38,8 +38,8 @@ public class ProjectController {
         try {
             PageHelper.startPage(pageNo,pageSize);
             ProjectDTO projectDTO = new ProjectDTO();
-            projectDTO.setId(page.getId());
-            projectDTO.setProject_name(page.getProject_name());
+            projectDTO.setId(projectPage.getId());
+            projectDTO.setProject_name(projectPage.getProject_name());
             List<ProjectDTO> projectDTOList = projectService.getProjectList(projectDTO);
             PageInfo<ProjectDTO> pageInfo = new PageInfo<>(projectDTOList);
             int row_count = (int) pageInfo.getTotal();

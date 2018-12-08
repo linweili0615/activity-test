@@ -38,7 +38,7 @@
         </trim>
     </select>
 
-    <select id="getApiList" parameterType="com.test.jm.dto.test.ApiDTO" resultMap="ApiListMap">
+    <select id="getApiList" parameterType="com.test.jm.domain.ApiPage" resultMap="ApiListMap">
          SELECT * FROM interface
          <trim prefix="WHERE" prefixOverrides="AND">
              <if test="project_id != null and project_id != ''">

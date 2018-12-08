@@ -1,9 +1,8 @@
 package com.test.jm.controller;
 
-import com.test.jm.domain.ApiResult;
-import com.test.jm.domain.HttpClientResult;
-import com.test.jm.domain.Result;
-import com.test.jm.domain.TestResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.test.jm.domain.*;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ApiService;
@@ -31,14 +30,27 @@ public class ApiController {
     private RequestService requestService;
 
     @PostMapping("/list")
-    public ApiResult getApiList(@RequestBody ApiDTO apiDTO){
-        if (StringUtils.isBlank(apiDTO.getProject_id())) {
-            return new ApiResult(ResultType.FAIL, "请求方法不能为空", null);
+    public ApiResult getApiList(@RequestBody ApiPage apiPage){
+        if (StringUtils.isBlank(apiPage.getProject_id())) {
+            return new ApiResult(ResultType.FAIL, "所属项目不能为空", null);
         }
         try {
-            List<ApiDTO> apiDTOList = apiService.getApiList(apiDTO);
+            Integer pageSize = apiPage.getPageSize();
+            Integer pageNo = apiPage.getPageNo();
+            if(null == pageSize){
+                pageSize = 15;
+            }
+            if(null == pageNo){
+                pageNo = 1;
+            }
+            PageHelper.startPage(pageNo,pageSize);
+            List<ApiDTO> apiDTOList = apiService.getApiList(apiPage);
+            PageInfo<ApiDTO> pageInfo = new PageInfo<>(apiDTOList);
+            int row_count = (int) pageInfo.getTotal();
+            int pageCount = row_count % pageSize==0 ? row_count/pageSize : row_count/pageSize + 1;
+
             if(null != apiDTOList){
-                return new ApiResult(ResultType.SUCCESS, "获取api列表成功", apiDTOList);
+                return new ApiResult(ResultType.SUCCESS, "获取api列表成功", pageInfo.getTotal(), pageSize, pageCount, pageNo, apiDTOList);
             }
             return new ApiResult(ResultType.SUCCESS, "获取api列表为空", null);
         } catch (Exception e) {

@@ -1,26 +1,10 @@
 package com.test.jm.domain;
 
-public class Page {
+public class ApiPage {
     private Integer pageSize;
     private Integer pageNo;
-    private String id;
-    private String project_name;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getProject_name() {
-        return project_name;
-    }
-
-    public void setProject_name(String project_name) {
-        this.project_name = project_name;
-    }
+    private String project_id;
+    private String case_id;
 
     public Integer getPageSize() {
         return pageSize;
@@ -38,13 +22,29 @@ public class Page {
         this.pageNo = pageNo;
     }
 
+    public String getProject_id() {
+        return project_id;
+    }
+
+    public void setProject_id(String project_id) {
+        this.project_id = project_id;
+    }
+
+    public String getCase_id() {
+        return case_id;
+    }
+
+    public void setCase_id(String case_id) {
+        this.case_id = case_id;
+    }
+
     @Override
     public String toString() {
-        return "Page{" +
+        return "ApiPage{" +
                 "pageSize=" + pageSize +
                 ", pageNo=" + pageNo +
-                ", id='" + id + '\'' +
-                ", project_name='" + project_name + '\'' +
+                ", project_id='" + project_id + '\'' +
+                ", case_id='" + case_id + '\'' +
                 '}';
     }
 }

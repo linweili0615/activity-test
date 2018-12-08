@@ -1,6 +1,7 @@
 package com.test.jm.service;
 
 import com.test.jm.dao.ApiDao;
+import com.test.jm.domain.ApiPage;
 import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
 import com.test.jm.dto.test.ApiDTO;
@@ -41,8 +42,8 @@ public class ApiService {
 
     }
 
-    public List<ApiDTO> getApiList(ApiDTO apiDTO) {
-        return apiDao.getApiList(apiDTO);
+    public List<ApiDTO> getApiList(ApiPage apiPage) {
+        return apiDao.getApiList(apiPage);
 
     }
 

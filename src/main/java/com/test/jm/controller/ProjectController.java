@@ -2,7 +2,7 @@ package com.test.jm.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.test.jm.domain.ProjectPage;
+import com.test.jm.domain.page.ProjectPage;
 import com.test.jm.domain.ProjectResult;
 import com.test.jm.domain.Result;
 import com.test.jm.dto.test.ProjectDTO;

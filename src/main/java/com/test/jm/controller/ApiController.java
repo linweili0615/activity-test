@@ -3,6 +3,7 @@ package com.test.jm.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.test.jm.domain.*;
+import com.test.jm.domain.page.ApiPage;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ApiService;
@@ -13,9 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")

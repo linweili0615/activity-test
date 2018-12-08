@@ -1,4 +1,4 @@
-package com.test.jm.domain;
+package com.test.jm.domain.page;
 
 public class ProjectPage {
     private Integer pageSize;

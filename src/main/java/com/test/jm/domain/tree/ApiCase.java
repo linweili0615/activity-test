@@ -1,4 +1,4 @@
-package com.test.jm.domain;
+package com.test.jm.domain.tree;
 
 public class ApiCase {
     private String value;

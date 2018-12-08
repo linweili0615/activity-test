@@ -1,6 +1,6 @@
 package com.test.jm.dao;
 
-import com.test.jm.domain.ApiPage;
+import com.test.jm.domain.page.ApiPage;
 import com.test.jm.dto.test.ApiDTO;
 
 import java.util.List;

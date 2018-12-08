@@ -1,4 +1,4 @@
-package com.test.jm.domain;
+package com.test.jm.domain.page;
 
 public class ApiPage {
     private Integer pageSize;

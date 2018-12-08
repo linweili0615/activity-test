@@ -2,10 +2,10 @@ package com.test.jm.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.test.jm.domain.ApiCase;
-import com.test.jm.domain.ApiTree;
-import com.test.jm.domain.Case;
-import com.test.jm.domain.CaseTree;
+import com.test.jm.domain.tree.ApiCase;
+import com.test.jm.domain.tree.ApiTree;
+import com.test.jm.domain.tree.Case;
+import com.test.jm.domain.tree.CaseTree;
 import com.test.jm.dto.CaseExtend;
 import com.test.jm.dto.test.CaseDTO;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +13,6 @@ import org.apache.http.Header;
 import org.apache.http.cookie.Cookie;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CommonUtils {
 

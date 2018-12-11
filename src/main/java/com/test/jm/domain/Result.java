@@ -6,6 +6,16 @@ public class Result {
     private String msg;
     private String data;
 
+    public Result() {
+    }
+
+    public Result(String id, String status, String msg, String data) {
+        this.id = id;
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public String getId() {
         return id;
     }

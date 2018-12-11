@@ -31,6 +31,7 @@
                 p.id = #{id}
             </if>
         </trim>
+        ORDER BY c.create_time DESC
     </select>
 
     <update id="editCase" parameterType="com.test.jm.dto.test.CaseDTO">
@@ -44,15 +45,21 @@
             </if>
             modify_time = now()
         </set>
-        WHERE id = #{id}
-        and project_id = #{project_id}
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter != null">
+                id = #{id}
+            </if>
+        </trim>
     </update>
 
 
     <delete id="delCase" parameterType="com.test.jm.dto.test.CaseDTO">
         DELETE FROM test_case
-        WHERE id = #{id}
-        and project_id = #{project_id}
+        <trim prefix="WHERE">
+            <if test="_parameter != null">
+                id = #{id}
+            </if>
+        </trim>
     </delete>
 
 </mapper>

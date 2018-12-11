@@ -36,5 +36,12 @@ public class CaseService {
         return caseDao.editCase(caseDTO);
     }
 
+    public Integer delCaseById(CaseDTO caseDTO){
+        caseDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
+        return caseDao.delCase(caseDTO);
+    }
+
+
+
 
 }

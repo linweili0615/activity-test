@@ -28,6 +28,11 @@ public class ApiController {
     @Autowired
     private RequestService requestService;
 
+    @PostMapping("/detail")
+    public Result getApiList(@RequestBody String id){
+        return null;
+    }
+
     @PostMapping("/list")
     public ApiResult getApiList(@RequestBody ApiPage apiPage){
         if (StringUtils.isBlank(apiPage.getProject_id())) {
@@ -37,7 +42,7 @@ public class ApiController {
             Integer pageSize = apiPage.getPageSize();
             Integer pageNo = apiPage.getPageNo();
             if(null == pageSize){
-                pageSize = 15;
+                pageSize = 30;
             }
             if(null == pageNo){
                 pageNo = 1;
@@ -141,19 +146,16 @@ public class ApiController {
             return new TestResult("", ResultType.FAIL, "接口ID不能为空", null);
         }
 
-        if (null != apiService.selectInterfaceById(id)) {
-            try {
-                Integer count = apiService.delInterfaceById(id);
-                if(count > 0){
-                    return new TestResult(id, ResultType.SUCCESS, "", null);
-                }
-                return new TestResult(id, ResultType.FAIL, "删除失败", null);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new TestResult(id, ResultType.ERROR, "删除异常", null);
+        try {
+            Integer count = apiService.delInterfaceById(id);
+            if(count > 0){
+                return new TestResult(id, ResultType.SUCCESS, "记录已删除", null);
             }
+            return new TestResult(id, ResultType.FAIL, "接口不存在", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new TestResult(id, ResultType.ERROR, "删除异常", null);
         }
-        return new TestResult(id, ResultType.FAIL, "接口ID不存在", null);
     }
 
 

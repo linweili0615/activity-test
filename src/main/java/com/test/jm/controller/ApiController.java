@@ -30,7 +30,16 @@ public class ApiController {
 
     @PostMapping("/detail")
     public Result getApiList(@RequestBody String id){
-        return null;
+        try {
+            ApiDTO apiDTO = apiService.selectInterfaceById(id);
+            if(null != apiDTO){
+                return new Result(ResultType.SUCCESS,null,apiDTO);
+            }
+            return new Result(ResultType.FAIL,null, null);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return new Result(ResultType.FAIL,e.getMessage(),null);
+        }
     }
 
     @PostMapping("/list")
@@ -58,8 +67,8 @@ public class ApiController {
             }
             return new ApiResult(ResultType.SUCCESS, "获取api列表为空", null);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ApiResult(ResultType.FAIL, "获取api列表异常", null);
+//            e.printStackTrace();
+            return new ApiResult(ResultType.FAIL, e.getMessage(), null);
         }
     }
 
@@ -76,8 +85,7 @@ public class ApiController {
             HttpClientResult result = requestService.request(apiDTO);
             return new TestResult("", ResultType.SUCCESS, "", result);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+//            e.printStackTrace();
             return new TestResult("", ResultType.ERROR, e.getMessage(), null);
         }
 
@@ -101,8 +109,8 @@ public class ApiController {
             return new TestResult(id, ResultType.SUCCESS, "", null);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return new TestResult("", ResultType.ERROR, "保存异常", null);
+//            e.printStackTrace();
+            return new TestResult("", ResultType.ERROR, e.getMessage(), null);
         }
 
     }
@@ -131,8 +139,8 @@ public class ApiController {
                 }
                 return new TestResult(apiDTO.getId(), ResultType.FAIL, "修改失败", "");
             } catch (Exception e) {
-                e.printStackTrace();
-                return new TestResult(apiDTO.getId(), ResultType.ERROR, "修改异常", null);
+//                e.printStackTrace();
+                return new TestResult(apiDTO.getId(), ResultType.ERROR, e.getMessage(), null);
             }
         }
         return new TestResult(apiDTO.getId(), ResultType.FAIL, "接口ID不存在", apiDTO);
@@ -153,8 +161,8 @@ public class ApiController {
             }
             return new TestResult(id, ResultType.FAIL, "接口不存在", null);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new TestResult(id, ResultType.ERROR, "删除异常", null);
+//            e.printStackTrace();
+            return new TestResult(id, ResultType.ERROR, e.getMessage(), null);
         }
     }
 

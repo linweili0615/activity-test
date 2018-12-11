@@ -29,10 +29,10 @@
     </insert>
 
     <select id="selectInterfaceById" parameterType="java.lang.String"
-            resultType="java.lang.Integer">
+            resultType="com.test.jm.dto.test.ApiDTO">
         SELECT * FROM interface
-        <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="id != null">
+        <trim prefix="WHERE" >
+            <if test="_parameter != null">
                 id = #{id}
             </if>
         </trim>

@@ -4,13 +4,19 @@ public class Result {
     private String id;
     private String status;
     private String msg;
-    private String data;
+    private Object data;
 
     public Result() {
     }
 
-    public Result(String id, String status, String msg, String data) {
+    public Result(String id, String status, String msg, Object data) {
         this.id = id;
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
+    }
+
+    public Result(String status, String msg, Object data) {
         this.status = status;
         this.msg = msg;
         this.data = data;
@@ -36,16 +42,16 @@ public class Result {
         return msg;
     }
 
-    public String getData() {
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 
     @Override
@@ -54,7 +60,7 @@ public class Result {
                 "id='" + id + '\'' +
                 ", status='" + status + '\'' +
                 ", msg='" + msg + '\'' +
-                ", data='" + data + '\'' +
+                ", data=" + data +
                 '}';
     }
 }

@@ -37,7 +37,6 @@ public class ApiController {
             }
             return new Result(ResultType.FAIL,null, null);
         } catch (Exception e) {
-//            e.printStackTrace();
             return new Result(ResultType.FAIL,e.getMessage(),null);
         }
     }
@@ -75,18 +74,17 @@ public class ApiController {
     @PostMapping("/test")
     public TestResult test_interface(@RequestBody ApiDTO apiDTO){
         if (StringUtils.isBlank(apiDTO.getMethod())) {
-            return new TestResult("", ResultType.FAIL, "请求方法不能为空", null);
+            return new TestResult(null, ResultType.FAIL, "请求方法不能为空", null);
         }
         if (StringUtils.isBlank(apiDTO.getUrl())) {
-            return new TestResult("", ResultType.FAIL, "请求URL不能为空", null);
+            return new TestResult(null, ResultType.FAIL, "请求URL不能为空", null);
         }
 
         try {
             HttpClientResult result = requestService.request(apiDTO);
-            return new TestResult("", ResultType.SUCCESS, "", result);
+            return new TestResult(null, ResultType.SUCCESS, "", result);
         } catch (Exception e) {
-//            e.printStackTrace();
-            return new TestResult("", ResultType.ERROR, e.getMessage(), null);
+            return new TestResult(null, ResultType.ERROR, e.getMessage(), null);
         }
 
 
@@ -105,12 +103,18 @@ public class ApiController {
         }
 
         try {
+            if(StringUtils.isNotBlank(apiDTO.getId())){
+                Integer count = apiService.editInterface(apiDTO);
+                if(count > 0){
+                    return new TestResult(apiDTO.getId(), ResultType.SUCCESS, "接口信息已更新", null);
+                }else {
+                    return new TestResult(apiDTO.getId(), ResultType.FAIL, "接口信息不存在", null);
+                }
+            }
             String id = apiService.addInterface(apiDTO);
-            return new TestResult(id, ResultType.SUCCESS, "", null);
-
+            return new TestResult(id, ResultType.SUCCESS, "接口信息已保存", null);
         } catch (Exception e) {
-//            e.printStackTrace();
-            return new TestResult("", ResultType.ERROR, e.getMessage(), null);
+            return new TestResult(null, ResultType.ERROR, e.getMessage(), null);
         }
 
     }

@@ -58,7 +58,7 @@
                 project_id = #{project_id},
             </if>
             <if test="case_id != null">
-                project_id = #{case_id},
+                case_id = #{case_id},
             </if>
             <if test="name != null">
                 name = #{name},

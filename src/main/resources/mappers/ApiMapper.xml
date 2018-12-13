@@ -47,8 +47,9 @@
              <if test="case_id != null and case_id != ''">
                  AND case_id = #{case_id}
              </if>
-             ORDER BY create_time DESC
+
          </trim>
+        ORDER BY create_time DESC
     </select>
 
     <update id="editInterface" parameterType="com.test.jm.dto.test.ApiDTO">

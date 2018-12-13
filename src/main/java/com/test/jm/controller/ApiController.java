@@ -41,6 +41,33 @@ public class ApiController {
         }
     }
 
+    @PostMapping("/all_list")
+    public ApiResult getApiAllList(@RequestBody ApiPage apiPage){
+        try {
+            Integer pageSize = apiPage.getPageSize();
+            Integer pageNo = apiPage.getPageNo();
+            if(null == pageSize){
+                pageSize = 40;
+            }
+            if(null == pageNo){
+                pageNo = 1;
+            }
+            PageHelper.startPage(pageNo,pageSize);
+            List<ApiDTO> apiDTOList = apiService.getApiList(apiPage);
+            PageInfo<ApiDTO> pageInfo = new PageInfo<>(apiDTOList);
+            int row_count = (int) pageInfo.getTotal();
+            int pageCount = row_count % pageSize==0 ? row_count/pageSize : row_count/pageSize + 1;
+
+            if(null != apiDTOList){
+                return new ApiResult(ResultType.SUCCESS, "获取api列表成功", pageInfo.getTotal(), pageSize, pageCount, pageNo, apiDTOList);
+            }
+            return new ApiResult(ResultType.SUCCESS, "获取api列表为空", null);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return new ApiResult(ResultType.FAIL, e.getMessage(), null);
+        }
+    }
+
     @PostMapping("/list")
     public ApiResult getApiList(@RequestBody ApiPage apiPage){
         if (StringUtils.isBlank(apiPage.getProject_id())) {

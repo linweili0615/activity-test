@@ -125,8 +125,8 @@ public class RequestUtils {
         HttpRequestRetryHandler handler = new HttpRequestRetryHandler() {
             @Override
             public boolean retryRequest(IOException e, int i, HttpContext httpContext) {
-                if (i > 3){
-                    //重试超过3次,放弃请求
+                if (i > 1){
+                    //重试超过1次,放弃请求
                     logger.error("retry has more than 3 time, give up request");
                     return false;
                 }
@@ -352,6 +352,7 @@ public class RequestUtils {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                result = new HttpClientResult(502, null, e.getMessage(), null);
             }
             return result;
         }

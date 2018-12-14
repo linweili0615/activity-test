@@ -16,4 +16,7 @@ public interface ApiDao {
     List<ApiDTO> getApiList(ApiPage apiPage);
 
     Integer deleteInterfaceById(String id);
+
+    List<ApiDTO> getApiList(ApiDTO apiDTO);
+
 }

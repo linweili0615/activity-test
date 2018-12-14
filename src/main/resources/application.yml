@@ -10,7 +10,7 @@ spring:
         service-id: config-server
         enabled: true
       name: activity-test
-      profile: test
+      profile: dev
       fail-fast: true
       label: master
 #  jackson:

@@ -6,7 +6,6 @@ public class ApiDTO {
     private String id;
     private String project_id;
     private String case_id;
-    private Integer case_index;
     private String name;
     private String url;
     private String headers;
@@ -41,14 +40,6 @@ public class ApiDTO {
 
     public void setCase_id(String case_id) {
         this.case_id = case_id;
-    }
-
-    public Integer getCase_index() {
-        return case_index;
-    }
-
-    public void setCase_index(Integer case_index) {
-        this.case_index = case_index;
     }
 
     public String getHeaders() {
@@ -145,7 +136,6 @@ public class ApiDTO {
                 "id='" + id + '\'' +
                 ", project_id='" + project_id + '\'' +
                 ", case_id='" + case_id + '\'' +
-                ", case_index='" + case_index + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", headers='" + headers + '\'' +

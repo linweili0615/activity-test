@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.jm.dao.TaskExtendDao">
+
+    <resultMap id="task_extend_list" type="com.test.jm.dto.test.TaskExtendDTO">
+        <id column="id" property="id"></id>
+        <result column="api_id" property="api_id"/>
+        <result column="api_name" property="api_name"/>
+        <result column="rank" property="rank"/>
+        <result column="pre_processors" property="pre_processors"/>
+        <result column="post_processors" property="post_processors"/>
+        <result column="valid_data" property="valid_data"/>
+    </resultMap>
+
+    <!--<insert id="addCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
+          <!--INSERT INTO-->
+          <!--test_case-->
+          <!--(id, project_id, name, author, update_author, create_time, modify_time)-->
+          <!--VALUES-->
+          <!--(#{id}, #{project_id}, #{name}, #{author}, #{update_author}, now(), now())-->
+    <!--</insert>-->
+
+
+    <select id="getTaskById" parameterType="java.lang.String"
+            resultMap="task_extend_list">
+        SELECT
+        t.id,
+        t.api_id,
+        t.api_name,
+        t.rank,
+        t.pre_processors,
+        t.post_processors,
+        t.valid_data
+        FROM
+        task_case c
+        LEFT JOIN task_case_extend t ON c.id = t.task_id
+        <trim prefix="WHERE">
+            <if test="_parameter != null">
+                c.id = #{id}
+            </if>
+        </trim>
+        ORDER BY t.create_time DESC
+    </select>
+
+    <!--<update id="editCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
+        <!--UPDATE test_case-->
+        <!--<set>-->
+            <!--<if test="name != null">-->
+                <!--name = #{name},-->
+            <!--</if>-->
+            <!--<if test="update_author != null">-->
+                <!--update_author = #{update_author},-->
+            <!--</if>-->
+            <!--modify_time = now()-->
+        <!--</set>-->
+        <!--<trim prefix="WHERE" prefixOverrides="AND | OR">-->
+            <!--<if test="_parameter != null">-->
+                <!--id = #{id}-->
+            <!--</if>-->
+        <!--</trim>-->
+    <!--</update>-->
+
+
+    <!--<delete id="delCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
+        <!--DELETE FROM test_case-->
+        <!--<trim prefix="WHERE">-->
+            <!--<if test="_parameter != null">-->
+                <!--id = #{id}-->
+            <!--</if>-->
+        <!--</trim>-->
+    <!--</delete>-->
+
+</mapper>

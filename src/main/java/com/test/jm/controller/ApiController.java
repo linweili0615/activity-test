@@ -109,6 +109,9 @@ public class ApiController {
 
         try {
             HttpClientResult result = requestService.request(apiDTO);
+            if(result.getCode().equals(502)){
+                return new TestResult(null, ResultType.SUCCESS, result.getContent(), result);
+            }
             return new TestResult(null, ResultType.SUCCESS, "", result);
         } catch (Exception e) {
             return new TestResult(null, ResultType.ERROR, e.getMessage(), null);

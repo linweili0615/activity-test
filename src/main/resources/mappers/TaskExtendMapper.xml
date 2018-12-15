@@ -31,7 +31,7 @@
                 c.id = #{id}
             </if>
         </trim>
-        ORDER BY t.create_time DESC
+        ORDER BY t.rank DESC
     </select>
 
     <delete id="removeTaskExtendById" parameterType="java.lang.String">

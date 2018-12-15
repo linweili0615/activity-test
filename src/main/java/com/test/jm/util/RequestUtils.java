@@ -344,7 +344,6 @@ public class RequestUtils {
         }catch (Exception e){
             e.printStackTrace();
             result = new HttpClientResult(502, null, e.getMessage(), null);
-
         }finally {
             try {
                 if (httpResponse != null) {

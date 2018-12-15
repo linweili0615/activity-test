@@ -1,8 +1,10 @@
 package com.test.jm.controller;
 
+import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskExtendResult;
 import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.ResultType;
+import com.test.jm.service.RequestService;
 import com.test.jm.service.TaskService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,16 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private RequestService requestService;
+
+
+    @RequestMapping("/test")
+    public List<HttpClientResult> runCase(){
+        String id = "81598efb-ffa9-11e8-a19c-0242ac110002";
+        return requestService.runCase(id);
+    }
 
     @PostMapping("/extend/info")
     public TaskExtendResult getTaskInfo(@RequestBody String id){

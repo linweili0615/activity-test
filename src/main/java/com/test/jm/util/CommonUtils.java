@@ -33,7 +33,7 @@ public class CommonUtils {
             Map<String, Object> map = JSONObject.parseObject(str);
             return map;
         }
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         return map;
     }
 

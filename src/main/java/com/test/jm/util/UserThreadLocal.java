@@ -1,7 +1,6 @@
 package com.test.jm.util;
 
 import com.test.jm.dto.TokenDTO;
-import com.test.jm.dto.UserInfoDTO;
 
 public class UserThreadLocal {
 

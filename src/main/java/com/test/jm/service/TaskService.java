@@ -13,7 +13,11 @@ public class TaskService {
     @Autowired
     private TaskExtendDao taskExtendDao;
 
-    public List<TaskExtendDTO> getTaskById(String id){
-        return taskExtendDao.getTaskById(id);
+    public List<TaskExtendDTO> getTaskExtendById(String id){
+        return taskExtendDao.getTaskExtendById(id);
+    }
+
+    public Integer delTaskExtendById(String id){
+        return taskExtendDao.removeTaskExtendById(id);
     }
 }

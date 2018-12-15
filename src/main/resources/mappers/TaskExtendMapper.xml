@@ -13,16 +13,7 @@
         <result column="valid_data" property="valid_data"/>
     </resultMap>
 
-    <!--<insert id="addCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
-          <!--INSERT INTO-->
-          <!--test_case-->
-          <!--(id, project_id, name, author, update_author, create_time, modify_time)-->
-          <!--VALUES-->
-          <!--(#{id}, #{project_id}, #{name}, #{author}, #{update_author}, now(), now())-->
-    <!--</insert>-->
-
-
-    <select id="getTaskById" parameterType="java.lang.String"
+    <select id="getTaskExtendById" parameterType="java.lang.String"
             resultMap="task_extend_list">
         SELECT
         t.id,
@@ -43,6 +34,23 @@
         ORDER BY t.create_time DESC
     </select>
 
+    <delete id="removeTaskExtendById" parameterType="java.lang.String">
+        DELETE FROM task_case_extend
+        <trim prefix="WHERE">
+            <if test="_parameter != null">
+                id = #{id}
+            </if>
+        </trim>
+    </delete>
+
+    <!--<insert id="addCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
+    <!--INSERT INTO-->
+    <!--test_case-->
+    <!--(id, project_id, name, author, update_author, create_time, modify_time)-->
+    <!--VALUES-->
+    <!--(#{id}, #{project_id}, #{name}, #{author}, #{update_author}, now(), now())-->
+    <!--</insert>-->
+
     <!--<update id="editCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
         <!--UPDATE test_case-->
         <!--<set>-->
@@ -60,15 +68,5 @@
             <!--</if>-->
         <!--</trim>-->
     <!--</update>-->
-
-
-    <!--<delete id="delCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
-        <!--DELETE FROM test_case-->
-        <!--<trim prefix="WHERE">-->
-            <!--<if test="_parameter != null">-->
-                <!--id = #{id}-->
-            <!--</if>-->
-        <!--</trim>-->
-    <!--</delete>-->
 
 </mapper>

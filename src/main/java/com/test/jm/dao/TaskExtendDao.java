@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface TaskExtendDao {
 
-    Integer addTask(TaskExtendDTO taskExtendDTO);
+    Integer addTaskExtend(TaskExtendDTO taskExtendDTO);
 
-    Integer removeTask(String id);
+    Integer removeTaskExtendById(String id);
 
-    Integer modifyTask(TaskExtendDTO taskExtendDTO);
+    Integer modifyTaskExtend(TaskExtendDTO taskExtendDTO);
 
-    List<TaskExtendDTO> getTaskById(String id);
+    List<TaskExtendDTO> getTaskExtendById(String id);
 
-    List<TaskExtendDTO> getTaskList();
+    List<TaskExtendDTO> getTaskExtendList();
 
 }

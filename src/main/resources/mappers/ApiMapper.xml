@@ -40,6 +40,9 @@
 
     <select id="getApiList" parameterType="com.test.jm.domain.page.ApiPage" resultMap="ApiListMap">
          SELECT * FROM interface
+        <if test="name != null and name !=''">
+            <bind name="pattern" value="'%' + name + '%'" />
+        </if>
          <trim prefix="WHERE" prefixOverrides="AND">
              <if test="project_id != null and project_id != ''">
                  project_id = #{project_id}
@@ -47,7 +50,9 @@
              <if test="case_id != null and case_id != ''">
                  AND case_id = #{case_id}
              </if>
-
+             <if test="name != null and name !=''">
+                 AND name LIKE #{pattern}
+             </if>
          </trim>
         ORDER BY create_time DESC
     </select>

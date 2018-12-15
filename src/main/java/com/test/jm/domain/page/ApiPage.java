@@ -5,6 +5,7 @@ public class ApiPage {
     private Integer pageNo;
     private String project_id;
     private String case_id;
+    private String name;
 
     public Integer getPageSize() {
         return pageSize;
@@ -38,6 +39,14 @@ public class ApiPage {
         this.case_id = case_id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "ApiPage{" +
@@ -45,6 +54,7 @@ public class ApiPage {
                 ", pageNo=" + pageNo +
                 ", project_id='" + project_id + '\'' +
                 ", case_id='" + case_id + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

@@ -26,11 +26,28 @@ public class TaskController {
             return new TaskExtendResult(null, ResultType.FAIL, "任务ID不能为空", null);
         }
         try {
-            List<TaskExtendDTO> data = taskService.getTaskById(id);
+            List<TaskExtendDTO> data = taskService.getTaskExtendById(id);
             if(null == data){
                 return new TaskExtendResult(id, ResultType.FAIL, "任务详情无记录", null);
             }
             return new TaskExtendResult(id, ResultType.SUCCESS, "获取任务详情成功", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new TaskExtendResult(id, ResultType.ERROR, e.getMessage(), null);
+        }
+    }
+
+    @PostMapping("/extend/del")
+    public TaskExtendResult delTaskInfoById(@RequestBody String id){
+        if(StringUtils.isBlank(id)){
+            return new TaskExtendResult(null, ResultType.FAIL, "接口ID不能为空", null);
+        }
+        try {
+            Integer count = taskService.delTaskExtendById(id);
+            if(count > 0){
+                return new TaskExtendResult(id, ResultType.SUCCESS, "任务详情删除成功", null);
+            }
+            return new TaskExtendResult(id, ResultType.FAIL, "任务详情删除失败", null);
         } catch (Exception e) {
             e.printStackTrace();
             return new TaskExtendResult(id, ResultType.ERROR, e.getMessage(), null);

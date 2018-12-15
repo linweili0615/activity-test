@@ -127,7 +127,7 @@ public class RequestUtils {
             public boolean retryRequest(IOException e, int i, HttpContext httpContext) {
                 if (i > 1){
                     //重试超过1次,放弃请求
-                    logger.error("retry has more than 3 time, give up request");
+                    logger.error("retry has more than 1 time, give up request");
                     return false;
                 }
                 if (e instanceof NoHttpResponseException){

@@ -96,14 +96,13 @@ CREATE TABLE `task_case` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `task_case`;
+DROP TABLE IF EXISTS `task_case_extend`;
 CREATE TABLE `task_case_extend` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `task_id` varchar(255) DEFAULT NULL,
   `api_id` varchar(255) DEFAULT NULL,
   `api_name` varchar(255) DEFAULT NULL,
   `rank` int(11) DEFAULT NULL,
-  `pre_processors` longtext,
   `post_processors` longtext,
   `valid_data` longtext,
   `status` int(2) DEFAULT '1',

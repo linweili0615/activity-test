@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +29,7 @@ public class RequestService {
     private ApiService apiService;
 
     public HttpClientResult request(ApiDTO apiDTO) throws Exception {
+        logger.info("RequestService.request: {}",apiDTO.toString());
         HttpClientResult result = new HttpClientResult();
         switch (apiDTO.getMethod().toUpperCase()){
             case RequestType.GET :
@@ -50,16 +50,26 @@ public class RequestService {
         for (TaskExtendDTO taskExtendDTO: data) {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());
             try {
+                List<String> matchList = CommonUtils.getMatchList(apiDTO.getBody());
+                if(null != matchList){
+                    //前置处理
+                    for (String match: matchList) {
+                        CommonUtils.replaceCommon(apiDTO, match);
+                        System.out.println("body: " + apiDTO.getBody());
+                    }
+                }
 
                 String pre = taskExtendDTO.getPre_processors();
-                if(StringUtils.isNotBlank(pre)){
-                    Map<String, Object> pre_search = CommonUtils.strToMap(pre);
-                    String telno = (String) RequestThreadLocal.getInfo().get("telno");
+                Map<String, Object> pre_search = CommonUtils.strToMap(pre);
+                if(null != pre_search){
+//                    String telno = (String) RequestThreadLocal.getInfo().get("telno");
+                    System.out.println(222);
                 }
 
                 HttpClientResult result = request(apiDTO);
                 res.add(result);
 
+                //后置处理
                 String post = taskExtendDTO.getPost_processors();
                 if(StringUtils.isNotBlank(post)){
                     Map<String, Object> post_search = CommonUtils.strToMap(post);
@@ -75,8 +85,6 @@ public class RequestService {
         }
         return res;
     }
-
-
 
 
 }

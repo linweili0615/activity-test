@@ -57,7 +57,7 @@ public class RequestService {
 
     public List<HttpClientResult> runCase(String id){
         logger.info("RequestService.runCase.task_id: {}", id);
-        List<TaskExtendDTO> data = taskService.getTaskExtendById(id);
+        List<TaskExtendDTO> data = taskService.getTaskExtendListById(id);
         List<HttpClientResult> res = new LinkedList<>();
         for (TaskExtendDTO taskExtendDTO: data) {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());

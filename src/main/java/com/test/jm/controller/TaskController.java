@@ -2,6 +2,7 @@ package com.test.jm.controller;
 
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskExtendResult;
+import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.RequestService;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RequestMapping("/task")
@@ -25,11 +25,21 @@ public class TaskController {
     @Autowired
     private RequestService requestService;
 
-
     @RequestMapping("/test")
-    public List<HttpClientResult> runCase(){
-        String id = "81598efb-ffa9-11e8-a19c-0242ac110002";
-        return requestService.runCase(id);
+    public TaskExtendResult runCase(@RequestBody String task_id){
+        if(StringUtils.isBlank(task_id)){
+            return new TaskExtendResult(ResultType.FAIL, "task_id不能为空");
+        }
+        try {
+            List<HttpClientResult> list = requestService.runCase(task_id);
+            if(null != list){
+                return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行成功", list);
+            }
+            return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行失败", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new TaskExtendResult(task_id, ResultType.ERROR, "task执行异常", null);
+        }
     }
 
     @PostMapping("/extend/info")
@@ -38,7 +48,7 @@ public class TaskController {
             return new TaskExtendResult(null, ResultType.FAIL, "任务ID不能为空", null);
         }
         try {
-            List<TaskExtendDTO> data = taskService.getTaskExtendById(id);
+            List<TaskExtendDTO> data = taskService.getTaskExtendListById(id);
             if(null == data){
                 return new TaskExtendResult(id, ResultType.FAIL, "任务详情无记录", null);
             }
@@ -66,6 +76,39 @@ public class TaskController {
         }
     }
 
-
+    @PostMapping("/extend/add")
+    public TaskExtendResult addTaskInfo(@RequestBody List<ApiDTO> apiDTOList, String task_id){
+        if(StringUtils.isNotBlank(task_id)){
+            return new TaskExtendResult(null, ResultType.FAIL, "task_id不能为空", null);
+        }
+        if(null == apiDTOList){
+            return new TaskExtendResult(null, ResultType.FAIL, "步骤信息不能为空", null);
+        }
+        Integer count = 0;
+        for (ApiDTO apiDTO: apiDTOList) {
+            try {
+                TaskExtendDTO tt = new TaskExtendDTO();
+                tt.setTask_id(task_id);
+                tt.setApi_id(apiDTO.getId());
+                tt.setApi_name(apiDTO.getName());
+                TaskExtendDTO ts = taskService.getTaskExtendById(task_id);
+                if(null != ts){
+                    tt.setRank(ts.getRank() + 1);
+                }
+                tt.setStatus("1");
+                Integer cc = taskService.addTaskExtend(tt);
+                if(cc > 0){
+                    count++;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        if(count > 0){
+            return new TaskExtendResult(null, ResultType.SUCCESS, "添加步骤信息成功", null);
+        }
+        return new TaskExtendResult(null, ResultType.FAIL, "添加步骤信息失败", null);
+    }
 
 }

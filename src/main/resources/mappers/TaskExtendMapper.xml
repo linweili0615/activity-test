@@ -12,7 +12,7 @@
         <result column="valid_data" property="valid_data"/>
     </resultMap>
 
-    <select id="getTaskExtendById" parameterType="java.lang.String"
+    <select id="getTaskExtendListById" parameterType="java.lang.String"
             resultMap="task_extend_list">
         SELECT
         t.id,
@@ -32,6 +32,16 @@
         ORDER BY t.rank DESC
     </select>
 
+    <select id="getTaskExtendById" parameterType="java.lang.String" resultType="com.test.jm.dto.test.TaskExtendDTO">
+        SELECT * FROM task_case_extend FROM task_case_extend
+        <trim prefix="WHERE">
+            <if test="_parameter != null">
+                task_id = #{task_id}
+            </if>
+        </trim>
+        ORDER BY rank DESC LIMIT 1
+    </select>
+
     <delete id="removeTaskExtendById" parameterType="java.lang.String">
         DELETE FROM task_case_extend
         <trim prefix="WHERE">
@@ -41,13 +51,14 @@
         </trim>
     </delete>
 
-    <!--<insert id="addCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
-    <!--INSERT INTO-->
-    <!--test_case-->
-    <!--(id, project_id, name, author, update_author, create_time, modify_time)-->
-    <!--VALUES-->
-    <!--(#{id}, #{project_id}, #{name}, #{author}, #{update_author}, now(), now())-->
-    <!--</insert>-->
+    <insert id="addTaskExtend" parameterType="com.test.jm.dto.test.TaskExtendDTO">
+        INSERT INTO `task_case_extend` (`task_id`,
+        `api_id`,`api_name`,`rank`,`post_processors`,`valid_data`,
+        `status`,`create_time`)
+        VALUES
+        (#{task_id},#{api_id},#{api_name},#{rank},#{post_processors},
+        #{valid_data},#{status},now())
+    </insert>
 
     <!--<update id="editCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
         <!--UPDATE test_case-->

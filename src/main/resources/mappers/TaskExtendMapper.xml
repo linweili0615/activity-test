@@ -8,7 +8,6 @@
         <result column="api_id" property="api_id"/>
         <result column="api_name" property="api_name"/>
         <result column="rank" property="rank"/>
-        <result column="pre_processors" property="pre_processors"/>
         <result column="post_processors" property="post_processors"/>
         <result column="valid_data" property="valid_data"/>
     </resultMap>
@@ -20,7 +19,6 @@
         t.api_id,
         t.api_name,
         t.rank,
-        t.pre_processors,
         t.post_processors,
         t.valid_data
         FROM

@@ -25,7 +25,7 @@ public class CommonUtils {
 
     //json提取
 
-    //正则提取
+    //正则提取需传入参数
     public static List<String> getMatchList(String source) {
         List<String> list = new ArrayList<>();
         if(StringUtils.isNotBlank(source) && !"{}".equalsIgnoreCase(source)){
@@ -40,6 +40,21 @@ public class CommonUtils {
         }
         return list;
     }
+
+    //正则提取所需参数值
+    public static String regMatch(String pre, String post, String source){
+        String result = null;
+        if(StringUtils.isNotBlank(pre) && StringUtils.isNotBlank(post)){
+            String rgex = pre + "(.*?)" + post;
+            Pattern pattern = Pattern.compile(rgex);
+            Matcher matcher = pattern.matcher(source);
+            while (matcher.find()) {
+                result = matcher.group(1);
+            }
+        }
+        return result;
+    }
+
 
     //str特殊字符替换
     public static String replaceStr(String special_str){
@@ -68,6 +83,17 @@ public class CommonUtils {
                     break;
                 default:
                     break;
+            }
+        }
+    }
+
+    //前置字符替换
+    public static void replacePre(ApiDTO apiDTO, String special_str){
+        if(null != special_str){
+            String special = special_str.split("\\{")[1].split("\\}")[0];
+            Object getPre = RequestThreadLocal.getInfo().getOrDefault( special, "replacePre");
+            if(!"replacePre".equals(getPre)){
+                apiDTO.setBody(apiDTO.getBody().replaceAll(replaceStr(special_str), String.valueOf(getPre)));
             }
         }
     }

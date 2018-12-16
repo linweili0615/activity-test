@@ -12,10 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Service
 public class RequestService {
@@ -31,7 +29,7 @@ public class RequestService {
     public HttpClientResult request(ApiDTO apiDTO) throws Exception {
         logger.info("RequestService.request: {}",apiDTO.toString());
         HttpClientResult result = new HttpClientResult();
-        replace(apiDTO);
+        replaceFirst(apiDTO);
         switch (apiDTO.getMethod().toUpperCase()){
             case RequestType.GET :
                 result = RequestUtils.doGet(apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
@@ -45,43 +43,44 @@ public class RequestService {
         return result;
     }
 
-    private void replace(ApiDTO apiDTO){
+    private void replaceFirst(ApiDTO apiDTO){
         List<String> matchList = CommonUtils.getMatchList(apiDTO.getBody());
         if(null != matchList){
             //前置处理
             for (String match: matchList) {
+                logger.info("RequestService.replace.match: {}", match);
                 CommonUtils.replaceCommon(apiDTO, match);
+                CommonUtils.replacePre(apiDTO, match);
             }
         }
     }
 
     public List<HttpClientResult> runCase(String id){
-        logger.info("RequestService.runCase: {}", id);
+        logger.info("RequestService.runCase.task_id: {}", id);
         List<TaskExtendDTO> data = taskService.getTaskExtendById(id);
         List<HttpClientResult> res = new LinkedList<>();
         for (TaskExtendDTO taskExtendDTO: data) {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());
             try {
-                replace(apiDTO);
-                String pre = taskExtendDTO.getPre_processors();
-                Map<String, Object> pre_search = CommonUtils.strToMap(pre);
-                if(null != pre_search){
-//                    String telno = (String) RequestThreadLocal.getInfo().get("telno");
-                    System.out.println(222);
-                }
-
+                replaceFirst(apiDTO);
                 HttpClientResult result = request(apiDTO);
                 res.add(result);
-
                 //后置处理
-                String post = taskExtendDTO.getPost_processors();
-                if(StringUtils.isNotBlank(post)){
-                    Map<String, Object> post_search = CommonUtils.strToMap(post);
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("telno",result.getContent());
-                    RequestThreadLocal.setInfo(map);
+                String post_processors = taskExtendDTO.getPost_processors();
+                Map<String, Object> map = RequestThreadLocal.getInfo();
+                if(StringUtils.isNotBlank(post_processors)){
+                    Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(post_processors).entrySet();
+                    for (Map.Entry<String, Object> entry : entrySet) {
+                        System.out.println("key: " + entry.getKey() + ", value: "+ entry.getValue());
+                        String pre = "";
+                        String post = "";
+                        String match = CommonUtils.regMatch(pre, post, result.getContent());
+                        if(StringUtils.isNotBlank(match)){
+                            map.put("telno", match);
+                            RequestThreadLocal.setInfo(map);
+                        }
+                    }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;

@@ -1,19 +1,28 @@
 package com.test.jm.domain;
 
-import com.test.jm.dto.test.TaskExtendDTO;
-
 import java.util.List;
 
-public class TaskExtendResult {
+public class TaskExtendResult<T> {
     private String id;
     private String status;
     private String msg;
-    private List<TaskExtendDTO> data;
+    private List<T> data;
 
     public TaskExtendResult() {
     }
 
-    public TaskExtendResult(String id, String status, String msg, List<TaskExtendDTO> data) {
+    public TaskExtendResult(String status, String msg) {
+        this.status = status;
+        this.msg = msg;
+    }
+
+    public TaskExtendResult(String id, String status, String msg) {
+        this.id = id;
+        this.status = status;
+        this.msg = msg;
+    }
+
+    public TaskExtendResult(String id, String status, String msg, List<T> data) {
         this.id = id;
         this.status = status;
         this.msg = msg;
@@ -44,11 +53,11 @@ public class TaskExtendResult {
         this.msg = msg;
     }
 
-    public List<TaskExtendDTO> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<TaskExtendDTO> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 

@@ -66,7 +66,7 @@ public class TokenUtils {
                     .getBody();
             return claims;
         }catch (Exception e){
-//            e.printStackTrace();
+            e.printStackTrace();
             logger.info("token: 已失效");
             return claims;
         }

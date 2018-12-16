@@ -31,6 +31,7 @@ public class RequestService {
     public HttpClientResult request(ApiDTO apiDTO) throws Exception {
         logger.info("RequestService.request: {}",apiDTO.toString());
         HttpClientResult result = new HttpClientResult();
+        replace(apiDTO);
         switch (apiDTO.getMethod().toUpperCase()){
             case RequestType.GET :
                 result = RequestUtils.doGet(apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
@@ -44,21 +45,24 @@ public class RequestService {
         return result;
     }
 
+    private void replace(ApiDTO apiDTO){
+        List<String> matchList = CommonUtils.getMatchList(apiDTO.getBody());
+        if(null != matchList){
+            //前置处理
+            for (String match: matchList) {
+                CommonUtils.replaceCommon(apiDTO, match);
+            }
+        }
+    }
+
     public List<HttpClientResult> runCase(String id){
+        logger.info("RequestService.runCase: {}", id);
         List<TaskExtendDTO> data = taskService.getTaskExtendById(id);
         List<HttpClientResult> res = new LinkedList<>();
         for (TaskExtendDTO taskExtendDTO: data) {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());
             try {
-                List<String> matchList = CommonUtils.getMatchList(apiDTO.getBody());
-                if(null != matchList){
-                    //前置处理
-                    for (String match: matchList) {
-                        CommonUtils.replaceCommon(apiDTO, match);
-                        System.out.println("body: " + apiDTO.getBody());
-                    }
-                }
-
+                replace(apiDTO);
                 String pre = taskExtendDTO.getPre_processors();
                 Map<String, Object> pre_search = CommonUtils.strToMap(pre);
                 if(null != pre_search){

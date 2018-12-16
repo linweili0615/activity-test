@@ -1,6 +1,7 @@
 package com.test.jm.controller;
 
 import com.test.jm.domain.HttpClientResult;
+import com.test.jm.domain.TaskExtendParams;
 import com.test.jm.domain.TaskExtendResult;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.dto.test.TaskExtendDTO;
@@ -77,21 +78,21 @@ public class TaskController {
     }
 
     @PostMapping("/extend/add")
-    public TaskExtendResult addTaskInfo(@RequestBody List<ApiDTO> apiDTOList, String task_id){
-        if(StringUtils.isNotBlank(task_id)){
+    public TaskExtendResult addTaskInfo(@RequestBody TaskExtendParams params){
+        if(StringUtils.isBlank(params.getTask_id())){
             return new TaskExtendResult(null, ResultType.FAIL, "task_id不能为空", null);
         }
-        if(null == apiDTOList){
+        if(null == params.getList()){
             return new TaskExtendResult(null, ResultType.FAIL, "步骤信息不能为空", null);
         }
         Integer count = 0;
-        for (ApiDTO apiDTO: apiDTOList) {
+        for (ApiDTO apiDTO: params.getList()) {
             try {
                 TaskExtendDTO tt = new TaskExtendDTO();
-                tt.setTask_id(task_id);
+                tt.setTask_id(params.getTask_id());
                 tt.setApi_id(apiDTO.getId());
                 tt.setApi_name(apiDTO.getName());
-                TaskExtendDTO ts = taskService.getTaskExtendById(task_id);
+                TaskExtendDTO ts = taskService.getTaskExtendById(params.getTask_id());
                 if(null != ts){
                     tt.setRank(ts.getRank() + 1);
                 }

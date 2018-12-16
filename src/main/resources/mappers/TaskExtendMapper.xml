@@ -33,7 +33,7 @@
     </select>
 
     <select id="getTaskExtendById" parameterType="java.lang.String" resultType="com.test.jm.dto.test.TaskExtendDTO">
-        SELECT * FROM task_case_extend FROM task_case_extend
+        SELECT * FROM task_case_extend
         <trim prefix="WHERE">
             <if test="_parameter != null">
                 task_id = #{task_id}

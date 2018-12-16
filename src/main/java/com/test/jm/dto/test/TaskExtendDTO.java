@@ -8,7 +8,6 @@ public class TaskExtendDTO {
     private String api_id;
     private String api_name;
     private Integer rank;
-    private String pre_processors;
     private String post_processors;
     private String valid_data;
     private String status;
@@ -54,14 +53,6 @@ public class TaskExtendDTO {
         this.rank = rank;
     }
 
-    public String getPre_processors() {
-        return pre_processors;
-    }
-
-    public void setPre_processors(String pre_processors) {
-        this.pre_processors = pre_processors;
-    }
-
     public String getPost_processors() {
         return post_processors;
     }
@@ -102,7 +93,6 @@ public class TaskExtendDTO {
                 ", api_id='" + api_id + '\'' +
                 ", api_name='" + api_name + '\'' +
                 ", rank=" + rank +
-                ", pre_processors='" + pre_processors + '\'' +
                 ", post_processors='" + post_processors + '\'' +
                 ", valid_data='" + valid_data + '\'' +
                 ", status='" + status + '\'' +

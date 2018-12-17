@@ -100,6 +100,8 @@ DROP TABLE IF EXISTS `task_case_extend`;
 CREATE TABLE `task_case_extend` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `task_id` varchar(255) DEFAULT NULL,
+  `project_id` varchar(255) DEFAULT NULL,
+  `case_id` varchar(255) DEFAULT NULL,
   `api_id` varchar(255) DEFAULT NULL,
   `api_name` varchar(255) DEFAULT NULL,
   `rank` int(11) DEFAULT NULL,

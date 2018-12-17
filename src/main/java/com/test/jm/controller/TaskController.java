@@ -90,6 +90,8 @@ public class TaskController {
             try {
                 TaskExtendDTO tt = new TaskExtendDTO();
                 tt.setTask_id(params.getTask_id());
+                tt.setProject_id(apiDTO.getProject_id());
+                tt.setCase_id(apiDTO.getCase_id());
                 tt.setApi_id(apiDTO.getId());
                 tt.setApi_name(apiDTO.getName());
                 TaskExtendDTO ts = taskService.getTaskExtendById(params.getTask_id());

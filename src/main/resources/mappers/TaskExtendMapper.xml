@@ -5,6 +5,8 @@
 
     <resultMap id="task_extend_list" type="com.test.jm.dto.test.TaskExtendDTO">
         <id column="id" property="id"></id>
+        <result column="project_id" property="project_id"/>
+        <result column="case_id" property="case_id"/>
         <result column="api_id" property="api_id"/>
         <result column="api_name" property="api_name"/>
         <result column="rank" property="rank"/>
@@ -16,6 +18,8 @@
             resultMap="task_extend_list">
         SELECT
         t.id,
+        t.project_id,
+        t.case_id,
         t.api_id,
         t.api_name,
         t.rank,
@@ -52,12 +56,12 @@
     </delete>
 
     <insert id="addTaskExtend" parameterType="com.test.jm.dto.test.TaskExtendDTO">
-        INSERT INTO `task_case_extend` (`task_id`,
+        INSERT INTO `task_case_extend` (`task_id`,project_id,case_id
         `api_id`,`api_name`,`rank`,`post_processors`,`valid_data`,
         `status`,`create_time`)
         VALUES
-        (#{task_id},#{api_id},#{api_name},#{rank},#{post_processors},
-        #{valid_data},#{status},now())
+        (#{task_id}, #{project_id}, #{case_id}, #{api_id}, #{api_name}, #{rank}, #{post_processors},
+        #{valid_data}, #{status}, now())
     </insert>
 
     <!--<update id="editCase" parameterType="com.test.jm.dto.test.CaseDTO">-->

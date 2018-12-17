@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 public class TaskExtendDTO {
     private String id;
     private String task_id;
+    private String project_id;
+    private String case_id;
     private String api_id;
     private String api_name;
     private Integer rank;
@@ -27,6 +29,22 @@ public class TaskExtendDTO {
 
     public void setTask_id(String task_id) {
         this.task_id = task_id;
+    }
+
+    public String getProject_id() {
+        return project_id;
+    }
+
+    public void setProject_id(String project_id) {
+        this.project_id = project_id;
+    }
+
+    public String getCase_id() {
+        return case_id;
+    }
+
+    public void setCase_id(String case_id) {
+        this.case_id = case_id;
     }
 
     public String getApi_id() {
@@ -90,6 +108,8 @@ public class TaskExtendDTO {
         return "TaskExtendDTO{" +
                 "id='" + id + '\'' +
                 ", task_id='" + task_id + '\'' +
+                ", project_id='" + project_id + '\'' +
+                ", case_id='" + case_id + '\'' +
                 ", api_id='" + api_id + '\'' +
                 ", api_name='" + api_name + '\'' +
                 ", rank=" + rank +

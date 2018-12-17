@@ -84,11 +84,11 @@ INSERT INTO `project` VALUES ('80431262-e81a-11e8-9ff0-0242ac110002', '用户服
 INSERT INTO `project` VALUES ('8290a5e0-e81a-11e8-9ff0-0242ac110002', '用户服务60', '0', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37');
 INSERT INTO `project` VALUES ('85c5a2b4-e81a-11e8-9ff0-0242ac110002', '用户服务50', '0', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37');
 
-DROP TABLE IF EXISTS `task_case`;
-CREATE TABLE `task_case` (
+DROP TABLE IF EXISTS `test_case`;
+CREATE TABLE `test_case` (
   `id` varchar(255) NOT NULL,
+  `project_id` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `status` int(2) DEFAULT '1',
   `author` varchar(255) DEFAULT NULL,
   `update_author` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,

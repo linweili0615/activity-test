@@ -47,7 +47,7 @@ public class ApiController {
             Integer pageSize = apiPage.getPageSize();
             Integer pageNo = apiPage.getPageNo();
             if(null == pageSize){
-                pageSize = 40;
+                pageSize = 70;
             }
             if(null == pageNo){
                 pageNo = 1;

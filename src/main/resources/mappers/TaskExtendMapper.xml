@@ -5,6 +5,7 @@
 
     <resultMap id="task_extend_list" type="com.test.jm.dto.test.TaskExtendDTO">
         <id column="id" property="id"></id>
+        <id column="task_id" property="task_id"></id>
         <result column="project_id" property="project_id"/>
         <result column="case_id" property="case_id"/>
         <result column="api_id" property="api_id"/>
@@ -12,19 +13,22 @@
         <result column="rank" property="rank"/>
         <result column="post_processors" property="post_processors"/>
         <result column="valid_data" property="valid_data"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <select id="getTaskExtendListById" parameterType="java.lang.String"
             resultMap="task_extend_list">
         SELECT
         t.id,
+        t.task_id,
         t.project_id,
         t.case_id,
         t.api_id,
         t.api_name,
         t.rank,
         t.post_processors,
-        t.valid_data
+        t.valid_data,
+        t.status
         FROM
         task_case c
         LEFT JOIN task_case_extend t ON c.id = t.task_id

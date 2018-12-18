@@ -96,6 +96,18 @@ CREATE TABLE `test_case` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `task_case`;
+CREATE TABLE `task_case` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `status` int(2) DEFAULT '1',
+  `author` varchar(255) DEFAULT NULL,
+  `update_author` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `modify_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `task_case_extend`;
 CREATE TABLE `task_case_extend` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

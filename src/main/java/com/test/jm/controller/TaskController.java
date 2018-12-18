@@ -3,6 +3,7 @@ package com.test.jm.controller;
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskExtendParams;
 import com.test.jm.domain.TaskExtendResult;
+import com.test.jm.domain.TaskExtendStatusParams;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.ResultType;
@@ -59,6 +60,25 @@ public class TaskController {
             return new TaskExtendResult(id, ResultType.ERROR, e.getMessage(), null);
         }
     }
+
+    @PostMapping("/extend/status")
+    public TaskExtendResult modifyTaskExtendStatus(@RequestBody TaskExtendStatusParams params){
+        if(null == params.getList() && params.getList().size() ==0){
+            return new TaskExtendResult(null, ResultType.FAIL, "任务ID不能为空", null);
+        }
+        try {
+            Integer count = taskService.updateTaskExtendStatusList(params);
+            if(count > 0){
+                return new TaskExtendResult(null, ResultType.SUCCESS, "更新任务集合status成功", null);
+            }
+            return new TaskExtendResult(null, ResultType.FAIL, "更新任务集合status失败", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new TaskExtendResult(null, ResultType.ERROR, e.getMessage(), null);
+        }
+
+    }
+
 
     @PostMapping("/extend/del")
     public TaskExtendResult delTaskInfoById(@RequestBody String id){

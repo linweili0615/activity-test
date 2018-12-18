@@ -68,22 +68,13 @@
         #{valid_data}, #{status}, now())
     </insert>
 
-    <!--<update id="editCase" parameterType="com.test.jm.dto.test.CaseDTO">-->
-        <!--UPDATE test_case-->
-        <!--<set>-->
-            <!--<if test="name != null">-->
-                <!--name = #{name},-->
-            <!--</if>-->
-            <!--<if test="update_author != null">-->
-                <!--update_author = #{update_author},-->
-            <!--</if>-->
-            <!--modify_time = now()-->
-        <!--</set>-->
-        <!--<trim prefix="WHERE" prefixOverrides="AND | OR">-->
-            <!--<if test="_parameter != null">-->
-                <!--id = #{id}-->
-            <!--</if>-->
-        <!--</trim>-->
-    <!--</update>-->
+    <update id="updateTaskExtendStatusList" parameterType="com.test.jm.domain.TaskExtendStatusParams">
+        UPDATE task_case_extend SET
+        status = #{status}
+        WHERE id INT
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+        </foreach>
+    </update>
 
 </mapper>

@@ -6,8 +6,10 @@ import com.test.jm.dto.test.TaskExtendDTO;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -32,7 +34,13 @@ public class TaskService {
         return taskExtendDao.getTaskExtendById(id);
     }
 
+    @Transactional
     public Integer updateTaskExtendStatusList(TaskExtendStatusParams params){
         return taskExtendDao.updateTaskExtendStatusList(params);
+    }
+
+    @Transactional
+    public Integer deleteTaskExtendByList(List<String> list){
+        return taskExtendDao.deleteTaskExtendByList(list);
     }
 }

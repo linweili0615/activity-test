@@ -5,12 +5,12 @@ import java.util.List;
 public class TaskExtendStatusParams {
 
     private List<String> list;
-    private String status;
+    private Integer status;
 
     public TaskExtendStatusParams() {
     }
 
-    public TaskExtendStatusParams(List<String> list, String status) {
+    public TaskExtendStatusParams(List<String> list, Integer status) {
         this.list = list;
         this.status = status;
     }
@@ -23,11 +23,11 @@ public class TaskExtendStatusParams {
         this.list = list;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -35,7 +35,7 @@ public class TaskExtendStatusParams {
     public String toString() {
         return "TaskExtendStatusParams{" +
                 "list=" + list +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

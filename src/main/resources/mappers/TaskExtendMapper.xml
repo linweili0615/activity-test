@@ -69,12 +69,19 @@
     </insert>
 
     <update id="updateTaskExtendStatusList" parameterType="com.test.jm.domain.TaskExtendStatusParams">
-        UPDATE task_case_extend SET
-        status = #{status}
-        WHERE id INT
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        UPDATE task_case_extend SET status = #{status}
+        WHERE id IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
                 #{item}
         </foreach>
     </update>
+
+    <delete id="deleteTaskExtendList" parameterType="java.util.List">
+        DELETE FROM task_case_extend
+        WHERE id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
 </mapper>

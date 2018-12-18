@@ -10,12 +10,16 @@ import com.test.jm.keys.ResultType;
 import com.test.jm.service.RequestService;
 import com.test.jm.service.TaskService;
 import org.apache.commons.lang.StringUtils;
+import org.omg.CORBA.MARSHAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/task")
 @RestController

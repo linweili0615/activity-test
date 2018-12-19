@@ -37,7 +37,7 @@
                 c.id = #{id}
             </if>
         </trim>
-        ORDER BY t.rank DESC
+        ORDER BY t.rank ASC
     </select>
 
     <select id="getTaskExtendById" parameterType="java.lang.String" resultType="com.test.jm.dto.test.TaskExtendDTO">
@@ -73,6 +73,18 @@
         WHERE id IN
         <foreach item="item" collection="list" open="(" separator="," close=")">
                 #{item}
+        </foreach>
+    </update>
+
+    <update id="updateTaskExtendRankByList" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="" close="" separator=";" >
+            UPDATE task_case_extend
+            <set>
+                <if test="item.rank != null">
+                    rank = #{item.rank}
+                </if>
+            </set>
+            WHERE id =#{item.id}
         </foreach>
     </update>
 

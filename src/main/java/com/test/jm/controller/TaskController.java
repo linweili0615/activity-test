@@ -1,9 +1,6 @@
 package com.test.jm.controller;
 
-import com.test.jm.domain.HttpClientResult;
-import com.test.jm.domain.TaskExtendParams;
-import com.test.jm.domain.TaskExtendResult;
-import com.test.jm.domain.TaskExtendStatusParams;
+import com.test.jm.domain.*;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.ResultType;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +79,32 @@ public class TaskController {
             return new TaskExtendResult(null, ResultType.ERROR, e.getMessage(), null);
         }
 
+    }
+
+    @PostMapping("/extend/deal")
+    public TaskExtendResult dealTaskExtend(@RequestBody TaskExtendRank taskExtendRank){
+        if(null == taskExtendRank){
+            return new TaskExtendResult(null, ResultType.FAIL, "任务详情信息不能为空", null);
+        }
+        List<TaskExtendDTO> list = new ArrayList<>();
+        TaskExtendDTO oldTaskExtend = new TaskExtendDTO();
+        TaskExtendDTO newTaskExtend = new TaskExtendDTO();
+        oldTaskExtend.setId(taskExtendRank.getOld_id());
+        oldTaskExtend.setRank(taskExtendRank.getOld_rank());
+        newTaskExtend.setId(taskExtendRank.getNew_id());
+        newTaskExtend.setRank(taskExtendRank.getNew_rank());
+        list.add(oldTaskExtend);
+        list.add(newTaskExtend);
+        try {
+            Integer count = taskService.updateTaskExtendRankByList(list);
+            if(count > 0){
+                return new TaskExtendResult(null, ResultType.SUCCESS, "任务详情顺序修改成功", null);
+            }
+            return new TaskExtendResult(null, ResultType.FAIL, "任务详情顺序修改失败", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new TaskExtendResult(null, ResultType.ERROR, e.getMessage(), null);
+        }
     }
 
 

@@ -43,4 +43,8 @@ public class TaskService {
     public Integer deleteTaskExtendByList(List<String> list){
         return taskExtendDao.deleteTaskExtendByList(list);
     }
+
+    public Integer updateTaskExtendRankByList(List<TaskExtendDTO> list){
+        return taskExtendDao.updateTaskExtendRankByList(list);
+    }
 }

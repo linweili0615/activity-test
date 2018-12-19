@@ -23,4 +23,6 @@ public interface TaskExtendDao {
 
     Integer deleteTaskExtendByList(List<String> list);
 
+    Integer updateTaskExtendRankByList(List<TaskExtendDTO> list);
+
 }

@@ -3,7 +3,7 @@ package com.test.jm.dto.test;
 import java.time.LocalDateTime;
 
 public class TaskExtendDTO {
-    private String id;
+    private Integer id;
     private String task_id;
     private String project_id;
     private String case_id;
@@ -15,11 +15,11 @@ public class TaskExtendDTO {
     private String status;
     private LocalDateTime create_time;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

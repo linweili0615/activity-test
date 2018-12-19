@@ -15,8 +15,8 @@ public class ApiDTO {
     private String paramstype;
     private String author;
     private String update_author;
-    private LocalDateTime create_time;
-    private LocalDateTime modify_time;
+    private String create_time;
+    private String modify_time;
 
     public String getId() {
         return id;
@@ -98,19 +98,19 @@ public class ApiDTO {
         this.update_author = update_author;
     }
 
-    public LocalDateTime getCreate_time() {
+    public String getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(LocalDateTime create_time) {
+    public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
 
-    public LocalDateTime getModify_time() {
+    public String getModify_time() {
         return modify_time;
     }
 
-    public void setModify_time(LocalDateTime modify_time) {
+    public void setModify_time(String modify_time) {
         this.modify_time = modify_time;
     }
 

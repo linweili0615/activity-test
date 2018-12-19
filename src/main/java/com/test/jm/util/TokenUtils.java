@@ -46,6 +46,7 @@ public class TokenUtils {
         if (ttlMillis >= 60000) {
             long expMillis = nowMillis + ttlMillis;
             Date exp = new Date(expMillis);
+            logger.info("token过期时间: {}",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(exp));
             builder.setExpiration(exp);
         }
         return builder.compact();

@@ -46,7 +46,10 @@
 
     <select id="selectProjectById" parameterType="java.lang.String"
             resultType="java.lang.Integer">
-        SELECT project_name, status, author, update_author, create_time, modify_time FROM project
+        SELECT project_name, status, author, update_author,
+        date_format(create_time,'%Y-%m-%d %H:%i:%s') as create_time,
+        date_format(modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
+        FROM project
         <trim prefix="WHERE">
             <if test="id != null">
                 id = #{id}
@@ -56,7 +59,10 @@
 
 
     <select id="getProjectList" parameterType="com.test.jm.dto.test.ProjectDTO" resultMap="ProjectList">
-        SELECT  * FROM project
+        SELECT  id,project_name, status, author, update_author,
+        date_format(create_time,'%Y-%m-%d %H:%i:%s') as create_time,
+        date_format(modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
+        FROM project
         <bind name="pattern" value="'%' + project_name + '%'" />
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test='id != "" and id != null'>

@@ -30,7 +30,11 @@
 
     <select id="selectInterfaceById" parameterType="java.lang.String"
             resultType="com.test.jm.dto.test.ApiDTO">
-        SELECT * FROM interface
+        SELECT id, project_id, case_id, name, url, headers,
+        method, body, paramstype, author, update_author,
+        date_format(create_time,'%Y-%m-%d %H:%i:%s') as create_time,
+        date_format(modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
+        FROM interface
         <trim prefix="WHERE" >
             <if test="_parameter != null">
                 id = #{id}
@@ -39,7 +43,11 @@
     </select>
 
     <select id="getApiList" parameterType="com.test.jm.domain.page.ApiPage" resultMap="ApiListMap">
-         SELECT * FROM interface
+        SELECT id, project_id, case_id, name, url, headers,
+        method, body, paramstype, author, update_author,
+        date_format(create_time,'%Y-%m-%d %H:%i:%s') as create_time,
+        date_format(modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
+        FROM interface
         <if test="name != null and name !=''">
             <bind name="pattern" value="'%' + name + '%'" />
         </if>

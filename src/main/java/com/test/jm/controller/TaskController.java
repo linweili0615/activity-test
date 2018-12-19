@@ -85,19 +85,19 @@ public class TaskController {
 
 
     @PostMapping("/extend/del")
-    public TaskExtendResult delTaskInfoById(@RequestBody String id){
-        if(StringUtils.isBlank(id)){
-            return new TaskExtendResult(null, ResultType.FAIL, "接口ID不能为空", null);
+    public TaskExtendResult delTaskInfoById(@RequestBody List<String> list){
+        if(null == list && list.size() == 0){
+            return new TaskExtendResult(null, ResultType.FAIL, "任务ID列表不能为空", null);
         }
         try {
-            Integer count = taskService.delTaskExtendById(id);
+            Integer count = taskService.deleteTaskExtendByList(list);
             if(count > 0){
-                return new TaskExtendResult(id, ResultType.SUCCESS, "任务详情删除成功", null);
+                return new TaskExtendResult(null, ResultType.SUCCESS, "任务详情删除成功", null);
             }
-            return new TaskExtendResult(id, ResultType.FAIL, "任务详情删除失败", null);
+            return new TaskExtendResult(null, ResultType.FAIL, "任务详情删除失败", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return new TaskExtendResult(id, ResultType.ERROR, e.getMessage(), null);
+            return new TaskExtendResult(null, ResultType.ERROR, e.getMessage(), null);
         }
     }
 

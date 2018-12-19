@@ -76,7 +76,7 @@
         </foreach>
     </update>
 
-    <delete id="deleteTaskExtendList" parameterType="java.util.List">
+    <delete id="deleteTaskExtendByList" parameterType="java.util.List">
         DELETE FROM task_case_extend
         WHERE id in
         <foreach collection="list" item="item" open="(" separator="," close=")">

@@ -13,7 +13,7 @@ public interface TaskExtendDao {
 
     Integer modifyTaskExtend(TaskExtendDTO taskExtendDTO);
 
-    List<TaskExtendDTO> getTaskExtendListById(String id);
+    List<TaskExtendDTO> getTaskExtendListById(TaskExtendDTO taskExtendDTO);
 
     TaskExtendDTO getTaskExtendById(String id);
 

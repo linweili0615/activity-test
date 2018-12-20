@@ -16,7 +16,7 @@
         <result column="status" property="status"/>
     </resultMap>
 
-    <select id="getTaskExtendListById" parameterType="java.lang.String"
+    <select id="getTaskExtendListById" parameterType="com.test.jm.dto.test.TaskExtendDTO"
             resultMap="task_extend_list">
         SELECT
         t.id,
@@ -32,9 +32,12 @@
         FROM
         task_case c
         LEFT JOIN task_case_extend t ON c.id = t.task_id
-        <trim prefix="WHERE">
-            <if test="_parameter != null">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id != null">
                 c.id = #{id}
+            </if>
+            <if test="status != null">
+                t.status = #{status}
             </if>
         </trim>
         ORDER BY t.rank ASC

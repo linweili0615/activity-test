@@ -52,7 +52,9 @@ public class TaskController {
             return new TaskExtendResult(null, ResultType.FAIL, "任务ID不能为空", null);
         }
         try {
-            List<TaskExtendDTO> data = taskService.getTaskExtendListById(id);
+            TaskExtendDTO taskExtendDTO = new TaskExtendDTO();
+            taskExtendDTO.setTask_id(id);
+            List<TaskExtendDTO> data = taskService.getTaskExtendListById(taskExtendDTO);
             if(null == data){
                 return new TaskExtendResult(id, ResultType.FAIL, "任务详情无记录", null);
             }
@@ -90,9 +92,9 @@ public class TaskController {
         TaskExtendDTO oldTaskExtend = new TaskExtendDTO();
         TaskExtendDTO newTaskExtend = new TaskExtendDTO();
         oldTaskExtend.setId(taskExtendRank.getOld_id());
-        oldTaskExtend.setRank(taskExtendRank.getOld_rank());
+        oldTaskExtend.setRank(taskExtendRank.getNew_rank());
         newTaskExtend.setId(taskExtendRank.getNew_id());
-        newTaskExtend.setRank(taskExtendRank.getNew_rank());
+        newTaskExtend.setRank(taskExtendRank.getOld_rank());
         list.add(oldTaskExtend);
         list.add(newTaskExtend);
         try {
@@ -145,6 +147,8 @@ public class TaskController {
                 TaskExtendDTO ts = taskService.getTaskExtendById(params.getTask_id());
                 if(null != ts){
                     tt.setRank(ts.getRank() + 1);
+                }else {
+                    tt.setRank(1);
                 }
                 tt.setStatus("1");
                 Integer cc = taskService.addTaskExtend(tt);

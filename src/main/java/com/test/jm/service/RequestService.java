@@ -33,14 +33,23 @@ public class RequestService {
         switch (apiDTO.getMethod().toUpperCase()){
             case RequestType.GET :
                 result = RequestUtils.doGet(apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
+                setReqResult(result, apiDTO);
                 break;
             case RequestType.POST :
                 result = RequestUtils.doPost(apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(), apiDTO.getBody(), apiDTO.getParamstype());
+                setReqResult(result, apiDTO);
                 break;
             default:
                 break;
         }
         return result;
+    }
+
+    private void setReqResult(HttpClientResult result, ApiDTO apiDTO){
+        result.setApi_id(apiDTO.getId());
+        result.setApi_name(apiDTO.getName());
+        result.setReq_url(apiDTO.getUrl());
+        result.setReq_method(apiDTO.getMethod());
     }
 
     private void replaceFirst(ApiDTO apiDTO){
@@ -57,7 +66,10 @@ public class RequestService {
 
     public List<HttpClientResult> runCase(String id){
         logger.info("RequestService.runCase.task_id: {}", id);
-        List<TaskExtendDTO> data = taskService.getTaskExtendListById(id);
+        TaskExtendDTO tt = new TaskExtendDTO();
+        tt.setTask_id(id);
+        tt.setStatus("1");
+        List<TaskExtendDTO> data = taskService.getTaskExtendListById(tt);
         List<HttpClientResult> res = new LinkedList<>();
         for (TaskExtendDTO taskExtendDTO: data) {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());
@@ -74,7 +86,7 @@ public class RequestService {
                         System.out.println("key: " + entry.getKey() + ", value: "+ entry.getValue());
                         String pre = "";
                         String post = "";
-                        String match = CommonUtils.regMatch(pre, post, result.getContent());
+                        String match = CommonUtils.regMatch(pre, post, result.getRes_body());
                         if(StringUtils.isNotBlank(match)){
                             map.put("telno", match);
                             RequestThreadLocal.setInfo(map);

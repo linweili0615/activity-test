@@ -18,8 +18,8 @@ public class TaskService {
     @Autowired
     private TaskExtendDao taskExtendDao;
 
-    public List<TaskExtendDTO> getTaskExtendListById(String id){
-        return taskExtendDao.getTaskExtendListById(id);
+    public List<TaskExtendDTO> getTaskExtendListById(TaskExtendDTO taskExtendDTO){
+        return taskExtendDao.getTaskExtendListById(taskExtendDTO);
     }
 
     public Integer delTaskExtendById(String id){

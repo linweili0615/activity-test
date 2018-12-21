@@ -68,7 +68,7 @@ public class RequestService {
         logger.info("RequestService.runCase.task_id: {}", id);
         TaskExtendDTO tt = new TaskExtendDTO();
         tt.setTask_id(id);
-        tt.setStatus("1");
+        tt.setStatus(1);
         List<TaskExtendDTO> data = taskService.getTaskExtendListById(tt);
         List<HttpClientResult> res = new LinkedList<>();
         for (TaskExtendDTO taskExtendDTO: data) {

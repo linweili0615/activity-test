@@ -56,7 +56,7 @@ public class TaskController {
             taskExtendDTO.setTask_id(id);
             List<TaskExtendDTO> data = taskService.getTaskExtendListById(taskExtendDTO);
             if(null == data){
-                return new TaskExtendResult(id, ResultType.FAIL, "任务详情无记录", null);
+                return new TaskExtendResult(id, ResultType.FAIL, "任务详情无记录", data);
             }
             return new TaskExtendResult(id, ResultType.SUCCESS, "获取任务详情成功", data);
         } catch (Exception e) {
@@ -150,7 +150,7 @@ public class TaskController {
                 }else {
                     tt.setRank(1);
                 }
-                tt.setStatus("1");
+                tt.setStatus(1);
                 Integer cc = taskService.addTaskExtend(tt);
                 if(cc > 0){
                     count++;

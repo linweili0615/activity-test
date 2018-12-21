@@ -63,7 +63,7 @@
     </delete>
 
     <insert id="addTaskExtend" parameterType="com.test.jm.dto.test.TaskExtendDTO">
-        INSERT INTO `task_case_extend` (`task_id`,project_id,case_id
+        INSERT INTO `task_case_extend` (`task_id`,project_id,case_id,
         `api_id`,`api_name`,`rank`,`post_processors`,`valid_data`,
         `status`,`create_time`)
         VALUES

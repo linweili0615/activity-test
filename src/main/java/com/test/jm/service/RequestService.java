@@ -27,7 +27,6 @@ public class RequestService {
     private ApiService apiService;
 
     public HttpClientResult request(ApiDTO apiDTO) throws Exception {
-        logger.info("RequestService.request: {}",apiDTO.toString());
         HttpClientResult result = new HttpClientResult();
         replaceFirst(apiDTO);
         switch (apiDTO.getMethod().toUpperCase()){
@@ -57,7 +56,6 @@ public class RequestService {
         if(null != matchList){
             //前置处理
             for (String match: matchList) {
-                logger.info("RequestService.replace.match: {}", match);
                 CommonUtils.replaceCommon(apiDTO, match);
                 CommonUtils.replacePre(apiDTO, match);
             }
@@ -65,10 +63,9 @@ public class RequestService {
     }
 
     public List<HttpClientResult> runCase(String id){
-        logger.info("RequestService.runCase.task_id: {}", id);
         TaskExtendDTO tt = new TaskExtendDTO();
         tt.setTask_id(id);
-        tt.setStatus(1);
+        tt.setStatus("1");
         List<TaskExtendDTO> data = taskService.getTaskExtendListById(tt);
         List<HttpClientResult> res = new LinkedList<>();
         for (TaskExtendDTO taskExtendDTO: data) {
@@ -83,7 +80,6 @@ public class RequestService {
                 if(StringUtils.isNotBlank(post_processors)){
                     Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(post_processors).entrySet();
                     for (Map.Entry<String, Object> entry : entrySet) {
-                        System.out.println("key: " + entry.getKey() + ", value: "+ entry.getValue());
                         String pre = "";
                         String post = "";
                         String match = CommonUtils.regMatch(pre, post, result.getRes_body());

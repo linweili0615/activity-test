@@ -150,7 +150,7 @@ public class TaskController {
                 }else {
                     tt.setRank(1);
                 }
-                tt.setStatus(1);
+                tt.setStatus("1");
                 Integer cc = taskService.addTaskExtend(tt);
                 if(cc > 0){
                     count++;

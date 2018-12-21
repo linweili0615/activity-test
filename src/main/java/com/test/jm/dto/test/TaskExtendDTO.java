@@ -12,7 +12,7 @@ public class TaskExtendDTO {
     private Integer rank;
     private String post_processors;
     private String valid_data;
-    private Integer status;
+    private String status;
     private LocalDateTime create_time;
 
     public Integer getId() {
@@ -87,11 +87,11 @@ public class TaskExtendDTO {
         this.valid_data = valid_data;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

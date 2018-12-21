@@ -353,7 +353,7 @@ public class RequestUtils {
                 result.setRes_body(content);
             }
         }catch (Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
             result.setRes_code(1000);
             result.setRes_body( e.getMessage());
         }finally {
@@ -362,7 +362,7 @@ public class RequestUtils {
                     httpResponse.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 result.setRes_code(1000);
                 result.setRes_body( e.getMessage());
             }

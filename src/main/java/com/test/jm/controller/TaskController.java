@@ -6,6 +6,7 @@ import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.RequestService;
 import com.test.jm.service.TaskService;
+import com.test.jm.util.UserThreadLocal;
 import org.apache.commons.lang.StringUtils;
 import org.omg.CORBA.MARSHAL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,12 @@ public class TaskController {
             return new TaskExtendResult(ResultType.FAIL, "task_id不能为空");
         }
         try {
+            File file1 = new File(new File("").getAbsolutePath()+"/log/"+task_id+".log");
+            if(file1.exists()){
+                FileOutputStream out = new FileOutputStream(new File("").getAbsolutePath()+"/log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
+                out.write(new String("").getBytes());
+                out.close();
+            }
             List<HttpClientResult> list = requestService.runCase(task_id);
             if(null != list){
                 return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行成功", list);

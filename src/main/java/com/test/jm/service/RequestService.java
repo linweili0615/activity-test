@@ -4,14 +4,13 @@ import com.test.jm.domain.HttpClientResult;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
-import com.test.jm.util.CommonUtils;
-import com.test.jm.util.LogUtil;
-import com.test.jm.util.RequestThreadLocal;
-import com.test.jm.util.RequestUtils;
+import com.test.jm.util.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -60,8 +59,8 @@ public class RequestService {
         }
     }
 
-    public List<HttpClientResult> runCase(String id){
-        org.apache.logging.log4j.Logger log = LogUtil.getLogger(id);
+    public List<HttpClientResult> runCase(String id) throws IOException {
+        org.apache.logging.log4j.Logger log = LogUtil.getLogger(id+ UserThreadLocal.getUserInfo().getUser_id());
         log.info("开始执行 task: {} ...",id);
         TaskExtendDTO tt = new TaskExtendDTO();
         tt.setTask_id(id);
@@ -100,6 +99,7 @@ public class RequestService {
                 continue;
             }
         }
+        log.info("执行结束 task: {}",id);
         return res;
     }
 

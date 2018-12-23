@@ -60,8 +60,8 @@ public class LogUtil {
 //        String loggerPathPrefix = loggerDir + File.separator + loggerName;
         RollingFileAppender appender = RollingFileAppender.newBuilder()
                 .withFileName(loggerDir + ".log")
-                .withFilePattern(loggerDir + ".%d{yyyy-MM-dd}.%i.log")
-                .withAppend(true)
+                .withFilePattern(loggerDir + ".%d{yyyy}.%i.log")
+                .withAppend(false)
                 .withStrategy(strategy)
                 .withName(loggerName)
                 .withPolicy(policyComposite)

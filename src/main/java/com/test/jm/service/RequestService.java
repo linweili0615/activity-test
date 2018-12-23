@@ -5,20 +5,18 @@ import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
 import com.test.jm.util.CommonUtils;
+import com.test.jm.util.LogUtil;
 import com.test.jm.util.RequestThreadLocal;
 import com.test.jm.util.RequestUtils;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class RequestService {
-
-    private static Logger logger = LoggerFactory.getLogger(RequestService.class);
 
     @Autowired
     private TaskService taskService;
@@ -63,6 +61,8 @@ public class RequestService {
     }
 
     public List<HttpClientResult> runCase(String id){
+        org.apache.logging.log4j.Logger log = LogUtil.getLogger(id);
+        log.info("开始执行 task: {} ...",id);
         TaskExtendDTO tt = new TaskExtendDTO();
         tt.setTask_id(id);
         tt.setStatus("1");
@@ -72,7 +72,12 @@ public class RequestService {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());
             try {
                 replaceFirst(apiDTO);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd  HH:mm:ss:SSS");
+                Date date1 = new Date();
+                log.info("{} 开始请求 ==> api: {} \n name: {} \n method: {} \n url: {}",dateFormat.format(date1),apiDTO.getId(),apiDTO.getName(),apiDTO.getMethod(),apiDTO.getUrl());
                 HttpClientResult result = request(apiDTO);
+                Date date2 = new Date();
+                log.info("{} 结束请求 ==> api: {}",dateFormat.format(date2),apiDTO.getId());
                 res.add(result);
                 //后置处理
                 String post_processors = taskExtendDTO.getPost_processors();
@@ -91,6 +96,7 @@ public class RequestService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                log.error("请求异常：api:{}\n{}",apiDTO.getId(),e.getMessage());
                 continue;
             }
         }

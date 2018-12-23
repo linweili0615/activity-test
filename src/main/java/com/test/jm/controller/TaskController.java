@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,18 +37,36 @@ public class TaskController {
     @Autowired
     private RedisUtil redisUtil;
 
+    @PostMapping("/getLog")
+    public String getlog(){
+        String logname = new File("").getAbsolutePath()+"/log/" + "81598efb-ffa9-11e8-a19c-0242ac110002" + UserThreadLocal.getUserInfo().getUser_id()+".log";
+        try {
+            BufferedInputStream buffer = new BufferedInputStream(new FileInputStream(logname));
+            byte[] b = new byte[buffer.available()];
+            buffer.read(b);
+            String finalstr = new String(b, "UTF-8");
+            return finalstr;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
     @RequestMapping("/test")
     public TaskExtendResult runCase(@RequestBody String task_id){
         if(StringUtils.isBlank(task_id)){
             return new TaskExtendResult(ResultType.FAIL, "task_id不能为空");
         }
-        long time = System.currentTimeMillis() + TIMEOUT;
-        String key = task_id + UserThreadLocal.getUserInfo().getUser_id();
-        if(!redisUtil.lock(key, String.valueOf(time))){
-            return new TaskExtendResult(ResultType.FAIL, "操作太频繁了哈");
-        }
+//        long time = System.currentTimeMillis() + TIMEOUT;
+//        String key = task_id + UserThreadLocal.getUserInfo().getUser_id();
+//        if(!redisUtil.lock(key, String.valueOf(time))){
+//            return new TaskExtendResult(ResultType.FAIL, "操作太频繁了哈");
+//        }
         try {
-            File file1 = new File(new File("").getAbsolutePath()+"/log/"+task_id+".log");
+            File file1 = new File(new File("").getAbsolutePath()+"/log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
             if(file1.exists()){
                 FileOutputStream out = new FileOutputStream(new File("").getAbsolutePath()+"/log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
                 out.write(new String("").getBytes());
@@ -65,7 +81,7 @@ public class TaskController {
             e.printStackTrace();
             return new TaskExtendResult(task_id, ResultType.ERROR, "task执行异常", null);
         }finally {
-            redisUtil.unlock(key, String.valueOf(time));
+//            redisUtil.unlock(key, String.valueOf(time));
         }
     }
 

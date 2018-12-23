@@ -6,9 +6,9 @@ import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.RequestService;
 import com.test.jm.service.TaskService;
+import com.test.jm.util.RedisUtil;
 import com.test.jm.util.UserThreadLocal;
 import org.apache.commons.lang.StringUtils;
-import org.omg.CORBA.MARSHAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,16 +27,27 @@ import java.util.Map;
 @RestController
 public class TaskController {
 
+    //超时时间 40秒
+    private static final int TIMEOUT = 40 * 1000;
+
     @Autowired
     private TaskService taskService;
 
     @Autowired
     private RequestService requestService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @RequestMapping("/test")
     public TaskExtendResult runCase(@RequestBody String task_id){
         if(StringUtils.isBlank(task_id)){
             return new TaskExtendResult(ResultType.FAIL, "task_id不能为空");
+        }
+        long time = System.currentTimeMillis() + TIMEOUT;
+        String key = task_id + UserThreadLocal.getUserInfo().getUser_id();
+        if(!redisUtil.lock(key, String.valueOf(time))){
+            return new TaskExtendResult(ResultType.FAIL, "操作太频繁了哈");
         }
         try {
             File file1 = new File(new File("").getAbsolutePath()+"/log/"+task_id+".log");
@@ -53,6 +64,8 @@ public class TaskController {
         } catch (Exception e) {
             e.printStackTrace();
             return new TaskExtendResult(task_id, ResultType.ERROR, "task执行异常", null);
+        }finally {
+            redisUtil.unlock(key, String.valueOf(time));
         }
     }
 

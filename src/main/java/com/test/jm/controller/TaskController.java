@@ -41,10 +41,24 @@ public class TaskController {
     public String getlog(){
         String logname = new File("").getAbsolutePath()+"/log/" + "81598efb-ffa9-11e8-a19c-0242ac110002" + UserThreadLocal.getUserInfo().getUser_id()+".log";
         try {
-            BufferedInputStream buffer = new BufferedInputStream(new FileInputStream(logname));
-            byte[] b = new byte[buffer.available()];
-            buffer.read(b);
-            String finalstr = new String(b, "UTF-8");
+//            BufferedInputStream buffer = new BufferedInputStream(new FileInputStream(logname));
+//            byte[] b = new byte[buffer.available()];
+//            buffer.read(b);
+//            String finalstr = new String(b, "UTF-8");
+//            System.out.println(finalstr);
+            File file = new File(logname);
+//            FileReader reader = new FileReader(file);
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            StringBuilder builder = new StringBuilder();
+            String s = null;
+            while ((s = bufferedReader.readLine()) != null){
+                builder.append(s + "\n");
+                System.out.println(s);
+            }
+            bufferedReader.close();
+            String finalstr = builder.toString();
+            System.out.println("finalstr: " + finalstr);
             return finalstr;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -69,7 +83,7 @@ public class TaskController {
             File file1 = new File(new File("").getAbsolutePath()+"/log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
             if(file1.exists()){
                 FileOutputStream out = new FileOutputStream(new File("").getAbsolutePath()+"/log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
-                out.write(new String("").getBytes());
+                out.write(new String("").getBytes("UTF-8"));
                 out.close();
             }
             List<HttpClientResult> list = requestService.runCase(task_id);

@@ -53,10 +53,10 @@ public class TaskController {
             StringBuilder builder = new StringBuilder();
             String s = null;
             while ((s = bufferedReader.readLine()) != null){
-                builder.append(s + "\n");
+                builder.append(s).append("\n");
                 System.out.println(s);
             }
-            bufferedReader.close();
+            reader.close();
             String finalstr = builder.toString();
             System.out.println("finalstr: " + finalstr);
             return finalstr;

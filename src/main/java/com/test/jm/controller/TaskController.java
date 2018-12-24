@@ -41,13 +41,7 @@ public class TaskController {
     public String getlog(){
         String logname = new File("").getAbsolutePath()+"/log/" + "81598efb-ffa9-11e8-a19c-0242ac110002" + UserThreadLocal.getUserInfo().getUser_id()+".log";
         try {
-//            BufferedInputStream buffer = new BufferedInputStream(new FileInputStream(logname));
-//            byte[] b = new byte[buffer.available()];
-//            buffer.read(b);
-//            String finalstr = new String(b, "UTF-8");
-//            System.out.println(finalstr);
             File file = new File(logname);
-//            FileReader reader = new FileReader(file);
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
             BufferedReader bufferedReader = new BufferedReader(reader);
             StringBuilder builder = new StringBuilder();

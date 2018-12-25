@@ -38,28 +38,28 @@ public class TaskController {
     private RedisUtil redisUtil;
 
     @PostMapping("/getLog")
-    public String getlog(){
+    public Result getlog(){
         String logname = new File("").getAbsolutePath()+"/log/" + "81598efb-ffa9-11e8-a19c-0242ac110002" + UserThreadLocal.getUserInfo().getUser_id()+".log";
+
         try {
             File file = new File(logname);
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
             BufferedReader bufferedReader = new BufferedReader(reader);
-            StringBuilder builder = new StringBuilder();
-            String s = null;
+
+            String s = "";
+            List list = new ArrayList();
             while ((s = bufferedReader.readLine()) != null){
-                builder.append(s).append("\n");
-                System.out.println(s);
+                list.add(s);
             }
             reader.close();
-            String finalstr = builder.toString();
-            System.out.println("finalstr: " + finalstr);
-            return finalstr;
+            list.remove(0);
+            return new Result(ResultType.SUCCESS,null,list);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return e.getMessage();
+            return new Result(ResultType.ERROR,e.getMessage(),null);
         } catch (IOException e) {
             e.printStackTrace();
-            return e.getMessage();
+            return new Result(ResultType.ERROR,e.getMessage(),null);
         }
     }
 

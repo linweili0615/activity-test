@@ -1,6 +1,5 @@
 server:
   port: 3333
-
 spring:
   application:
     name:  activity-test
@@ -28,3 +27,13 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://10.100.14.107:21111//eureka/
+  instance:
+    ip-address: 10.100.97.31
+    prefer-ip-address: true

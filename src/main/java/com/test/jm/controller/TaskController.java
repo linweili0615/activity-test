@@ -38,14 +38,15 @@ public class TaskController {
     private RedisUtil redisUtil;
 
     @PostMapping("/getLog")
-    public Result getlog(){
-        String logname = new File("").getAbsolutePath()+"/log/" + "81598efb-ffa9-11e8-a19c-0242ac110002" + UserThreadLocal.getUserInfo().getUser_id()+".log";
-
+    public Result getlog(@RequestBody String id){
+        if(StringUtils.isBlank(id)){
+            return new Result(ResultType.ERROR,"task不能为空",null);
+        }
+        String logname = new File("").getAbsolutePath()+"/log/" + id + UserThreadLocal.getUserInfo().getUser_id()+".log";
         try {
             File file = new File(logname);
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
             BufferedReader bufferedReader = new BufferedReader(reader);
-
             String s = "";
             List list = new ArrayList();
             while ((s = bufferedReader.readLine()) != null){

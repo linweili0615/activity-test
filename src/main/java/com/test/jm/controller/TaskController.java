@@ -40,7 +40,7 @@ public class TaskController {
     @PostMapping("/getLog")
     public Result getlog(@RequestBody String id){
         if(StringUtils.isBlank(id)){
-            return new Result(ResultType.ERROR,"task不能为空",null);
+            return new Result(ResultType.ERROR,"taskid不能为空",null);
         }
         String logname = new File("").getAbsolutePath()+"/log/" + id + UserThreadLocal.getUserInfo().getUser_id()+".log";
         try {
@@ -50,10 +50,12 @@ public class TaskController {
             String s = "";
             List list = new ArrayList();
             while ((s = bufferedReader.readLine()) != null){
-                list.add(s);
+                if(StringUtils.isNotBlank(s.trim())){
+                    list.add(s);
+                }
             }
             reader.close();
-            list.remove(0);
+//            list.remove(0);
             return new Result(ResultType.SUCCESS,null,list);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -75,12 +77,13 @@ public class TaskController {
 //            return new TaskExtendResult(ResultType.FAIL, "操作太频繁了哈");
 //        }
         try {
-            File file1 = new File(new File("").getAbsolutePath()+"/log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
-            if(file1.exists()){
-                FileOutputStream out = new FileOutputStream(new File("").getAbsolutePath()+"/log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
-                out.write(new String("").getBytes("UTF-8"));
-                out.close();
-            }
+            File file1 = new File("log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
+            file1.deleteOnExit();
+//            if(file1.exists()){
+//                FileWriter out = new FileWriter("log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log",false);
+//                out.write("");
+//                out.close();
+//            }
             List<HttpClientResult> list = requestService.runCase(task_id);
             if(null != list){
                 return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行成功", list);

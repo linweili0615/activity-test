@@ -79,16 +79,11 @@ public class TaskController {
         try {
             File file1 = new File("log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
             file1.deleteOnExit();
-//            if(file1.exists()){
-//                FileWriter out = new FileWriter("log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log",false);
-//                out.write("");
-//                out.close();
-//            }
             List<HttpClientResult> list = requestService.runCase(task_id);
             if(null != list){
                 return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行成功", list);
             }
-            return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行失败", null);
+            return new TaskExtendResult(task_id, ResultType.FAIL, "task执行失败", null);
         } catch (Exception e) {
             e.printStackTrace();
             return new TaskExtendResult(task_id, ResultType.ERROR, "task执行异常", null);
@@ -98,21 +93,37 @@ public class TaskController {
     }
 
     @PostMapping("/extend/info")
-    public TaskExtendResult getTaskInfo(@RequestBody String id){
+    public Map getTaskInfo(@RequestBody String id){
+        Map<String,Object> resultMap = new HashMap<>();
         if(StringUtils.isBlank(id)){
-            return new TaskExtendResult(null, ResultType.FAIL, "任务ID不能为空", null);
+            resultMap.put("msg", "任务ID不能为空");
+            resultMap.put("status", ResultType.FAIL);
+            resultMap.put("data",null);
+            return resultMap;
         }
         try {
             TaskExtendDTO taskExtendDTO = new TaskExtendDTO();
             taskExtendDTO.setTask_id(id);
             List<TaskExtendDTO> data = taskService.getTaskExtendListById(taskExtendDTO);
             if(null == data){
-                return new TaskExtendResult(id, ResultType.FAIL, "任务详情无记录", data);
+                resultMap.put("id",id);
+                resultMap.put("msg", "任务详情无记录");
+                resultMap.put("status", ResultType.FAIL);
+                resultMap.put("data",null);
+                return resultMap;
             }
-            return new TaskExtendResult(id, ResultType.SUCCESS, "获取任务详情成功", data);
+            resultMap.put("id",id);
+            resultMap.put("msg", "获取任务详情成功");
+            resultMap.put("status", ResultType.SUCCESS);
+            resultMap.put("data",data);
+            return resultMap;
         } catch (Exception e) {
             e.printStackTrace();
-            return new TaskExtendResult(id, ResultType.ERROR, e.getMessage(), null);
+            resultMap.put("id",id);
+            resultMap.put("msg", e.getMessage());
+            resultMap.put("status", ResultType.ERROR);
+            resultMap.put("data",null);
+            return resultMap;
         }
     }
 

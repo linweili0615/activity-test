@@ -1,5 +1,6 @@
 package com.test.jm.service;
 
+import com.test.jm.config.DataSource;
 import com.test.jm.dao.TokenDao;
 import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
@@ -15,10 +16,12 @@ public class TokenService {
     @Autowired
     private TokenDao tokenDao;
 
+    @DataSource("master")
     public TokenDTO findTokenByUserId(String userid){
         return tokenDao.findTokenByUserId(userid);
     }
 
+    @DataSource("master")
     public Integer updateToken(String token){
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setToken(token);
@@ -27,6 +30,7 @@ public class TokenService {
     }
 
 
+    @DataSource("master")
     public Integer addToken(TokenDTO tokenDTO, long expirationdate){
         if(findTokenByUserId(tokenDTO.getUser_id())!=null){
             tokenDTO.setExpire_time(LocalDateTime.now().plusMinutes(expirationdate));

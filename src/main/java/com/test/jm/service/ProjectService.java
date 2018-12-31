@@ -1,5 +1,6 @@
 package com.test.jm.service;
 
+import com.test.jm.config.DataSource;
 import com.test.jm.dao.ProjectDao;
 import com.test.jm.dto.test.ProjectDTO;
 import com.test.jm.util.UserThreadLocal;
@@ -15,6 +16,7 @@ public class ProjectService {
     @Autowired
     private ProjectDao projectDao;
 
+    @DataSource("master")
     public List<ProjectDTO> getProjectList(ProjectDTO projectDTO){
         return projectDao.getProjectList(projectDTO);
     }

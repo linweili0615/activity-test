@@ -1,5 +1,6 @@
 package com.test.jm.service;
 
+import com.test.jm.config.DataSource;
 import com.test.jm.dao.TokenDao;
 import com.test.jm.dto.TokenDTO;
 import com.test.jm.util.CookieUtils;
@@ -23,6 +24,7 @@ public class LoginService {
     @Autowired
     private TokenDao tokenDao;
 
+    @DataSource("master")
     public TokenDTO validToken(HttpServletRequest request){
         String jm_cookie = CookieUtils.getCookie(request,"jm");
         Claims claims;

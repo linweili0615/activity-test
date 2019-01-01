@@ -314,7 +314,7 @@ public class RequestUtils {
                 case "raw":
                     httpMethod.setEntity(new StringEntity(params, ENCODING));
                     break;
-                case "from":
+                case "form":
                     List<BasicNameValuePair> pair =new ArrayList<>();
                     Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
                     for (Map.Entry<String, Object> entry : entrySet) {

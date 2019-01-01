@@ -37,12 +37,12 @@ public class TaskController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @PostMapping("/getLog")
+    @PostMapping("/getResult")
     public Result getlog(@RequestBody String id){
         if(StringUtils.isBlank(id)){
             return new Result(ResultType.ERROR,"taskid不能为空",null);
         }
-        String logname = new File("").getAbsolutePath()+"/log/" + id + UserThreadLocal.getUserInfo().getUser_id()+".log";
+        String logname = "/log/" + id +".log";
         try {
             File file = new File(logname);
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
@@ -77,8 +77,7 @@ public class TaskController {
 //            return new TaskExtendResult(ResultType.FAIL, "操作太频繁了哈");
 //        }
         try {
-            File file1 = new File("log/"+task_id+ UserThreadLocal.getUserInfo().getUser_id()+".log");
-            file1.deleteOnExit();
+
             List<HttpClientResult> list = requestService.runCase(task_id);
             if(null != list){
                 return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行成功", list);

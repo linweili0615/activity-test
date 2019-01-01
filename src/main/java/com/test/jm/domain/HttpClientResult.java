@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class HttpClientResult implements Serializable {
 
+    private String start_time;
+    private String end_time;
     private String api_id;
     private String api_name;
     private String req_url;
@@ -15,6 +17,22 @@ public class HttpClientResult implements Serializable {
     private String res_cookies;
     private String res_headers;
     private String res_body;
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
 
     public String getApi_id() {
         return api_id;
@@ -107,7 +125,10 @@ public class HttpClientResult implements Serializable {
     @Override
     public String toString() {
         return "HttpClientResult{" +
-                "api_name='" + api_name + '\'' +
+                "start_time='" + start_time + '\'' +
+                ", end_time='" + end_time + '\'' +
+                ", api_id='" + api_id + '\'' +
+                ", api_name='" + api_name + '\'' +
                 ", req_url='" + req_url + '\'' +
                 ", req_method='" + req_method + '\'' +
                 ", req_cookies='" + req_cookies + '\'' +

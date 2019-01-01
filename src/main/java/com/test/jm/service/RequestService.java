@@ -1,6 +1,9 @@
 package com.test.jm.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.test.jm.domain.HttpClientResult;
+import com.test.jm.domain.TaskResult;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -60,22 +64,40 @@ public class RequestService {
     }
 
     public List<HttpClientResult> runCase(String id) throws IOException {
+
+        File file1 = new File("/result/"+id +".json");
+        file1.deleteOnExit();
+
+        TaskResult taskResult = new TaskResult();
         TaskExtendDTO tt = new TaskExtendDTO();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd  HH:mm:ss:SSS");
+        Date start = new Date();
+        taskResult.setStart_time(dateFormat.format(start));
         tt.setTask_id(id);
         tt.setStatus("1");
         List<TaskExtendDTO> data = taskService.getTaskExtendListById(tt);
+        taskResult.setTotal(data.size());
+        taskResult.setExecutor(UserThreadLocal.getUserInfo().getUser_name());
+        Integer success = 0;
+        Integer fail = 0;
         List<HttpClientResult> res = new LinkedList<>();
         for (TaskExtendDTO taskExtendDTO: data) {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());
             try {
                 replaceFirst(apiDTO);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd  HH:mm:ss:SSS");
                 Date date1 = new Date();
                 HttpClientResult result = request(apiDTO);
                 result.setStart_time(dateFormat.format(date1));
                 Date date2 = new Date();
                 result.setEnd_time(dateFormat.format(date2));
                 res.add(result);
+
+                if(result.getRes_code() == 1000){
+                    fail++;
+                }else {
+                    success++;
+                }
+
                 //后置处理
                 String post_processors = taskExtendDTO.getPost_processors();
                 Map<String, Object> map = RequestThreadLocal.getInfo();
@@ -96,6 +118,17 @@ public class RequestService {
                 continue;
             }
         }
+        Date end = new Date();
+        taskResult.setEnd_time(dateFormat.format(end));
+        taskResult.setSuccess(success);
+        taskResult.setFail(fail);
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(2);
+        String percent = numberFormat.format((float) success / (float) taskResult.getTotal() * 100);
+        taskResult.setPercent(percent);
+        taskResult.setResultList(res);
+        String jsonstr = JSONObject.toJSONString(taskResult);
+        System.out.println(jsonstr);
         return res;
     }
 

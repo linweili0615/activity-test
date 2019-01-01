@@ -60,8 +60,6 @@ public class RequestService {
     }
 
     public List<HttpClientResult> runCase(String id) throws IOException {
-        org.apache.logging.log4j.Logger log = LogUtil.getLogger(id+ UserThreadLocal.getUserInfo().getUser_id());
-        log.info("开始执行 task: {} ...",id);
         TaskExtendDTO tt = new TaskExtendDTO();
         tt.setTask_id(id);
         tt.setStatus("1");
@@ -73,10 +71,10 @@ public class RequestService {
                 replaceFirst(apiDTO);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd  HH:mm:ss:SSS");
                 Date date1 = new Date();
-                log.info("{} 开始请求 ==> api: {} \n name: {} \n method: {} \n url: {}",dateFormat.format(date1),apiDTO.getId(),apiDTO.getName(),apiDTO.getMethod(),apiDTO.getUrl());
                 HttpClientResult result = request(apiDTO);
+                result.setStart_time(dateFormat.format(date1));
                 Date date2 = new Date();
-                log.info("{} 结束请求 ==> api: {}",dateFormat.format(date2),apiDTO.getId());
+                result.setEnd_time(dateFormat.format(date2));
                 res.add(result);
                 //后置处理
                 String post_processors = taskExtendDTO.getPost_processors();
@@ -95,11 +93,9 @@ public class RequestService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                log.error("请求异常：api:{}\n{}",apiDTO.getId(),e.getMessage());
                 continue;
             }
         }
-        log.info("执行结束 task: {}",id);
         return res;
     }
 

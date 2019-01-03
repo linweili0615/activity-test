@@ -10,11 +10,18 @@ spring:
     password: linweili123
     timeout: 10ms
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
-    jdbc-url: jdbc:mysql://localhost:3306/jm?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
-    username: root
-    password: 123456a
+    master:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/jm?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: 123456a
+    slave:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: 123456a
 
 mybatis:
   type-aliases-package: com.test.jm.dto

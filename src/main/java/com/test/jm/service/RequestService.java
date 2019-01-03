@@ -64,7 +64,8 @@ public class RequestService {
     }
 
     public List<HttpClientResult> runCase(String id) throws IOException {
-
+        org.apache.logging.log4j.Logger log = LogUtil.getLogger(id+ UserThreadLocal.getUserInfo().getUser_id());
+        log.info("开始执行 task: {} ...",id);
         File file1 = new File("/result/"+id +".json");
         file1.deleteOnExit();
 
@@ -86,9 +87,11 @@ public class RequestService {
             try {
                 replaceFirst(apiDTO);
                 Date date1 = new Date();
+                log.info("{} 开始请求 ==> api: {} \n name: {} \n method: {} \n url: {}",dateFormat.format(date1),apiDTO.getId(),apiDTO.getName(),apiDTO.getMethod(),apiDTO.getUrl());
                 HttpClientResult result = request(apiDTO);
                 result.setStart_time(dateFormat.format(date1));
                 Date date2 = new Date();
+                log.info("{} 结束请求 ==> api: {}",dateFormat.format(date2),apiDTO.getId());
                 result.setEnd_time(dateFormat.format(date2));
                 res.add(result);
 
@@ -115,9 +118,11 @@ public class RequestService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                log.error("请求异常：api:{}\n{}",apiDTO.getId(),e.getMessage());
                 continue;
             }
         }
+        log.info("执行结束 task: {}",id);
         Date end = new Date();
         taskResult.setEnd_time(dateFormat.format(end));
         taskResult.setSuccess(success);
@@ -129,6 +134,7 @@ public class RequestService {
         taskResult.setResultList(res);
         String jsonstr = JSONObject.toJSONString(taskResult);
         System.out.println(jsonstr);
+
         return res;
     }
 

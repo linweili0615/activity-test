@@ -37,8 +37,37 @@ public class TaskController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @PostMapping("/getResult")
+    @PostMapping("/getLog")
     public Result getlog(@RequestBody String id){
+        if(StringUtils.isBlank(id)){
+            return new Result(ResultType.ERROR,"taskid不能为空",null);
+        }
+        String logname = new File("").getAbsolutePath()+"/log/" + id + UserThreadLocal.getUserInfo().getUser_id()+".log";
+        try {
+            File file = new File(logname);
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String s = "";
+            List list = new ArrayList();
+            while ((s = bufferedReader.readLine()) != null){
+                if(StringUtils.isNotBlank(s.trim())){
+                    list.add(s);
+                }
+            }
+            reader.close();
+//            list.remove(0);
+            return new Result(ResultType.SUCCESS,null,list);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new Result(ResultType.ERROR,e.getMessage(),null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Result(ResultType.ERROR,e.getMessage(),null);
+        }
+    }
+
+    @PostMapping("/getResult")
+    public Result getresult(@RequestBody String id){
         if(StringUtils.isBlank(id)){
             return new Result(ResultType.ERROR,"taskid不能为空",null);
         }

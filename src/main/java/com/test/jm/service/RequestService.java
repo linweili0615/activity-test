@@ -1,6 +1,5 @@
 package com.test.jm.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskResult;
@@ -9,11 +8,11 @@ import com.test.jm.dto.test.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
 import com.test.jm.util.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,31 +26,7 @@ public class RequestService {
     @Autowired
     private ApiService apiService;
 
-    public HttpClientResult request(ApiDTO apiDTO) throws Exception {
-        HttpClientResult result = new HttpClientResult();
-        replaceFirst(apiDTO);
-        switch (apiDTO.getMethod().toUpperCase()){
-            case RequestType.GET :
-                result = RequestUtils.doGet(apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
-                setReqResult(result, apiDTO);
-                break;
-            case RequestType.POST :
-                result = RequestUtils.doPost(apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(), apiDTO.getBody(), apiDTO.getParamstype());
-                setReqResult(result, apiDTO);
-                break;
-            default:
-                break;
-        }
-        return result;
-    }
-
-    private void setReqResult(HttpClientResult result, ApiDTO apiDTO){
-        result.setApi_id(apiDTO.getId());
-        result.setApi_name(apiDTO.getName());
-        result.setReq_url(apiDTO.getUrl());
-        result.setReq_method(apiDTO.getMethod());
-    }
-
+    //替换变量属性
     private void replaceFirst(ApiDTO apiDTO){
         List<String> matchList = CommonUtils.getMatchList(apiDTO.getBody());
         if(null != matchList){
@@ -63,15 +38,53 @@ public class RequestService {
         }
     }
 
-    public List<HttpClientResult> runCase(String id) throws IOException {
-        org.apache.logging.log4j.Logger log = LogUtil.getLogger(id+ UserThreadLocal.getUserInfo().getUser_id());
-        log.info("开始执行 task: {} ...",id);
-        File file1 = new File("/result/"+id +".json");
-        file1.deleteOnExit();
+    private void setReqResult(HttpClientResult result, ApiDTO apiDTO){
+        result.setApi_id(apiDTO.getId());
+        result.setApi_name(apiDTO.getName());
+        result.setReq_method(apiDTO.getMethod());
+    }
 
+    public HttpClientResult normal_request(ApiDTO apiDTO) throws Exception {
+        HttpClientResult result = new HttpClientResult();
+        replaceFirst(apiDTO);
+        setReqResult(result, apiDTO);
+        Logger log = LogUtil.getLogger("12345678");
+        switch (apiDTO.getMethod().toUpperCase()){
+            case RequestType.GET :
+                result = RequestUtils.doGet(log, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
+                break;
+            case RequestType.POST :
+                result = RequestUtils.doPost(log, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(), apiDTO.getBody(), apiDTO.getParamstype());
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    public HttpClientResult request(Logger logger,ApiDTO apiDTO) throws Exception {
+        HttpClientResult result = new HttpClientResult();
+        replaceFirst(apiDTO);
+        setReqResult(result, apiDTO);
+        switch (apiDTO.getMethod().toUpperCase()){
+            case RequestType.GET :
+                result = RequestUtils.doGet(logger, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
+                break;
+            case RequestType.POST :
+                result = RequestUtils.doPost(logger, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(), apiDTO.getBody(), apiDTO.getParamstype());
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    public List<HttpClientResult> runCase(String id) throws IOException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        Logger log = LogUtil.getLogger(id);
+        log.info("开始执行 TASK: {} ...",id);
         TaskResult taskResult = new TaskResult();
         TaskExtendDTO tt = new TaskExtendDTO();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd  HH:mm:ss:SSS");
         Date start = new Date();
         taskResult.setStart_time(dateFormat.format(start));
         tt.setTask_id(id);
@@ -87,20 +100,18 @@ public class RequestService {
             try {
                 replaceFirst(apiDTO);
                 Date date1 = new Date();
-                log.info("{} 开始请求 ==> api: {} \n name: {} \n method: {} \n url: {}",dateFormat.format(date1),apiDTO.getId(),apiDTO.getName(),apiDTO.getMethod(),apiDTO.getUrl());
-                HttpClientResult result = request(apiDTO);
+                log.info("{} 开始请求 ==> api: {}\n",dateFormat.format(date1),apiDTO.getId());
+                HttpClientResult result = request(log, apiDTO);
                 result.setStart_time(dateFormat.format(date1));
                 Date date2 = new Date();
-                log.info("{} 结束请求 ==> api: {}",dateFormat.format(date2),apiDTO.getId());
+                log.info("{} 结束请求 ==> api: {}\n",dateFormat.format(date2),apiDTO.getId());
                 result.setEnd_time(dateFormat.format(date2));
                 res.add(result);
-
                 if(result.getRes_code() == 1000){
                     fail++;
                 }else {
                     success++;
                 }
-
                 //后置处理
                 String post_processors = taskExtendDTO.getPost_processors();
                 Map<String, Object> map = RequestThreadLocal.getInfo();
@@ -122,7 +133,7 @@ public class RequestService {
                 continue;
             }
         }
-        log.info("执行结束 task: {}",id);
+        log.info(dateFormat.format(new Date()) + "执行结束 TASK: {}",id);
         Date end = new Date();
         taskResult.setEnd_time(dateFormat.format(end));
         taskResult.setSuccess(success);
@@ -133,8 +144,17 @@ public class RequestService {
         taskResult.setPercent(percent);
         taskResult.setResultList(res);
         String jsonstr = JSONObject.toJSONString(taskResult);
-        System.out.println(jsonstr);
-
+        File resultfile = new File("/task/"+id +"/" + UserThreadLocal.getUserInfo().getUser_id() + "/result.json");
+        resultfile.deleteOnExit();
+        // 将格式化后的字符串写入文件
+        String fullPath = "/task" + File.separator + id + File.separator + UserThreadLocal.getUserInfo().getUser_id() + "/result.json";
+        File file = new File(fullPath);
+        file.createNewFile();
+        Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+        write.write(jsonstr);
+        write.flush();
+        write.close();
+        //写入执行结果
         return res;
     }
 

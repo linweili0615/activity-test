@@ -26,7 +26,7 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 public class LogUtil {
     //日志打印目录
     /**日志打印的目录*/
-    private static final String datalogDir = "log";
+    private static final String datalogDir = "task";
 
     private static final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
     private static final Configuration config = ctx.getConfiguration();
@@ -39,13 +39,12 @@ public class LogUtil {
         //创建一个展示的样式：PatternLayout，   还有其他的日志打印样式。
         Layout layout = PatternLayout.newBuilder()
                 .withConfiguration(config).withPattern("%msg%n").build();
-
         //单个日志文件大小
         TimeBasedTriggeringPolicy tbtp = TimeBasedTriggeringPolicy.createPolicy(null, null);
         TriggeringPolicy tp = SizeBasedTriggeringPolicy.createPolicy("10M");
         CompositeTriggeringPolicy policyComposite = CompositeTriggeringPolicy.createPolicy(tbtp, tp);
 
-        String loggerDir = datalogDir + File.separator + loggerName;
+        String loggerDir = datalogDir + File.separator + loggerName + File.separator + UserThreadLocal.getUserInfo().getUser_id() + File.separator + "task.log";
         //删除日志的条件
         IfFileName ifFileName = IfFileName.createNameCondition(null, loggerName + "\\.\\d{4}-\\d{2}-\\d{2}.*");
         IfLastModified ifLastModified = IfLastModified.createAgeCondition(Duration.parse("1d"));
@@ -57,13 +56,12 @@ public class LogUtil {
         DefaultRolloverStrategy strategy = DefaultRolloverStrategy.createStrategy(
                 "7", "1", null, null, actions, false, config);
 
-//        String loggerPathPrefix = loggerDir + File.separator + loggerName;
         RollingFileAppender appender = RollingFileAppender.newBuilder()
-                .withFileName(loggerDir + ".log")
+                .withFileName(loggerDir)
                 .withFilePattern(loggerDir + ".%d{yyyy}.%i.log")
                 .withAppend(false)
                 .withStrategy(strategy)
-                .withName(loggerName)
+                .withName("task")
                 .withPolicy(policyComposite)
                 .withLayout(layout)
                 .withConfiguration(config)
@@ -92,6 +90,8 @@ public class LogUtil {
 
     /**获取Logger*/
     public static Logger getLogger(String loggerName) {
+        File resultfile = new File("/task/"+loggerName +"/" + UserThreadLocal.getUserInfo().getUser_id() + "/task.log");
+        resultfile.deleteOnExit();
         synchronized (config) {
             if (!config.getLoggers().containsKey(loggerName)) {
                 start(loggerName);

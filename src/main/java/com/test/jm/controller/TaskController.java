@@ -42,7 +42,7 @@ public class TaskController {
         if(StringUtils.isBlank(id)){
             return new Result(ResultType.ERROR,"taskid不能为空",null);
         }
-        String logname = new File("").getAbsolutePath()+"/log/" + id + UserThreadLocal.getUserInfo().getUser_id()+".log";
+        String logname = new File("").getAbsolutePath() + "/task/" + id +"/" + UserThreadLocal.getUserInfo().getUser_id()+"/task.log";
         try {
             File file = new File(logname);
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");

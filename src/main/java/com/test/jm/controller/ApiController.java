@@ -111,7 +111,7 @@ public class ApiController {
         }
 
         try {
-            HttpClientResult result = requestService.request(apiDTO);
+            HttpClientResult result = requestService.normal_request(apiDTO);
             if(result.getRes_code().equals(1000)){
                 return new TestResult(null, ResultType.SUCCESS, result.getRes_body(), result);
             }

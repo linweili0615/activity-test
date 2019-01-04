@@ -26,8 +26,8 @@ public class DynamicDataSourceAspect {
         } else {
             // 切换数据源
             DynamicDataSourceContextHolder.setDataSourceKey(dataSource.value());
-            System.out.println("Switch DataSource to [" + DynamicDataSourceContextHolder.getDataSourceKey()
-                    + "] in Method [" + point.getSignature() + "]");
+//            System.out.println("Switch DataSource to [" + DynamicDataSourceContextHolder.getDataSourceKey()
+//                    + "] in Method [" + point.getSignature() + "]");
         }
     }
 
@@ -40,7 +40,7 @@ public class DynamicDataSourceAspect {
     public void restoreDataSource(JoinPoint point, DataSource dataSource) {
         // 将数据源置为默认数据源
         DynamicDataSourceContextHolder.clearDataSourceKey();
-        System.out.println("Restore DataSource to [" + DynamicDataSourceContextHolder.getDataSourceKey()
-                + "] in Method [" + point.getSignature() + "]");
+//        System.out.println("Restore DataSource to [" + DynamicDataSourceContextHolder.getDataSourceKey()
+//                + "] in Method [" + point.getSignature() + "]");
     }
 }

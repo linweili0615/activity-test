@@ -1,7 +1,6 @@
 package com.test.jm.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.jm.domain.HttpClientResult;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
@@ -14,7 +13,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -29,15 +27,15 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -46,8 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RequestUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(RequestUtils.class);
-
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(RequestUtils.class);
     private static final String ENCODING = "UTF-8";
     private static final int CONNECT_TIMEOUT = 3000;// 设置连接建立的超时时间为10s
     private static final int SOCKET_TIMEOUT = 3000;
@@ -190,23 +187,25 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doGet(String url, String headers,String cookies, String params, String paramstype) throws Exception {
-        HttpClientResult result = new HttpClientResult();
+    public static HttpClientResult doGet(Logger log, HttpClientResult result, String url, String headers, String cookies, String params, String paramstype) throws Exception {
         // 创建访问的地址
         URIBuilder uriBuilder = new URIBuilder(url);
         //组装参数
-        if (params != null && paramstype =="form") {
-            result.setReq_body(params);
-            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
-            for (Map.Entry<String, Object> entry : entrySet) {
-                uriBuilder.setParameter(entry.getKey(), String.valueOf(entry.getValue()));
+        if ( params!= null && paramstype.equals("form") ) {
+            Map<String, Object> param = CommonUtils.strToMap(params);
+            for (String key : param.keySet()) {
+                uriBuilder.addParameter(key, (String) param.get(key));
             }
         }
-        HttpGet httpGet = new HttpGet(uriBuilder.build());
+        URI uri = uriBuilder.build();
+        HttpGet httpGet = new HttpGet(uri);
+        log.info("Request URL: {}\n",httpGet.getURI().toString());
+        log.info("Request Method: {} {}\n",httpGet.getRequestLine().getProtocolVersion(),httpGet.getMethod());
         setRequestConfig(httpGet);
-        packageHeader(result, headers, httpGet);
-        setCookies(result, cookies);
-        return getHttpClientResult(result, httpGet);
+        packageHeader(log, result, headers, httpGet);
+        setCookies(log, result, cookies);
+
+        return getHttpClientResult(log, result, httpGet);
     }
 
     /**
@@ -218,14 +217,16 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPost(String url, String headers,String cookies, String params, String paramstype) throws Exception {
-        HttpClientResult result = new HttpClientResult();
+    public static HttpClientResult doPost(Logger log, HttpClientResult result, String url, String headers,String cookies, String params, String paramstype) throws Exception {
         HttpPost httpPost = new HttpPost(url);
+        log.info("Request URL: {}\n",httpPost.getURI().toString());
+        log.info("Request Method: {} {}\n",httpPost.getRequestLine().getProtocolVersion(),httpPost.getMethod());
         setRequestConfig(httpPost);
-        packageHeader(result, headers, httpPost);
-        setCookies(result, cookies);
-        packageParam(result, params, paramstype, httpPost);
-        return getHttpClientResult(result, httpPost);
+        packageHeader(log, result, headers, httpPost);
+        setCookies(log, result, cookies);
+        packageParam(log, result, params, paramstype, httpPost);
+
+        return getHttpClientResult(log, result, httpPost);
     }
 
     /**
@@ -236,14 +237,13 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPut(String url, String headers,String cookies, String params, String paramstype) throws Exception {
-        HttpClientResult result = new HttpClientResult();
+    public static HttpClientResult doPut(Logger log, HttpClientResult result,String url, String headers,String cookies, String params, String paramstype) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPut httpPut = new HttpPut(url);
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPut.setConfig(requestConfig);
-        packageParam(result, params,paramstype, httpPut);
-        return getHttpClientResult(result, httpPut);
+        packageParam(log, result, params,paramstype, httpPut);
+        return getHttpClientResult(log, result, httpPut);
     }
 
     /**
@@ -254,10 +254,10 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doDelete(String url, String headers,String cookies, String params, String paramstype) throws Exception {
+    public static HttpClientResult doDelete(Logger log, HttpClientResult result, String url, String headers,String cookies, String params, String paramstype) throws Exception {
         Map<String, Object> map = CommonUtils.strToMap(params);
         map.put("_method", "delete");
-        return doPost(url, headers, cookies, params,paramstype);
+        return doPost(log, result, url, headers, cookies, params,paramstype);
     }
 
     /**
@@ -265,9 +265,10 @@ public class RequestUtils {
      * @param params
      * @param httpMethod
      */
-    public static void packageHeader(HttpClientResult result, String params, HttpRequestBase httpMethod) throws JsonProcessingException {
+    public static void packageHeader(Logger log, HttpClientResult result, String params, HttpRequestBase httpMethod) throws JsonProcessingException {
         // 封装请求头
         if (params != null) {
+            log.info("Request Headers:\n{}\n",params);
             result.setReq_headers(params);
             Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
             for (Map.Entry<String, Object> entry : entrySet) {
@@ -275,14 +276,17 @@ public class RequestUtils {
                 httpMethod.setHeader(entry.getKey(), String.valueOf(entry.getValue()));
             }
         }
+
+
     }
 
     public static List<Cookie> getCookies(){
         return cookieStore.getCookies();
     }
 
-    public static void setCookies(HttpClientResult result, String cookies) throws JsonProcessingException {
+    public static void setCookies(Logger log, HttpClientResult result, String cookies) throws JsonProcessingException {
         if (cookies != null) {
+            log.info("Request Cookies:\n{}\n",cookies);
             result.setReq_cookies(cookies);
             Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(cookies).entrySet();
             for (Map.Entry<String, Object> entry : entrySet) {
@@ -305,10 +309,11 @@ public class RequestUtils {
      * @param httpMethod
      * @throws UnsupportedEncodingException
      */
-    public static void packageParam(HttpClientResult result, String params, String paramstype, HttpEntityEnclosingRequestBase httpMethod)
+    public static void packageParam(Logger log, HttpClientResult result, String params, String paramstype, HttpEntityEnclosingRequestBase httpMethod)
             throws UnsupportedEncodingException {
         // 封装请求参数
         if (params != null) {
+            log.info("Request Parameters:\n{}\n",params);
             result.setReq_body(params);
             switch (paramstype){
                 case "raw":
@@ -335,7 +340,7 @@ public class RequestUtils {
      * @return
      * @throws Exception
      */
-    public static HttpClientResult getHttpClientResult(HttpClientResult result, HttpRequestBase httpMethod){
+    public static HttpClientResult getHttpClientResult(Logger log, HttpClientResult result, HttpRequestBase httpMethod){
         CloseableHttpResponse httpResponse = null;
         // 执行请求
         try {
@@ -343,10 +348,13 @@ public class RequestUtils {
             HttpEntity entity = httpResponse.getEntity();
             if (entity != null) {
                 String content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
+                log.info("Response StatusCode: {}\n",httpResponse.getStatusLine().getStatusCode());
+                log.info("Response data:\n{}\n",content);
                 Header[] headers= httpResponse.getAllHeaders();
                 List<Header> hh = Arrays.asList(headers);
                 String header = CommonUtils.HeaderListToMap(hh);
                 String cookies = CommonUtils.CookieListToMap(getCookies());
+                log.info("Response Cookies:\n{}\n",cookies);
                 result.setRes_code(httpResponse.getStatusLine().getStatusCode());
                 result.setRes_headers(header);
                 result.setRes_cookies(cookies);
@@ -354,6 +362,7 @@ public class RequestUtils {
             }
         }catch (Exception e){
 //            e.printStackTrace();
+            log.info("Exception:\n{}{}\n",e.getMessage(),e.getCause());
             result.setRes_code(1000);
             result.setRes_body( e.getMessage());
         }finally {

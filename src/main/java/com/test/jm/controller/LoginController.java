@@ -96,9 +96,6 @@ public class LoginController {
             return tokenResult;
 
         }
-
-
-
     }
 
     @GetMapping("/logout")

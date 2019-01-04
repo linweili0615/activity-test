@@ -6,6 +6,7 @@ import com.test.jm.domain.page.ProjectPage;
 import com.test.jm.domain.ProjectResult;
 import com.test.jm.domain.Result;
 import com.test.jm.dto.test.ProjectDTO;
+import com.test.jm.keys.ResultType;
 import com.test.jm.service.ProjectService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -49,12 +50,12 @@ public class ProjectController {
             result.setPageSize(pageSize);
             result.setPageCount(pageCount);
             result.setPageNo(pageNo);
-            result.setStatus("success");
+            result.setStatus(ResultType.SUCCESS);
             result.setMsg("获取项目列表成功");
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("获取getProjectList失败");
-            result.setStatus("fail");
+            result.setStatus(ResultType.FAIL);
             result.setMsg("获取项目列表失败");
         }
         return result;
@@ -67,15 +68,15 @@ public class ProjectController {
             String p_id = projectService.addProject(project_name);
             if(StringUtils.isNotBlank(p_id)){
                 result.setId(p_id);
-                result.setStatus("success");
+                result.setStatus(ResultType.SUCCESS);
                 result.setMsg("添加项目成功");
                 return result;
             }
-            result.setStatus("fail");
+            result.setStatus(ResultType.FAIL);
             result.setStatus("添加项目失败");
             return result;
         }
-        result.setStatus("fail");
+        result.setStatus(ResultType.FAIL);
         result.setStatus("项目名称不能为空");
         return result;
     }
@@ -87,15 +88,15 @@ public class ProjectController {
             Integer count = projectService.deleteProjectById(id);
             if(count > 0){
                 result.setId(id);
-                result.setStatus("success");
+                result.setStatus(ResultType.SUCCESS);
                 result.setMsg("删除项目成功");
                 return result;
             }
             result.setId(id);
-            result.setStatus("fail");
+            result.setStatus(ResultType.FAIL);
             result.setMsg("删除项目失败");
         }
-        result.setStatus("fail");
+        result.setStatus(ResultType.FAIL);
         result.setStatus("项目id不能为空");
         return result;
     }
@@ -110,15 +111,15 @@ public class ProjectController {
             Integer count = projectService.editProject(projectDTO1);
             if(count > 0){
                 result.setId(projectDTO1.getId());
-                result.setStatus("success");
+                result.setStatus(ResultType.SUCCESS);
                 result.setMsg("修改项目状态成功");
                 return result;
             }
             result.setId(projectDTO.getId());
-            result.setStatus("fail");
+            result.setStatus(ResultType.FAIL);
             result.setMsg("修改项目状态失败");
         }
-        result.setStatus("fail");
+        result.setStatus(ResultType.FAIL);
         result.setStatus("参数不能为空");
         return result;
     }
@@ -130,15 +131,15 @@ public class ProjectController {
             Integer count = projectService.editProject(projectDTO);
             if(count > 0){
                 result.setId(projectDTO.getId());
-                result.setStatus("success");
+                result.setStatus(ResultType.SUCCESS);
                 result.setMsg("修改项目成功");
                 return result;
             }
             result.setId(projectDTO.getId());
-            result.setStatus("fail");
+            result.setStatus(ResultType.FAIL);
             result.setMsg("修改项目失败");
         }
-        result.setStatus("fail");
+        result.setStatus(ResultType.FAIL);
         result.setStatus("项目id不能为空");
         return result;
     }

@@ -26,15 +26,15 @@ public class CaseController {
         try {
             List<CaseExtend> caseExtends = caseService.getCaseList(id);
             if(null == caseExtends){
-                return new CaseResult("fail", "项目ID不存在", null);
+                return new CaseResult(ResultType.NOT_FOUND, "项目ID不存在", null);
             }
             if(StringUtils.isBlank(id)){
-                return new CaseResult("success", "获取分组成功", CommonUtils.apiTree(caseExtends));
+                return new CaseResult(ResultType.SUCCESS, "获取分组成功", CommonUtils.apiTree(caseExtends));
             }
-            return new CaseResult("success", "获取分组成功", CommonUtils.caseTree(caseExtends));
+            return new CaseResult(ResultType.SUCCESS, "获取分组成功", CommonUtils.caseTree(caseExtends));
         } catch (Exception e) {
             e.printStackTrace();
-            return new CaseResult("fail", "获取分组异常", null);
+            return new CaseResult(ResultType.ERROR, "获取分组异常", null);
         }
     }
 
@@ -55,7 +55,7 @@ public class CaseController {
                 return result;
             }
         }
-        result.setStatus(ResultType.ERROR);
+        result.setStatus(ResultType.FAIL);
         result.setMsg("项目id或分组名称不能为空");
         return result;
     }
@@ -74,7 +74,7 @@ public class CaseController {
                         return result;
                     }else {
                         result.setId(caseDTO.getId());
-                        result.setStatus(ResultType.SUCCESS);
+                        result.setStatus(ResultType.NOT_FOUND);
                         result.setMsg("该分组不存在");
                         return result;
                     }
@@ -88,7 +88,7 @@ public class CaseController {
                             result.setMsg("分组已修改");
                             return result;
                         }else {
-                            result.setStatus(ResultType.FAIL);
+                            result.setStatus(ResultType.NOT_FOUND);
                             result.setMsg("该分组不存在");
                             return result;
                         }

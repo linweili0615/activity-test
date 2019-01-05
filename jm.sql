@@ -18,6 +18,16 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for interface
 -- ----------------------------
+DROP TABLE IF EXISTS `task_case_result`;
+CREATE TABLE `task_case_result` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` varchar(255) DEFAULT NULL,
+  `u_id` varchar(255) DEFAULT NULL,
+  `u_name` varchar(255) DEFAULT NULL,
+  `execute_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `interface`;
 CREATE TABLE `interface` (
   `id` varchar(255) NOT NULL,

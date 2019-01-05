@@ -10,10 +10,7 @@ import com.test.jm.util.RedisUtil;
 import com.test.jm.util.UserThreadLocal;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -55,40 +52,42 @@ public class TaskController {
                 }
             }
             reader.close();
-//            list.remove(0);
             return new Result(ResultType.SUCCESS,null,list);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return new Result(ResultType.ERROR,e.getMessage(),null);
+            return new Result(ResultType.NOT_FOUND,e.getMessage(),null);
         } catch (IOException e) {
             e.printStackTrace();
             return new Result(ResultType.ERROR,e.getMessage(),null);
         }
     }
 
-    @PostMapping("/getResult")
-    public Result getresult(@RequestBody String id){
+    @GetMapping("/getResult")
+    public Result getresult(){
+        String id = "81598efb-ffa9-11e8-a19c-0242ac110002";
         if(StringUtils.isBlank(id)){
-            return new Result(ResultType.ERROR,"taskid不能为空",null);
+            return new Result(ResultType.FAIL,"taskid不能为空",null);
         }
-        String logname = "/log/" + id +".log";
+        String fullPath = "task/" + File.separator +id +  File.separator + UserThreadLocal.getUserInfo().getUser_id() +   File.separator + "result.json";
         try {
-            File file = new File(logname);
+            File file = new File(fullPath);
+            if(!file.exists()){
+                return new Result(ResultType.NOT_FOUND,"该任务结果不存在",null);
+            }
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
             BufferedReader bufferedReader = new BufferedReader(reader);
             String s = "";
-            List list = new ArrayList();
+            StringBuffer buffer = new StringBuffer();
             while ((s = bufferedReader.readLine()) != null){
                 if(StringUtils.isNotBlank(s.trim())){
-                    list.add(s);
+                    buffer.append(s);
                 }
             }
             reader.close();
-//            list.remove(0);
-            return new Result(ResultType.SUCCESS,null,list);
+            return new Result(ResultType.SUCCESS,null,buffer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return new Result(ResultType.ERROR,e.getMessage(),null);
+            return new Result(ResultType.NOT_FOUND,e.getMessage(),null);
         } catch (IOException e) {
             e.printStackTrace();
             return new Result(ResultType.ERROR,e.getMessage(),null);

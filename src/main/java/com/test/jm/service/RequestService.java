@@ -1,6 +1,8 @@
 package com.test.jm.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskResult;
 import com.test.jm.dto.test.ApiDTO;
@@ -143,13 +145,19 @@ public class RequestService {
         String percent = numberFormat.format((float) success / (float) taskResult.getTotal() * 100);
         taskResult.setPercent(percent);
         taskResult.setResultList(res);
-        String jsonstr = JSONObject.toJSONString(taskResult);
-        File resultfile = new File("/task/"+id +"/" + UserThreadLocal.getUserInfo().getUser_id() + "/result.json");
-        resultfile.deleteOnExit();
-        // 将格式化后的字符串写入文件
-        String fullPath = "/task" + File.separator + id + File.separator + UserThreadLocal.getUserInfo().getUser_id() + "/result.json";
+
+        String fullPath = "task/" + File.separator +id +  File.separator + UserThreadLocal.getUserInfo().getUser_id() +   File.separator + "result.json";
         File file = new File(fullPath);
+        if (!file.getParentFile().exists()) { // 如果父目录不存在，创建父目录
+            file.getParentFile().mkdirs();
+        }
+        if (file.exists()) { // 如果已存在,删除旧文件
+            file.delete();
+        }
         file.createNewFile();
+        // 将格式化后的字符串写入文件
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonstr = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(taskResult);
         Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
         write.write(jsonstr);
         write.flush();

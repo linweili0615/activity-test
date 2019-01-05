@@ -135,7 +135,7 @@ public class RequestService {
                 continue;
             }
         }
-        log.info(dateFormat.format(new Date()) + "执行结束 TASK: {}",id);
+        log.info("执行结束 TASK: {}",id);
         Date end = new Date();
         taskResult.setEnd_time(dateFormat.format(end));
         taskResult.setSuccess(success);

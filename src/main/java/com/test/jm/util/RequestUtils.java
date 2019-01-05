@@ -199,8 +199,8 @@ public class RequestUtils {
         }
         URI uri = uriBuilder.build();
         HttpGet httpGet = new HttpGet(uri);
-        log.info("Request URL: {}\n",httpGet.getURI().toString());
-        log.info("Request Method: {} {}\n",httpGet.getRequestLine().getProtocolVersion(),httpGet.getMethod());
+        log.info("Request URL: {}",httpGet.getURI().toString());
+        log.info("Request Method: {} {}",httpGet.getRequestLine().getProtocolVersion(),httpGet.getMethod());
         setRequestConfig(httpGet);
         packageHeader(log, result, headers, httpGet);
         setCookies(log, result, cookies);
@@ -219,8 +219,8 @@ public class RequestUtils {
      */
     public static HttpClientResult doPost(Logger log, HttpClientResult result, String url, String headers,String cookies, String params, String paramstype) throws Exception {
         HttpPost httpPost = new HttpPost(url);
-        log.info("Request URL: {}\n",httpPost.getURI().toString());
-        log.info("Request Method: {} {}\n",httpPost.getRequestLine().getProtocolVersion(),httpPost.getMethod());
+        log.info("Request URL: {}",httpPost.getURI().toString());
+        log.info("Request Method: {} {}",httpPost.getRequestLine().getProtocolVersion(),httpPost.getMethod());
         setRequestConfig(httpPost);
         packageHeader(log, result, headers, httpPost);
         setCookies(log, result, cookies);

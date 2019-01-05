@@ -102,11 +102,11 @@ public class RequestService {
             try {
                 replaceFirst(apiDTO);
                 Date date1 = new Date();
-                log.info("{} 开始请求 ==> api: {}\n",dateFormat.format(date1),apiDTO.getId());
+                log.info("{} 开始请求 ==> api: {}",dateFormat.format(date1),apiDTO.getId());
                 HttpClientResult result = request(log, apiDTO);
                 result.setStart_time(dateFormat.format(date1));
                 Date date2 = new Date();
-                log.info("{} 结束请求 ==> api: {}\n",dateFormat.format(date2),apiDTO.getId());
+                log.info("{} 结束请求 ==> api: {}",dateFormat.format(date2),apiDTO.getId());
                 result.setEnd_time(dateFormat.format(date2));
                 res.add(result);
                 if(result.getRes_code() == 1000){

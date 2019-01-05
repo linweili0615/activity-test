@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Transactional
 @Service
 public class TaskService {
 
@@ -34,12 +35,10 @@ public class TaskService {
         return taskExtendDao.getTaskExtendById(id);
     }
 
-    @Transactional
     public Integer updateTaskExtendStatusList(TaskExtendStatusParams params){
         return taskExtendDao.updateTaskExtendStatusList(params);
     }
 
-    @Transactional
     public Integer deleteTaskExtendByList(List<String> list){
         return taskExtendDao.deleteTaskExtendByList(list);
     }
@@ -47,4 +46,5 @@ public class TaskService {
     public Integer updateTaskExtendRankByList(List<TaskExtendDTO> list){
         return taskExtendDao.updateTaskExtendRankByList(list);
     }
+
 }

@@ -5,7 +5,7 @@
 
     <resultMap id="task_extend_list" type="com.test.jm.dto.test.TaskExtendDTO">
         <id column="id" property="id"></id>
-        <id column="task_id" property="task_id"></id>
+        <result column="task_id" property="task_id"></result>
         <result column="project_id" property="project_id"/>
         <result column="case_id" property="case_id"/>
         <result column="api_id" property="api_id"/>

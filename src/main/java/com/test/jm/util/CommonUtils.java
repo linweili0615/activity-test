@@ -2,6 +2,8 @@ package com.test.jm.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.jm.domain.tree.ApiCase;
 import com.test.jm.domain.tree.ApiTree;
 import com.test.jm.domain.tree.Case;
@@ -100,6 +102,11 @@ public class CommonUtils {
 
     public static void setCommon(ApiDTO apiDTO, String special_str, String str){
         apiDTO.setBody(apiDTO.getBody().replaceAll(special_str, str));
+    }
+
+    public static String ObjectToJsonStr(Object object) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
     }
 
     public static boolean isJson(String content) {

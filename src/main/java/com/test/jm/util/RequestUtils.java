@@ -199,6 +199,7 @@ public class RequestUtils {
         }
         URI uri = uriBuilder.build();
         HttpGet httpGet = new HttpGet(uri);
+        result.setReq_url(httpGet.getURI().toString());
         log.info("Request URL: {}",httpGet.getURI().toString());
         log.info("Request Method: {} {}",httpGet.getRequestLine().getProtocolVersion(),httpGet.getMethod());
         setRequestConfig(httpGet);
@@ -219,6 +220,7 @@ public class RequestUtils {
      */
     public static HttpClientResult doPost(Logger log, HttpClientResult result, String url, String headers,String cookies, String params, String paramstype) throws Exception {
         HttpPost httpPost = new HttpPost(url);
+        result.setReq_url(httpPost.getURI().toString());
         log.info("Request URL: {}",httpPost.getURI().toString());
         log.info("Request Method: {} {}",httpPost.getRequestLine().getProtocolVersion(),httpPost.getMethod());
         setRequestConfig(httpPost);
@@ -268,15 +270,13 @@ public class RequestUtils {
     public static void packageHeader(Logger log, HttpClientResult result, String params, HttpRequestBase httpMethod) throws JsonProcessingException {
         // 封装请求头
         if (params != null) {
-            log.info("Request Headers:\n{}\n",params);
+            log.info("Request Headers:\n{}",params);
             result.setReq_headers(params);
-            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
-            for (Map.Entry<String, Object> entry : entrySet) {
-                // 设置到请求头到HttpRequestBase对象中
-                httpMethod.setHeader(entry.getKey(), String.valueOf(entry.getValue()));
+            Map<String, Object> param = CommonUtils.strToMap(params);
+            for (String key : param.keySet()) {
+                httpMethod.setHeader(key, (String) param.get(key));
             }
         }
-
 
     }
 
@@ -286,11 +286,11 @@ public class RequestUtils {
 
     public static void setCookies(Logger log, HttpClientResult result, String cookies) throws JsonProcessingException {
         if (cookies != null) {
-            log.info("Request Cookies:\n{}\n",cookies);
+            log.info("Request Cookies:\n{}",cookies);
             result.setReq_cookies(cookies);
-            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(cookies).entrySet();
-            for (Map.Entry<String, Object> entry : entrySet) {
-                BasicClientCookie cookie = new BasicClientCookie(entry.getKey(), String.valueOf(entry.getValue()));
+            Map<String, Object> param = CommonUtils.strToMap(cookies);
+            for (String key : param.keySet()) {
+                BasicClientCookie cookie = new BasicClientCookie(key, String.valueOf(param.get(key)));
                 cookie.setDomain("domain");
                 cookie.setExpiryDate(new Date());
                 cookieStore.addCookie(cookie);
@@ -313,7 +313,7 @@ public class RequestUtils {
             throws UnsupportedEncodingException {
         // 封装请求参数
         if (params != null) {
-            log.info("Request Parameters:\n{}\n",params);
+            log.info("Request Parameters:\n{}",params);
             result.setReq_body(params);
             switch (paramstype){
                 case "raw":
@@ -321,9 +321,9 @@ public class RequestUtils {
                     break;
                 case "form":
                     List<BasicNameValuePair> pair =new ArrayList<>();
-                    Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(params).entrySet();
-                    for (Map.Entry<String, Object> entry : entrySet) {
-                        pair.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
+                    Map<String, Object> param = CommonUtils.strToMap(params);
+                    for (String key : param.keySet()) {
+                        pair.add(new BasicNameValuePair(key, String.valueOf(param.get(key))));
                     }
                     httpMethod.setEntity(new UrlEncodedFormEntity(pair, ENCODING));
                     break;
@@ -348,13 +348,13 @@ public class RequestUtils {
             HttpEntity entity = httpResponse.getEntity();
             if (entity != null) {
                 String content = EntityUtils.toString(httpResponse.getEntity(), ENCODING);
-                log.info("Response StatusCode: {}\n",httpResponse.getStatusLine().getStatusCode());
-                log.info("Response data:\n{}\n",content);
+                log.info("Response StatusCode: {}",httpResponse.getStatusLine().getStatusCode());
+                log.info("Response data:\n{}",content);
                 Header[] headers= httpResponse.getAllHeaders();
                 List<Header> hh = Arrays.asList(headers);
                 String header = CommonUtils.HeaderListToMap(hh);
                 String cookies = CommonUtils.CookieListToMap(getCookies());
-                log.info("Response Cookies:\n{}\n",cookies);
+                log.info("Response Cookies:\n{}",cookies);
                 result.setRes_code(httpResponse.getStatusLine().getStatusCode());
                 result.setRes_headers(header);
                 result.setRes_cookies(cookies);
@@ -362,7 +362,7 @@ public class RequestUtils {
             }
         }catch (Exception e){
 //            e.printStackTrace();
-            log.info("Exception:\n{}{}\n",e.getMessage(),e.getCause());
+            log.info("Exception:\n{}{}",e.getMessage(),e.getCause());
             result.setRes_code(1000);
             result.setRes_body( e.getMessage());
         }finally {

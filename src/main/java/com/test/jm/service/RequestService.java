@@ -1,7 +1,5 @@
 package com.test.jm.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskResult;
@@ -39,6 +37,22 @@ public class RequestService {
             }
         }
     }
+    //提取参数
+    private void replacePost(String post_processors){
+        Map<String, Object> map = RequestThreadLocal.getInfo();
+        if(StringUtils.isNotBlank(post_processors)){
+            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(post_processors).entrySet();
+            for (Map.Entry<String, Object> entry : entrySet) {
+                String pre = "";
+                String post = "";
+                String match = CommonUtils.regMatch(pre, post, "body");
+                if(StringUtils.isNotBlank(match)){
+                    map.put("telno", match);
+                    RequestThreadLocal.setInfo(map);
+                }
+            }
+        }
+    }
 
     private void setReqResult(HttpClientResult result, ApiDTO apiDTO){
         result.setApi_id(apiDTO.getId());
@@ -46,27 +60,8 @@ public class RequestService {
         result.setReq_method(apiDTO.getMethod());
     }
 
-    public HttpClientResult normal_request(ApiDTO apiDTO) throws Exception {
-        HttpClientResult result = new HttpClientResult();
-        replaceFirst(apiDTO);
-        setReqResult(result, apiDTO);
-        Logger log = LogUtil.getLogger("12345678");
-        switch (apiDTO.getMethod().toUpperCase()){
-            case RequestType.GET :
-                result = RequestUtils.doGet(log, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
-                break;
-            case RequestType.POST :
-                result = RequestUtils.doPost(log, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(), apiDTO.getBody(), apiDTO.getParamstype());
-                break;
-            default:
-                break;
-        }
-        return result;
-    }
-
     public HttpClientResult request(Logger logger,ApiDTO apiDTO) throws Exception {
         HttpClientResult result = new HttpClientResult();
-        replaceFirst(apiDTO);
         setReqResult(result, apiDTO);
         switch (apiDTO.getMethod().toUpperCase()){
             case RequestType.GET :
@@ -110,25 +105,15 @@ public class RequestService {
                 result.setEnd_time(dateFormat.format(date2));
                 res.add(result);
                 if(result.getRes_code() == 1000){
+                    result.setResult("失败");
                     fail++;
                 }else {
+                    result.setResult("通过");
                     success++;
                 }
                 //后置处理
                 String post_processors = taskExtendDTO.getPost_processors();
-                Map<String, Object> map = RequestThreadLocal.getInfo();
-                if(StringUtils.isNotBlank(post_processors)){
-                    Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(post_processors).entrySet();
-                    for (Map.Entry<String, Object> entry : entrySet) {
-                        String pre = "";
-                        String post = "";
-                        String match = CommonUtils.regMatch(pre, post, result.getRes_body());
-                        if(StringUtils.isNotBlank(match)){
-                            map.put("telno", match);
-                            RequestThreadLocal.setInfo(map);
-                        }
-                    }
-                }
+                replacePost(post_processors);
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("请求异常：api:{}\n{}",apiDTO.getId(),e.getMessage());
@@ -156,8 +141,7 @@ public class RequestService {
         }
         file.createNewFile();
         // 将格式化后的字符串写入文件
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonstr = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(taskResult);
+        String jsonstr = CommonUtils.ObjectToJsonStr(taskResult);
         Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
         write.write(jsonstr);
         write.flush();

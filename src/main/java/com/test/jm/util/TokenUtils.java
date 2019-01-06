@@ -27,7 +27,7 @@ public class TokenUtils {
      * @return
      */
     public static String createJwtToken(String userid, long expirationdate){
-        //过期时间最小1小时
+        //过期时间最小24小时
         long ttlMillis = expirationdate * 60 * 60 * 1000;
         // 签名算法 ，将对token进行签名
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -46,7 +46,7 @@ public class TokenUtils {
         if (ttlMillis >= 60000) {
             long expMillis = nowMillis + ttlMillis;
             Date exp = new Date(expMillis);
-            logger.info("token过期时间: {}",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(exp));
+            logger.info("createJwtToken|token过期时间: {}",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(exp));
             builder.setExpiration(exp);
         }
         return builder.compact();
@@ -58,7 +58,7 @@ public class TokenUtils {
      * @return
      */
     public static Claims parseJWTToken(String token) {
-
+        logger.info("parseJWTToken: {}",token);
         Claims claims = null;
         try{
             claims = Jwts.parser()

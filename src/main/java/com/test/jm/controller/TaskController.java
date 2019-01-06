@@ -62,9 +62,8 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/getResult")
-    public Result getresult(){
-        String id = "81598efb-ffa9-11e8-a19c-0242ac110002";
+    @RequestMapping("/getResult")
+    public Result getresult(@RequestBody String id){
         if(StringUtils.isBlank(id)){
             return new Result(ResultType.FAIL,"taskid不能为空",null);
         }
@@ -84,7 +83,7 @@ public class TaskController {
                 }
             }
             reader.close();
-            return new Result(ResultType.SUCCESS,null,buffer.toString());
+            return new Result(id, ResultType.SUCCESS,null,buffer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return new Result(ResultType.NOT_FOUND,e.getMessage(),null);

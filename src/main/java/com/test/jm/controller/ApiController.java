@@ -8,6 +8,7 @@ import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ApiService;
 import com.test.jm.service.RequestService;
+import com.test.jm.util.LogUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +112,8 @@ public class ApiController {
         }
 
         try {
-            HttpClientResult result = requestService.normal_request(apiDTO);
+            org.apache.logging.log4j.Logger log = LogUtil.getLogger("12345678");
+            HttpClientResult result = requestService.request(log, apiDTO);
             if(result.getRes_code().equals(1000)){
                 return new TestResult(null, ResultType.SUCCESS, result.getRes_body(), result);
             }

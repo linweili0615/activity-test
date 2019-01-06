@@ -17,6 +17,7 @@ public class HttpClientResult implements Serializable {
     private String res_cookies;
     private String res_headers;
     private String res_body;
+    private String result;
 
     public String getStart_time() {
         return start_time;
@@ -120,6 +121,14 @@ public class HttpClientResult implements Serializable {
 
     public void setRes_body(String res_body) {
         this.res_body = res_body;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.test.jm.domain;
 
-import com.test.jm.dto.TokenDTO;
-
 public class TokenResult{
     private String code;
     private String msg;
@@ -9,6 +7,22 @@ public class TokenResult{
     private String user_name;
     private String token;
 
+
+    public TokenResult() {
+    }
+
+    public TokenResult(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public TokenResult(String code, String msg, String user_id, String user_name, String token) {
+        this.code = code;
+        this.msg = msg;
+        this.user_id = user_id;
+        this.user_name = user_name;
+        this.token = token;
+    }
 
     public String getCode() {
         return code;

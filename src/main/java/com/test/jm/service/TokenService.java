@@ -33,11 +33,13 @@ public class TokenService {
     @DataSource("master")
     public Integer addToken(TokenDTO tokenDTO, long expirationdate){
         if(findTokenByUserId(tokenDTO.getUser_id())!=null){
-            tokenDTO.setExpire_time(LocalDateTime.now().plusMinutes(expirationdate));
+            System.out.println("token expire_time: " + LocalDateTime.now().plusHours(expirationdate));
+            tokenDTO.setExpire_time(LocalDateTime.now().plusHours(expirationdate));
             return tokenDao.updateToken(tokenDTO);
         }
         tokenDTO.setStatus("0");
-        tokenDTO.setExpire_time(LocalDateTime.now().plusMinutes(expirationdate));
+        System.out.println("token expire_time: " + LocalDateTime.now().plusHours(expirationdate));
+        tokenDTO.setExpire_time(LocalDateTime.now().plusHours(expirationdate));
         return tokenDao.addToken(tokenDTO);
     }
 

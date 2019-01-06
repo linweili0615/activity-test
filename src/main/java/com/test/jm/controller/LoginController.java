@@ -3,6 +3,7 @@ package com.test.jm.controller;
 import com.test.jm.domain.TokenResult;
 import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
+import com.test.jm.keys.ResultType;
 import com.test.jm.service.LoginService;
 import com.test.jm.service.TokenService;
 import com.test.jm.service.UserInfoService;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,60 +43,46 @@ public class LoginController {
 
     @PostMapping("/validtoken")
     @ResponseBody
-    public TokenDTO validtoken(HttpServletRequest request){
+    public TokenResult validtoken(HttpServletRequest request){
         TokenDTO tokenDTO = loginService.validToken(request);
         if( tokenDTO != null){
-            return tokenDTO;
+            return new TokenResult(ResultType.LOGIN, "已登录", tokenDTO.getUser_id(),tokenDTO.getUser_name(),tokenDTO.getToken());
         }
-       return null;
-    }
-
-    @RequestMapping("/test")
-    @ResponseBody
-    public String test1(){
-        return "login test";
+       return new TokenResult(ResultType.NOT_LOGIN, "未登录");
     }
 
     @PostMapping("/2login")
     @ResponseBody
     public TokenResult login2(HttpServletResponse response,
                               @RequestBody UserInfoDTO  userInfoDTO){
-        TokenResult tokenResult = new TokenResult();
         if(StringUtils.isBlank(userInfoDTO.getTelno())&& StringUtils.isBlank(userInfoDTO.getPwd())) {
-            tokenResult.setCode("203");
-            tokenResult.setMsg("用户名或密码不能为空");
-            return tokenResult;
+            return new TokenResult(ResultType.FAIL,"用户名或密码不能为空");
         }
-
         userInfoDTO.setPwd(Md5Util.encoder(userInfoDTO.getPwd()));
-        UserInfoDTO uu = userInfoService.getUserInfo(userInfoDTO);
-        if(uu == null){
-            tokenResult.setCode("202");
-            tokenResult.setMsg("用户名或密码错误");
-            return tokenResult;
+        UserInfoDTO userInfo = userInfoService.getUserInfo(userInfoDTO);
+        if(userInfo == null){
+            return new TokenResult(ResultType.FAIL,"用户名或密码错误");
         }
-
-        long expirationdate = 2;
-        String token =  TokenUtils.createJwtToken(uu.getId(), expirationdate);
+        long expirationdate = 24;
+        String token =  TokenUtils.createJwtToken(userInfo.getId(), expirationdate);
         TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setUser_name(uu.getUsername());
-        tokenDTO.setUser_id(uu.getId());
+        tokenDTO.setUser_name(userInfo.getUsername());
+        tokenDTO.setUser_id(userInfo.getId());
         tokenDTO.setToken(token);
         try {
             Integer count = tokenService.addToken(tokenDTO, expirationdate);
-            tokenResult.setCode("200");
-            tokenResult.setMsg("获取token成功");
-            tokenResult.setUser_id(tokenDTO.getUser_id());
-            tokenResult.setUser_name(uu.getUsername());
-            tokenResult.setToken(token);
-            return tokenResult;
+            if(count > 0){
+                Cookie cookie = new Cookie("jm",token);
+                cookie.setPath("/");
+                //设置Cookie的有效期为1天
+                cookie.setMaxAge(60*60*24*7);
+                response.addCookie(cookie);
+            }
+            return new TokenResult(ResultType.LOGIN,"获取token成功",tokenDTO.getUser_id(),userInfo.getUsername(),token);
         } catch (Exception e) {
-            logger.info("写入token异常");
+            logger.info("token写入异常");
             e.printStackTrace();
-            tokenResult.setCode("201");
-            tokenResult.setMsg("写入token异常");
-            return tokenResult;
-
+            return new TokenResult(ResultType.FAIL,e.getMessage());
         }
     }
 

@@ -22,13 +22,17 @@ spring:
       jdbc-url: jdbc:mysql://10.100.99.164:3306/test?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
       username: root
       password: 123456a
-
-mybatis:
-  type-aliases-package: com.test.jm.dto
-  mapper-locations: classpath:mappers/*.xml
+  devtools:
+    restart:
+      enabled: true
+      #设置重启的目录
+#      additional-paths: src/main/java
+      #classpath目录下的WEB-INF文件夹内容修改不重启
+      #additional-exclude: WEB-INF/**
+  thymeleaf:
+    cache: false
 test:
   appname: 123456a
-#mybatis分页
 pagehelper:
   helper-dialect: mysql
   reasonable: true
@@ -42,5 +46,5 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:1111//eureka/
   instance:
-    ip-address: 192.168.1.106
+    ip-address: localhost
     prefer-ip-address: true

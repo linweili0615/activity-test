@@ -22,15 +22,6 @@ spring:
       jdbc-url: jdbc:mysql://10.100.99.164:3306/test?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
       username: root
       password: 123456a
-  devtools:
-    restart:
-      enabled: true
-      #设置重启的目录
-#      additional-paths: src/main/java
-      #classpath目录下的WEB-INF文件夹内容修改不重启
-      #additional-exclude: WEB-INF/**
-  thymeleaf:
-    cache: false
 test:
   appname: 123456a
 pagehelper:
@@ -44,7 +35,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: false
     serviceUrl:
-      defaultZone: http://localhost:1111//eureka/
+      defaultZone: http://10.100.14.107:21111/eureka/
   instance:
-    ip-address: localhost
+    ip-address: 10.100.97.31
     prefer-ip-address: true

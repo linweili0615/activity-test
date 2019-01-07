@@ -205,5 +205,22 @@ public class ApiController {
         }
     }
 
+    @PostMapping("/del/ids")
+    public TestResult removerInterfaceIds(@RequestBody List<String> ids) {
+        if (null == ids || ids.size() == 0 ) {
+            return new TestResult(ResultType.FAIL, "接口ID集合不能为空");
+        }
+        try {
+            Integer count = apiService.delApiByIds(ids);
+            if(count > 0){
+                return new TestResult(ResultType.SUCCESS, "记录已删除");
+            }
+            return new TestResult(ResultType.FAIL, "接口ID不存在");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return new TestResult(ResultType.ERROR, e.getMessage());
+        }
+    }
+
 
 }

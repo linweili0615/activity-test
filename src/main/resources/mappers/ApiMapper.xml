@@ -106,4 +106,12 @@
         DELETE FROM interface WHERE id = #{id}
     </delete>
 
+    <delete id="deleteInterfaceByIds" parameterType="java.util.List">
+        DELETE FROM interface
+        WHERE id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
 </mapper>

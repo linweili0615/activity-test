@@ -20,6 +20,7 @@ public class ApiService {
         String uid = UUID.randomUUID().toString();
         apiDTO.setId(uid);
         apiDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
+        apiDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
         apiDao.addInterface(apiDTO);
         return uid;
 
@@ -27,6 +28,12 @@ public class ApiService {
 
     public Integer delInterfaceById(String id) {
         return apiDao.deleteInterfaceById(id);
+
+    }
+
+
+    public Integer delApiByIds(List<String> ids) {
+        return apiDao.deleteInterfaceByIds(ids);
 
     }
 

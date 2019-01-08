@@ -1,7 +1,7 @@
 package com.test.jm.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.jm.domain.HttpClientResult;
+import com.test.jm.dto.test.ApiDTO;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -179,20 +179,15 @@ public class RequestUtils {
 
     /**
      * 发送get请求；带请求头和请求参数
-     *
-     * @param url 请求地址
-     * @param headers 请求头集合
-     * @param cookies 请求cookie集合
-     * @param params 请求参数集合
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doGet(Logger log, HttpClientResult result, String url, String headers, String cookies, String params, String paramstype) throws Exception {
+    public static HttpClientResult doGet(Logger log, HttpClientResult result, ApiDTO apiDTO) throws Exception {
         // 创建访问的地址
-        URIBuilder uriBuilder = new URIBuilder(url);
+        URIBuilder uriBuilder = new URIBuilder(apiDTO.getUrl());
         //组装参数
-        if ( params!= null && paramstype.equals("form") ) {
-            Map<String, Object> param = CommonUtils.strToMap(params);
+        if ( apiDTO.getBody()!= null && apiDTO.getParamstype().equals("form") ) {
+            Map<String, Object> param = CommonUtils.strToMap(apiDTO.getBody());
             for (String key : param.keySet()) {
                 uriBuilder.addParameter(key, (String) param.get(key));
             }
@@ -203,63 +198,52 @@ public class RequestUtils {
         log.info("Request URL: {}",httpGet.getURI().toString());
         log.info("Request Method: {} {}",httpGet.getRequestLine().getProtocolVersion(),httpGet.getMethod());
         setRequestConfig(httpGet);
-        packageHeader(log, result, headers, httpGet);
-        setCookies(log, result, cookies);
+        packageHeader(log, result, apiDTO.getHeaders(), httpGet);
+        setCookies(log, result, apiDTO.getCookies());
 
         return getHttpClientResult(log, result, httpGet);
     }
 
     /**
      * 发送post请求；带请求头和请求参数
-     *
-     * @param url 请求地址
-     * @param headers 请求头集合
-     * @param params 请求参数集合
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPost(Logger log, HttpClientResult result, String url, String headers,String cookies, String params, String paramstype) throws Exception {
-        HttpPost httpPost = new HttpPost(url);
+    public static HttpClientResult doPost(Logger log, HttpClientResult result, ApiDTO apiDTO) throws Exception {
+        HttpPost httpPost = new HttpPost(apiDTO.getUrl());
         result.setReq_url(httpPost.getURI().toString());
         log.info("Request URL: {}",httpPost.getURI().toString());
         log.info("Request Method: {} {}",httpPost.getRequestLine().getProtocolVersion(),httpPost.getMethod());
         setRequestConfig(httpPost);
-        packageHeader(log, result, headers, httpPost);
-        setCookies(log, result, cookies);
-        packageParam(log, result, params, paramstype, httpPost);
+        packageHeader(log, result, apiDTO.getHeaders(), httpPost);
+        setCookies(log, result, apiDTO.getCookies());
+        packageParam(log, result, apiDTO.getBody(), apiDTO.getParamstype(), httpPost);
 
         return getHttpClientResult(log, result, httpPost);
     }
 
     /**
      * 发送put请求；带请求参数
-     *
-     * @param url 请求地址
-     * @param params 参数集合
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doPut(Logger log, HttpClientResult result,String url, String headers,String cookies, String params, String paramstype) throws Exception {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPut httpPut = new HttpPut(url);
+    public static HttpClientResult doPut(Logger log, HttpClientResult result, ApiDTO apiDTO) throws Exception {
+        HttpPut httpPut = new HttpPut(apiDTO.getUrl());
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPut.setConfig(requestConfig);
-        packageParam(log, result, params,paramstype, httpPut);
+        packageParam(log, result, apiDTO.getBody(),apiDTO.getParamstype(), httpPut);
         return getHttpClientResult(log, result, httpPut);
     }
 
     /**
      * 发送delete请求；带请求参数
-     *
-     * @param url 请求地址
-     * @param params 参数集合
      * @return
      * @throws Exception
      */
-    public static HttpClientResult doDelete(Logger log, HttpClientResult result, String url, String headers,String cookies, String params, String paramstype) throws Exception {
-        Map<String, Object> map = CommonUtils.strToMap(params);
+    public static HttpClientResult doDelete(Logger log, HttpClientResult result, ApiDTO apiDTO) throws Exception {
+        Map<String, Object> map = CommonUtils.strToMap(apiDTO.getBody());
         map.put("_method", "delete");
-        return doPost(log, result, url, headers, cookies, params,paramstype);
+        return doPost(log, result, apiDTO);
     }
 
     /**
@@ -267,9 +251,9 @@ public class RequestUtils {
      * @param params
      * @param httpMethod
      */
-    public static void packageHeader(Logger log, HttpClientResult result, String params, HttpRequestBase httpMethod) throws JsonProcessingException {
+    public static void packageHeader(Logger log, HttpClientResult result, String params, HttpRequestBase httpMethod) {
         // 封装请求头
-        if (params != null) {
+        if (params != null && params != "{}") {
             log.info("Request Headers:\n{}",params);
             result.setReq_headers(params);
             Map<String, Object> param = CommonUtils.strToMap(params);
@@ -277,15 +261,14 @@ public class RequestUtils {
                 httpMethod.setHeader(key, (String) param.get(key));
             }
         }
-
     }
 
     public static List<Cookie> getCookies(){
         return cookieStore.getCookies();
     }
 
-    public static void setCookies(Logger log, HttpClientResult result, String cookies) throws JsonProcessingException {
-        if (cookies != null) {
+    public static void setCookies(Logger log, HttpClientResult result, String cookies){
+        if (cookies != null && cookies != "{}") {
             log.info("Request Cookies:\n{}",cookies);
             result.setReq_cookies(cookies);
             Map<String, Object> param = CommonUtils.strToMap(cookies);
@@ -312,7 +295,7 @@ public class RequestUtils {
     public static void packageParam(Logger log, HttpClientResult result, String params, String paramstype, HttpEntityEnclosingRequestBase httpMethod)
             throws UnsupportedEncodingException {
         // 封装请求参数
-        if (params != null) {
+        if (params != null && params != "{}") {
             log.info("Request Parameters:\n{}",params);
             result.setReq_body(params);
             switch (paramstype){

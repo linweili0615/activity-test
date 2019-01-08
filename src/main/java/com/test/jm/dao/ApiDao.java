@@ -1,6 +1,7 @@
 package com.test.jm.dao;
 
 import com.test.jm.domain.page.ApiPage;
+import com.test.jm.dto.APIvariables;
 import com.test.jm.dto.test.ApiDTO;
 
 import java.util.List;
@@ -21,4 +22,5 @@ public interface ApiDao {
 
     List<ApiDTO> getApiList(ApiDTO apiDTO);
 
+    List<APIvariables> getApiVariableList();
 }

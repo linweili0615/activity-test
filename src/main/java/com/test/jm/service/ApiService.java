@@ -2,6 +2,7 @@ package com.test.jm.service;
 
 import com.test.jm.dao.ApiDao;
 import com.test.jm.domain.page.ApiPage;
+import com.test.jm.dto.APIvariables;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,10 @@ public class ApiService {
     public List<ApiDTO> getApiList(ApiPage apiPage) {
         return apiDao.getApiList(apiPage);
 
+    }
+
+    public List<APIvariables> getAPIvariableList(){
+        return apiDao.getApiVariableList();
     }
 
 

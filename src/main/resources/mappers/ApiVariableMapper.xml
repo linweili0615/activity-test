@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.jm.dao.ApiDao">
+
+    <resultMap id="Variabl_list" type="com.test.jm.dto.APIvariables">
+        <id column="id" property="id"></id>
+        <result column="VariableName" property="VariableName"></result>
+        <result column="VariableValue" property="VariableValue"/>
+    </resultMap>
+
+    <select id="getApiVariableList"  resultMap="Variabl_list">
+        SELECT * FROM api_variables
+    </select>
+
+</mapper>

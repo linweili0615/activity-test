@@ -33,9 +33,7 @@ public class CommonUtils {
         if(StringUtils.isNotBlank(source) && !"{}".equalsIgnoreCase(source)){
             Pattern regex = Pattern.compile("\\$\\{([^}]*)\\}");
             Matcher matcher = regex.matcher(source);
-            //循环，字符串中有多少个符合的，就循环多少次
             while(matcher.find()) {
-                //每一个符合正则的字符串
                 String e = matcher.group();
                 list.add(e);
             }
@@ -57,31 +55,21 @@ public class CommonUtils {
         return result;
     }
 
-
-    //str特殊字符替换
-    public static String replaceStr(String special_str){
-        if(StringUtils.isNotBlank(special_str)){
-            String final_str = special_str
-                    .replaceAll("\\$\\{",Matcher.quoteReplacement("\\$\\{"))
-                    .replaceAll("\\}",Matcher.quoteReplacement("\\}"));
-            System.out.println("final_str: "+ final_str);
-            return final_str;
-        }
-        return null;
-    }
-
     //常亮字符替换
-    public static void replaceCommon(ApiDTO apiDTO, String special_str){
+    public static void replaceCommon(String type, ApiDTO apiDTO, String special_str){
         if(null != special_str){
             switch (special_str){
                 case CommonType.TELNO:
-                    setCommon(apiDTO, replaceStr(special_str), get_tel_no());
+                    setCommon(type, apiDTO, special_str, get_tel_no());
                     break;
                 case CommonType.IDCARD:
-                    setCommon(apiDTO, replaceStr(special_str), get_id_card());
+                    setCommon(type, apiDTO, special_str, get_id_card());
                     break;
                 case CommonType.BANKCARD:
-                    setCommon(apiDTO, replaceStr(special_str), get_bank_card());
+                    setCommon(type, apiDTO, special_str, get_bank_card());
+                    break;
+                case CommonType.NEWID:
+                    setCommon(type, apiDTO, special_str, UUID.randomUUID().toString());
                     break;
                 default:
                     break;
@@ -91,17 +79,30 @@ public class CommonUtils {
 
     //前置字符替换
     public static void replacePre(ApiDTO apiDTO, String special_str){
+        System.out.println("replacePre: " + special_str);
         if(null != special_str){
             String special = special_str.split("\\{")[1].split("\\}")[0];
+            System.out.println("special: " + special_str);
             Object getPre = RequestThreadLocal.getInfo().getOrDefault( special, "replacePre");
+            System.out.println("getPre: " + getPre);
             if(!"replacePre".equals(getPre)){
-                apiDTO.setBody(apiDTO.getBody().replaceAll(replaceStr(special_str), String.valueOf(getPre)));
+                apiDTO.setBody(apiDTO.getBody().replaceAll(replaceSpecial(special_str), String.valueOf(getPre)));
             }
         }
     }
 
-    public static void setCommon(ApiDTO apiDTO, String special_str, String str){
-        apiDTO.setBody(apiDTO.getBody().replaceAll(special_str, str));
+    public static void setCommon(String type, ApiDTO apiDTO, String special_str, String str){
+        if("param".equals(type)){
+            apiDTO.setBody(apiDTO.getBody().replaceAll(replaceSpecial(special_str), str));
+        }else{
+            apiDTO.setUrl(apiDTO.getUrl().replaceAll(replaceSpecial(special_str), str));
+        }
+
+    }
+
+    public static String replaceSpecial(String str){
+        return str.replaceAll("\\$\\{",Matcher.quoteReplacement("\\$\\{"))
+                .replaceAll("\\}",Matcher.quoteReplacement("\\}"));
     }
 
     public static String ObjectToJsonStr(Object object) throws JsonProcessingException {

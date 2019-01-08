@@ -1,6 +1,5 @@
 package com.test.jm.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskResult;
 import com.test.jm.dto.test.ApiDTO;
@@ -26,18 +25,26 @@ public class RequestService {
     @Autowired
     private ApiService apiService;
 
-    //替换变量属性
+    //前置处理
     private void replaceFirst(ApiDTO apiDTO){
+        //提取params
         List<String> matchList = CommonUtils.getMatchList(apiDTO.getBody());
-        if(null != matchList){
-            //前置处理
+        if(null != matchList && matchList.size()>0){
             for (String match: matchList) {
-                CommonUtils.replaceCommon(apiDTO, match);
-                CommonUtils.replacePre(apiDTO, match);
+                CommonUtils.replaceCommon("param", apiDTO, match);
+//                CommonUtils.replacePre(apiDTO, match);
+            }
+        }
+        //提取url
+        List<String> matchList1 = CommonUtils.getMatchList(apiDTO.getUrl());
+        if(null != matchList1 && matchList1.size()>0){
+            for (String match: matchList1) {
+                CommonUtils.replaceCommon("url", apiDTO, match);
+//                CommonUtils.replacePre(apiDTO, match);
             }
         }
     }
-    //提取参数
+    //后置处理
     private void replacePost(String post_processors){
         Map<String, Object> map = RequestThreadLocal.getInfo();
         if(StringUtils.isNotBlank(post_processors)){
@@ -62,13 +69,14 @@ public class RequestService {
 
     public HttpClientResult request(Logger logger,ApiDTO apiDTO) throws Exception {
         HttpClientResult result = new HttpClientResult();
+        replaceFirst(apiDTO);
         setReqResult(result, apiDTO);
         switch (apiDTO.getMethod().toUpperCase()){
             case RequestType.GET :
-                result = RequestUtils.doGet(logger, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(),apiDTO.getBody(), apiDTO.getParamstype());
+                result = RequestUtils.doGet(logger, result, apiDTO);
                 break;
             case RequestType.POST :
-                result = RequestUtils.doPost(logger, result, apiDTO.getUrl(),apiDTO.getHeaders(),apiDTO.getCookies(), apiDTO.getBody(), apiDTO.getParamstype());
+                result = RequestUtils.doPost(logger, result, apiDTO);
                 break;
             default:
                 break;
@@ -95,7 +103,6 @@ public class RequestService {
         for (TaskExtendDTO taskExtendDTO: data) {
             ApiDTO apiDTO = apiService.selectInterfaceById(taskExtendDTO.getApi_id());
             try {
-                replaceFirst(apiDTO);
                 Date date1 = new Date();
                 log.info("{} 开始请求 ==> api: {}",dateFormat.format(date1),apiDTO.getId());
                 HttpClientResult result = request(log, apiDTO);
@@ -122,6 +129,8 @@ public class RequestService {
         }
         log.info("执行结束 TASK: {}",id);
         Date end = new Date();
+        long interval = (start.getTime() - end.getTime())/1000;
+        taskResult.setConsuming_time(interval);
         taskResult.setEnd_time(dateFormat.format(end));
         taskResult.setSuccess(success);
         taskResult.setFail(fail);

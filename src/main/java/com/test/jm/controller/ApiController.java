@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.test.jm.domain.*;
 import com.test.jm.domain.page.ApiPage;
+import com.test.jm.dto.APIvariables;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ApiService;
@@ -42,6 +43,20 @@ public class ApiController {
             return new Result(ResultType.NOT_FOUND,null, null);
         } catch (Exception e) {
             return new Result(ResultType.FAIL,e.getMessage(),null);
+        }
+    }
+
+    @GetMapping("/variable_list")
+    public ListResult getVariableList(){
+        try {
+            List<APIvariables> list = apiService.getAPIvariableList();
+            if(null == list && list.size() == 0){
+                return new ListResult(ResultType.FAIL,"变量列表为空");
+            }
+            return new ListResult(ResultType.SUCCESS,"获取变量列表成功",list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ListResult(ResultType.ERROR,e.getMessage());
         }
     }
 
@@ -119,6 +134,7 @@ public class ApiController {
             }
             return new TestResult(null, ResultType.SUCCESS, "", result);
         } catch (Exception e) {
+            e.printStackTrace();
             return new TestResult(null, ResultType.ERROR, e.getMessage(), null);
         }
 

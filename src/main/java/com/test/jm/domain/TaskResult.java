@@ -8,6 +8,7 @@ public class TaskResult {
     private Integer fail;
     private String percent;
     private String start_time;
+    private long consuming_time;
     private String end_time;
     private String executor;
     private List<HttpClientResult> resultList;
@@ -15,12 +16,13 @@ public class TaskResult {
     public TaskResult() {
     }
 
-    public TaskResult(Integer total, Integer success, Integer fail, String percent, String start_time, String end_time, String executor, List<HttpClientResult> resultList) {
+    public TaskResult(Integer total, Integer success, Integer fail, String percent, String start_time, long consuming_time, String end_time, String executor, List<HttpClientResult> resultList) {
         this.total = total;
         this.success = success;
         this.fail = fail;
         this.percent = percent;
         this.start_time = start_time;
+        this.consuming_time = consuming_time;
         this.end_time = end_time;
         this.executor = executor;
         this.resultList = resultList;
@@ -88,6 +90,14 @@ public class TaskResult {
 
     public void setResultList(List<HttpClientResult> resultList) {
         this.resultList = resultList;
+    }
+
+    public long getConsuming_time() {
+        return consuming_time;
+    }
+
+    public void setConsuming_time(long consuming_time) {
+        this.consuming_time = consuming_time;
     }
 
     @Override

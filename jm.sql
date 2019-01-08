@@ -18,6 +18,21 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for interface
 -- ----------------------------
+DROP TABLE IF EXISTS `api_variables`;
+CREATE TABLE `api_variables` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `VariableName` varchar(255) DEFAULT NULL,
+  `VariableValue` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of api_variables
+-- ----------------------------
+INSERT INTO `api_variables` VALUES ('1', '手机号', '${telno}');
+INSERT INTO `api_variables` VALUES ('2', '身份证', '${idcard}');
+INSERT INTO `api_variables` VALUES ('3', '银行卡', '${bankcard}');
+INSERT INTO `api_variables` VALUES ('4', '随机ID', '${newid}');
 DROP TABLE IF EXISTS `task_case_result`;
 CREATE TABLE `task_case_result` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

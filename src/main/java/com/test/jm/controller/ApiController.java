@@ -2,13 +2,18 @@ package com.test.jm.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import com.test.jm.domain.*;
 import com.test.jm.domain.page.ApiPage;
+import com.test.jm.domain.swagger.Group;
+import com.test.jm.domain.swagger.Info;
+import com.test.jm.domain.swagger.JsonSwagger;
 import com.test.jm.dto.APIvariables;
 import com.test.jm.dto.test.ApiDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ApiService;
 import com.test.jm.service.RequestService;
+import com.test.jm.util.CommonUtils;
 import com.test.jm.util.LogUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -16,7 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -115,6 +123,35 @@ public class ApiController {
 //            e.printStackTrace();
             return new ApiResult(ResultType.FAIL, e.getMessage(), null);
         }
+    }
+
+    @GetMapping("/swagger")
+    public String getSwaggerJson() throws Exception {
+        ApiDTO apiDTO = new ApiDTO();
+        apiDTO.setUrl("http://10.100.14.5:9002/v2/api-docs");
+        apiDTO.setMethod("GET");
+        org.apache.logging.log4j.Logger log = LogUtil.getLogger("12345678");
+        HttpClientResult results = requestService.request(log, apiDTO);
+        String res = results.getRes_body();
+        Gson gson = new Gson();
+        JsonSwagger swagger = gson.fromJson(res, JsonSwagger.class);
+        String host = swagger.getHost();
+        System.out.println(host);
+        List<Group> groupList = swagger.getTags();
+        System.out.println(groupList.toString());
+        Map<String, Map<String,Map<String, Info>>> map = swagger.getPaths();
+        for (String key : map.keySet()) {
+            System.out.println("URI: "+key);
+            Map<String,Map<String, Info>> mapmethod = map.get(key);
+            for (String method : mapmethod.keySet()) {
+                System.out.println("METHOD: "+method);
+                Info info = gson.fromJson(mapmethod.get(method).toString(),Info.class);
+                System.out.println("INFO: "+ info.toString());
+            }
+
+        }
+
+        return "ok";
     }
 
     @PostMapping("/test")

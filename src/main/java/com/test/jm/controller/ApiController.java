@@ -10,6 +10,7 @@ import com.test.jm.domain.swagger.Info;
 import com.test.jm.domain.swagger.JsonSwagger;
 import com.test.jm.dto.APIvariables;
 import com.test.jm.dto.test.ApiDTO;
+import com.test.jm.dto.test.CaseDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ApiService;
 import com.test.jm.service.RequestService;
@@ -135,8 +136,9 @@ public class ApiController {
         String host = "http://" + swagger.getHost();
         List<Group> groupList = swagger.getTags();
         List<ApiDTO> apiDTOList = new ArrayList<>();
+        List<CaseDTO> caseDTOList = new ArrayList<>();
         for (Group group : groupList) {
-            
+
             Map<String, Map<String,Map<String, Info>>> map = swagger.getPaths();
             for (String key : map.keySet()) {
                 System.out.println("URI: "+key);

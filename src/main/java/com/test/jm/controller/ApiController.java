@@ -135,8 +135,7 @@ public class ApiController {
         String res = results.getRes_body();
         Gson gson = new Gson();
         JsonSwagger swagger = gson.fromJson(res, JsonSwagger.class);
-        String host = swagger.getHost();
-        System.out.println(host);
+        String host = "http://" + swagger.getHost();
         List<Group> groupList = swagger.getTags();
         System.out.println(groupList.toString());
         Map<String, Map<String,Map<String, Info>>> map = swagger.getPaths();
@@ -145,8 +144,21 @@ public class ApiController {
             Map<String,Map<String, Info>> mapmethod = map.get(key);
             for (String method : mapmethod.keySet()) {
                 System.out.println("METHOD: "+method);
-                Info info = gson.fromJson(mapmethod.get(method).toString(),Info.class);
-                System.out.println("INFO: "+ info.toString());
+                Map<String, Info> info = mapmethod.get(method);
+                for (String mt : info.keySet()) {
+                    //所在分组
+                    if(mt.equals("tags")){
+
+                    }
+                    if(mt.equals("summary")){
+                        String summary = String.valueOf(info.get(mt));
+                        System.out.println("summary: " + summary);
+                    }
+                    if(mt.equals("consumes")){
+                        List consumes = (List) info.get(mt);
+                        System.out.println("consumes: " + consumes.toString());
+                    }
+                }
             }
 
         }

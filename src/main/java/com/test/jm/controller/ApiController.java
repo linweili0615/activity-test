@@ -21,10 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -137,31 +134,34 @@ public class ApiController {
         JsonSwagger swagger = gson.fromJson(res, JsonSwagger.class);
         String host = "http://" + swagger.getHost();
         List<Group> groupList = swagger.getTags();
-        System.out.println(groupList.toString());
-        Map<String, Map<String,Map<String, Info>>> map = swagger.getPaths();
-        for (String key : map.keySet()) {
-            System.out.println("URI: "+key);
-            Map<String,Map<String, Info>> mapmethod = map.get(key);
-            for (String method : mapmethod.keySet()) {
-                System.out.println("METHOD: "+method);
-                Map<String, Info> info = mapmethod.get(method);
-                for (String mt : info.keySet()) {
-                    //所在分组
-                    if(mt.equals("tags")){
+        List<ApiDTO> apiDTOList = new ArrayList<>();
+        for (Group group : groupList) {
+            
+            Map<String, Map<String,Map<String, Info>>> map = swagger.getPaths();
+            for (String key : map.keySet()) {
+                System.out.println("URI: "+key);
+                Map<String,Map<String, Info>> mapmethod = map.get(key);
+                for (String method : mapmethod.keySet()) {
+                    System.out.println("METHOD: "+method);
+                    Map<String, Info> info = mapmethod.get(method);
+                    for (String mt : info.keySet()) {
+                        //所在分组
+                        if(mt.equals("tags")){
 
-                    }
-                    if(mt.equals("summary")){
-                        String summary = String.valueOf(info.get(mt));
-                        System.out.println("summary: " + summary);
-                    }
-                    if(mt.equals("consumes")){
-                        List consumes = (List) info.get(mt);
-                        System.out.println("consumes: " + consumes.toString());
+                        }
+                        if(mt.equals("summary")){
+                            String summary = String.valueOf(info.get(mt));
+                            System.out.println("summary: " + summary);
+                        }
+                        if(mt.equals("consumes")){
+                            List consumes = (List) info.get(mt);
+                            System.out.println("consumes: " + consumes.toString());
+                        }
                     }
                 }
             }
-
         }
+
 
         return "ok";
     }

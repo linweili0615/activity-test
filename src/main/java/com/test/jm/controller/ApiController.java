@@ -16,6 +16,7 @@ import com.test.jm.service.ApiService;
 import com.test.jm.service.RequestService;
 import com.test.jm.util.CommonUtils;
 import com.test.jm.util.LogUtil;
+import com.test.jm.util.UserThreadLocal;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,6 +126,8 @@ public class ApiController {
 
     @GetMapping("/swagger")
     public String getSwaggerJson() throws Exception {
+        String project_id = "";
+        String case_id = "";
         ApiDTO apiDTO = new ApiDTO();
         apiDTO.setUrl("http://10.100.14.5:9002/v2/api-docs");
         apiDTO.setMethod("GET");
@@ -138,31 +141,50 @@ public class ApiController {
         List<ApiDTO> apiDTOList = new ArrayList<>();
         List<CaseDTO> caseDTOList = new ArrayList<>();
         for (Group group : groupList) {
-
+            CaseDTO caseDTO = new CaseDTO();
+            caseDTO.setProject_id(project_id);
+            caseDTO.setName(group.getDescription());
+            caseDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_id());
+            caseDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_id());
+            caseDTOList.add(caseDTO);
             Map<String, Map<String,Map<String, Info>>> map = swagger.getPaths();
-            for (String key : map.keySet()) {
-                System.out.println("URI: "+key);
-                Map<String,Map<String, Info>> mapmethod = map.get(key);
+            for (String uri : map.keySet()) {
+                ApiDTO api = new ApiDTO();
+                Map<String,Map<String, Info>> mapmethod = map.get(uri);
                 for (String method : mapmethod.keySet()) {
-                    System.out.println("METHOD: "+method);
+                    api.setMethod(method.toUpperCase());
+                    if(method.toUpperCase().equals("POST")){
+                        Map<String, String> header = new HashMap<>();
+                        header.put("Content-Type","application/json;charset=UTF8");
+                        api.setHeaders(header.toString());
+                    }
+                    api.setUrl(host + uri);
+                    api.setParamstype("form");
+                    api.setProject_id(project_id);
+                    api.setCase_id(case_id);
                     Map<String, Info> info = mapmethod.get(method);
                     for (String mt : info.keySet()) {
                         //所在分组
                         if(mt.equals("tags")){
-
-                        }
-                        if(mt.equals("summary")){
-                            String summary = String.valueOf(info.get(mt));
-                            System.out.println("summary: " + summary);
-                        }
-                        if(mt.equals("consumes")){
-                            List consumes = (List) info.get(mt);
-                            System.out.println("consumes: " + consumes.toString());
+                            List infolist = (List) info.get("tags");
+                            if(infolist.get(0).equals(group.getName())){
+                                if(mt.equals("summary")){
+                                    String api_name = String.valueOf(info.get(mt));
+                                    api.setName(api_name);
+                                }
+                                if(mt.equals("consumes")){
+                                    List consumes = (List) info.get(mt);
+                                    System.out.println("consumes: " + consumes.toString());
+                                }
+                            }
                         }
                     }
                 }
+                apiDTOList.add(api);
             }
         }
+        System.out.println("分组数：" + caseDTOList.size());
+        System.out.println("接口数：" + apiDTOList.size());
 
 
         return "ok";

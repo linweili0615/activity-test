@@ -167,16 +167,27 @@ public class ApiController {
                         //所在分组
                         if(mt.equals("tags")){
                             List infolist = (List) info.get("tags");
-                            if(infolist.get(0).equals(group.getName())){
-                                if(mt.equals("summary")){
-                                    String api_name = String.valueOf(info.get(mt));
-                                    api.setName(api_name);
-                                }
-                                if(mt.equals("consumes")){
-                                    List consumes = (List) info.get(mt);
-                                    System.out.println("consumes: " + consumes.toString());
+                            for (Object folist: infolist) {
+                                if(folist.toString().equals(group.getName())){
+                                    System.out.println("mt: " + mt);
+                                    System.out.println("infolist: " + infolist);
+                                    System.out.println("groupName: " + group.getName());
+                                    if(mt.equals("summary")){
+                                        System.out.println("summary"+ info.get(mt));
+                                        String api_name = String.valueOf(info.get(mt));
+                                        api.setName(api_name);
+                                    }
+                                    if(mt.equals("consumes")){
+                                        System.out.println("consumes"+ info.get(mt));
+                                        List consumes = (List) info.get(mt);
+                                        System.out.println("consumes: " + consumes.toString());
+                                    }
+                                }else {
+                                    System.out.println("666infolist: " + infolist);
+                                    System.out.println("666groupName: " + group.getName());
                                 }
                             }
+
                         }
                     }
                 }
@@ -185,6 +196,8 @@ public class ApiController {
         }
         System.out.println("分组数：" + caseDTOList.size());
         System.out.println("接口数：" + apiDTOList.size());
+        System.out.println(caseDTOList.toString());
+        System.out.println(apiDTOList.toString());
 
 
         return "ok";

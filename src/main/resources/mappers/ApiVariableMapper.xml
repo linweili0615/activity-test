@@ -4,13 +4,12 @@
 <mapper namespace="com.test.jm.dao.ApiDao">
 
     <resultMap id="Variabl_list" type="com.test.jm.dto.APIvariables">
-        <id column="id" property="id"></id>
         <result column="VariableName" property="VariableName"></result>
         <result column="VariableValue" property="VariableValue"/>
     </resultMap>
 
     <select id="getApiVariableList"  resultMap="Variabl_list">
-        SELECT * FROM api_variables
+        SELECT VariableName,VariableValue FROM api_variables
     </select>
 
 </mapper>

@@ -57,9 +57,6 @@ public class ApiController {
     public ListResult getVariableList(){
         try {
             List<APIvariables> list = apiService.getAPIvariableList();
-            if(null == list && list.size() == 0){
-                return new ListResult(ResultType.FAIL,"变量列表为空");
-            }
             return new ListResult(ResultType.SUCCESS,"获取变量列表成功",list);
         } catch (Exception e) {
             e.printStackTrace();

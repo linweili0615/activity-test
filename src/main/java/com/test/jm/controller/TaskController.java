@@ -55,7 +55,7 @@ public class TaskController {
             return new Result(ResultType.SUCCESS,null,list);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return new Result(ResultType.NOT_FOUND,e.getMessage(),null);
+            return new Result(ResultType.ERROR,e.getMessage(),null);
         } catch (IOException e) {
             e.printStackTrace();
             return new Result(ResultType.ERROR,e.getMessage(),null);

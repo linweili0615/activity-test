@@ -129,7 +129,7 @@ public class RequestService {
         }
         log.info("执行结束 TASK: {}",id);
         Date end = new Date();
-        long interval = (start.getTime() - end.getTime())/1000;
+        long interval = ( end.getTime() - start.getTime())/1000;
         taskResult.setConsuming_time(interval);
         taskResult.setEnd_time(dateFormat.format(end));
         taskResult.setSuccess(success);

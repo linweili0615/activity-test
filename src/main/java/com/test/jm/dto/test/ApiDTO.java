@@ -1,7 +1,5 @@
 package com.test.jm.dto.test;
 
-import java.time.LocalDateTime;
-
 public class ApiDTO {
     private String id;
     private String project_id;

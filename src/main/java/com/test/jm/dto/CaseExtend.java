@@ -1,7 +1,5 @@
 package com.test.jm.dto;
 
-import com.test.jm.dto.test.CaseDTO;
-
 import java.util.List;
 
 public class CaseExtend {

@@ -1,4 +1,4 @@
-package com.test.jm.dto.test;
+package com.test.jm.dto;
 
 public class ApiDTO {
     private String id;

@@ -1,15 +1,15 @@
-package com.test.jm.dto.test;
+package com.test.jm.dto;
 
 import java.time.LocalDateTime;
 
-public class TaskDTO {
+public class ProjectDTO {
     private String id;
-    private String name;
-    private String status;
+    private String project_name;
+    private Integer status;
     private String author;
     private String update_author;
-    private LocalDateTime create_time;
-    private LocalDateTime modify_time;
+    private String create_time;
+    private String modify_time;
 
     public String getId() {
         return id;
@@ -19,20 +19,12 @@ public class TaskDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getProject_name() {
+        return project_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setProject_name(String project_name) {
+        this.project_name = project_name;
     }
 
     public String getAuthor() {
@@ -51,28 +43,36 @@ public class TaskDTO {
         this.update_author = update_author;
     }
 
-    public LocalDateTime getCreate_time() {
+    public String getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(LocalDateTime create_time) {
+    public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
 
-    public LocalDateTime getModify_time() {
+    public String getModify_time() {
         return modify_time;
     }
 
-    public void setModify_time(LocalDateTime modify_time) {
+    public void setModify_time(String modify_time) {
         this.modify_time = modify_time;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return "TaskDTO{" +
+        return "ProjectDTO{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", status='" + status + '\'' +
+                ", project_name='" + project_name + '\'' +
+                ", status=" + status +
                 ", author='" + author + '\'' +
                 ", update_author='" + update_author + '\'' +
                 ", create_time=" + create_time +

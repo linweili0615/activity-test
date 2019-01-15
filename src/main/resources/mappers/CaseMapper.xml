@@ -6,13 +6,13 @@
     <resultMap id="case_extend_list" type="com.test.jm.dto.CaseExtend">
         <id column="pid" property="pid"></id>
         <result column="project_name" property="project_name"/>
-        <collection property="caseExtends" ofType="com.test.jm.dto.test.CaseDTO">
+        <collection property="caseExtends" ofType="com.test.jm.dto.CaseDTO">
             <id column="id" property="id"/>
             <result column="name" property="name"/>
         </collection>
     </resultMap>
 
-    <insert id="addCase" parameterType="com.test.jm.dto.test.CaseDTO">
+    <insert id="addCase" parameterType="com.test.jm.dto.CaseDTO">
           INSERT INTO
           test_case
           (id, project_id, name, author, update_author, create_time, modify_time)
@@ -34,7 +34,7 @@
         ORDER BY c.create_time DESC
     </select>
 
-    <update id="editCase" parameterType="com.test.jm.dto.test.CaseDTO">
+    <update id="editCase" parameterType="com.test.jm.dto.CaseDTO">
         UPDATE test_case
         <set>
             <if test="name != null">
@@ -53,7 +53,7 @@
     </update>
 
 
-    <delete id="delCase" parameterType="com.test.jm.dto.test.CaseDTO">
+    <delete id="delCase" parameterType="com.test.jm.dto.CaseDTO">
         DELETE FROM test_case
         <trim prefix="WHERE">
             <if test="_parameter != null">

@@ -2,7 +2,7 @@ package com.test.jm.service;
 
 import com.test.jm.config.DataSource;
 import com.test.jm.dao.ProjectDao;
-import com.test.jm.dto.test.ProjectDTO;
+import com.test.jm.dto.ProjectDTO;
 import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

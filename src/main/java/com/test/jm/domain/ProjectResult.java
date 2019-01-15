@@ -1,6 +1,6 @@
 package com.test.jm.domain;
 
-import com.test.jm.dto.test.ProjectDTO;
+import com.test.jm.dto.ProjectDTO;
 
 import java.util.List;
 

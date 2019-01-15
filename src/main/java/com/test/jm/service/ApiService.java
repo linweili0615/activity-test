@@ -3,7 +3,7 @@ package com.test.jm.service;
 import com.test.jm.dao.ApiDao;
 import com.test.jm.domain.page.ApiPage;
 import com.test.jm.dto.APIvariables;
-import com.test.jm.dto.test.ApiDTO;
+import com.test.jm.dto.ApiDTO;
 import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

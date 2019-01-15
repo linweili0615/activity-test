@@ -2,7 +2,7 @@ package com.test.jm.dao;
 
 import com.test.jm.domain.page.ApiPage;
 import com.test.jm.dto.APIvariables;
-import com.test.jm.dto.test.ApiDTO;
+import com.test.jm.dto.ApiDTO;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package com.test.jm.service;
 
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskResult;
-import com.test.jm.dto.test.ApiDTO;
-import com.test.jm.dto.test.TaskExtendDTO;
+import com.test.jm.dto.ApiDTO;
+import com.test.jm.dto.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
 import com.test.jm.util.*;
 import org.apache.commons.lang.StringUtils;

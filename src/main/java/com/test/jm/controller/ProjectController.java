@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.test.jm.domain.page.ProjectPage;
 import com.test.jm.domain.ProjectResult;
 import com.test.jm.domain.Result;
-import com.test.jm.dto.test.ProjectDTO;
+import com.test.jm.dto.ProjectDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ProjectService;
 import org.apache.commons.lang.StringUtils;

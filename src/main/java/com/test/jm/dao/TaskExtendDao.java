@@ -1,7 +1,7 @@
 package com.test.jm.dao;
 
 import com.test.jm.domain.TaskExtendStatusParams;
-import com.test.jm.dto.test.TaskExtendDTO;
+import com.test.jm.dto.TaskExtendDTO;
 import java.util.List;
 
 public interface TaskExtendDao {

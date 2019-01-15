@@ -3,7 +3,7 @@ package com.test.jm.controller;
 import com.test.jm.domain.CaseResult;
 import com.test.jm.domain.Result;
 import com.test.jm.dto.CaseExtend;
-import com.test.jm.dto.test.CaseDTO;
+import com.test.jm.dto.CaseDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.CaseService;
 import com.test.jm.util.CommonUtils;
@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/case")

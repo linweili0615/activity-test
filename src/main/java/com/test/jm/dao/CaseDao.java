@@ -1,7 +1,7 @@
 package com.test.jm.dao;
 
 import com.test.jm.dto.CaseExtend;
-import com.test.jm.dto.test.CaseDTO;
+import com.test.jm.dto.CaseDTO;
 
 import java.util.List;
 

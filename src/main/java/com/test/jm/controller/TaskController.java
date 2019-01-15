@@ -1,8 +1,8 @@
 package com.test.jm.controller;
 
 import com.test.jm.domain.*;
-import com.test.jm.dto.test.ApiDTO;
-import com.test.jm.dto.test.TaskExtendDTO;
+import com.test.jm.dto.ApiDTO;
+import com.test.jm.dto.TaskExtendDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.RequestService;
 import com.test.jm.service.TaskService;

@@ -1,7 +1,7 @@
 package com.test.jm.util;
 
 import com.test.jm.domain.HttpClientResult;
-import com.test.jm.dto.test.ApiDTO;
+import com.test.jm.dto.ApiDTO;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpRequestRetryHandler;

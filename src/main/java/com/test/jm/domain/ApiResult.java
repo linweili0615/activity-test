@@ -1,6 +1,6 @@
 package com.test.jm.domain;
 
-import com.test.jm.dto.test.ApiDTO;
+import com.test.jm.dto.ApiDTO;
 
 import java.util.List;
 

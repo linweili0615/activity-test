@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.jm.dao.ProjectDao">
 
-    <resultMap id="ProjectList" type="com.test.jm.dto.test.ProjectDTO">
+    <resultMap id="ProjectList" type="com.test.jm.dto.ProjectDTO">
         <id column="id" property="id"/>
         <result column="project_name" property="project_name"/>
         <result column="status" property="status"/>
@@ -12,7 +12,7 @@
         <result column="modify_time" property="modify_time"/>
     </resultMap>
 
-    <insert id="addProject" parameterType="com.test.jm.dto.test.ProjectDTO">
+    <insert id="addProject" parameterType="com.test.jm.dto.ProjectDTO">
           INSERT INTO
           project
           (id,project_name, status, author, update_author, create_time, modify_time)
@@ -24,7 +24,7 @@
         DELETE FROM project WHERE id = #{id}
     </delete>
 
-    <update id="editProject" parameterType="com.test.jm.dto.test.ProjectDTO">
+    <update id="editProject" parameterType="com.test.jm.dto.ProjectDTO">
         UPDATE project
         <set>
             <if test="project_name != null">
@@ -58,7 +58,7 @@
     </select>
 
 
-    <select id="getProjectList" parameterType="com.test.jm.dto.test.ProjectDTO" resultMap="ProjectList">
+    <select id="getProjectList" parameterType="com.test.jm.dto.ProjectDTO" resultMap="ProjectList">
         SELECT  id,project_name, status, author, update_author,
         date_format(create_time,'%Y-%m-%d %H:%i:%s') as create_time,
         date_format(modify_time,'%Y-%m-%d %H:%i:%s') as modify_time

@@ -1,19 +1,16 @@
 package com.test.jm;
 
-import com.test.jm.dao.CaseDao;
 import com.test.jm.dao.TokenDao;
 import com.test.jm.dto.TokenDTO;
 import com.test.jm.dto.UserInfoDTO;
-import com.test.jm.dto.test.CaseDTO;
+import com.test.jm.dto.CaseDTO;
 import com.test.jm.service.CaseService;
 import com.test.jm.service.TokenService;
 import com.test.jm.service.UserInfoService;
-import com.test.jm.util.CookieUtils;
 import com.test.jm.util.Md5Util;
 import com.test.jm.util.RedisUtil;
 import com.test.jm.util.TokenUtils;
 import io.jsonwebtoken.Claims;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RunWith(SpringRunner.class)

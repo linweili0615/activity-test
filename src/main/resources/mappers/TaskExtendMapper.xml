@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.jm.dao.TaskExtendDao">
 
-    <resultMap id="task_extend_list" type="com.test.jm.dto.test.TaskExtendDTO">
+    <resultMap id="task_extend_list" type="com.test.jm.dto.TaskExtendDTO">
         <id column="id" property="id"></id>
         <result column="task_id" property="task_id"></result>
         <result column="project_id" property="project_id"/>
@@ -16,7 +16,7 @@
         <result column="status" property="status"/>
     </resultMap>
 
-    <select id="getTaskExtendListById" parameterType="com.test.jm.dto.test.TaskExtendDTO"
+    <select id="getTaskExtendListById" parameterType="com.test.jm.dto.TaskExtendDTO"
             resultMap="task_extend_list">
         SELECT
         t.id,
@@ -43,7 +43,7 @@
         ORDER BY t.rank ASC
     </select>
 
-    <select id="getTaskExtendById" parameterType="java.lang.String" resultType="com.test.jm.dto.test.TaskExtendDTO">
+    <select id="getTaskExtendById" parameterType="java.lang.String" resultType="com.test.jm.dto.TaskExtendDTO">
         SELECT * FROM task_case_extend
         <trim prefix="WHERE">
             <if test="_parameter != null">
@@ -62,7 +62,7 @@
         </trim>
     </delete>
 
-    <insert id="addTaskExtend" parameterType="com.test.jm.dto.test.TaskExtendDTO">
+    <insert id="addTaskExtend" parameterType="com.test.jm.dto.TaskExtendDTO">
         INSERT INTO `task_case_extend` (`task_id`,project_id,case_id,
         `api_id`,`api_name`,`rank`,`post_processors`,`valid_data`,
         `status`,`create_time`)

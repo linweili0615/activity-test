@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.jm.dao.ApiDao">
 
-    <resultMap id="ApiListMap" type="com.test.jm.dto.test.ApiDTO">
+    <resultMap id="ApiListMap" type="com.test.jm.dto.ApiDTO">
         <id column="id" property="id"></id>
         <result column="project_id" property="project_id"></result>
         <result column="case_id" property="case_id"></result>
@@ -20,7 +20,7 @@
         <result column="modify_time" property="modify_time"></result>
     </resultMap>
 
-    <insert id="addInterface" parameterType="com.test.jm.dto.test.ApiDTO">
+    <insert id="addInterface" parameterType="com.test.jm.dto.ApiDTO">
           INSERT INTO
           interface
           (id, project_id, case_id, name, url, headers, method, body, paramstype, author, update_author, create_time, modify_time)
@@ -29,7 +29,7 @@
     </insert>
 
     <select id="selectInterfaceById" parameterType="java.lang.String"
-            resultType="com.test.jm.dto.test.ApiDTO">
+            resultType="com.test.jm.dto.ApiDTO">
         SELECT id, project_id, case_id, name, url, headers,
         method, body, paramstype, author, update_author,
         date_format(create_time,'%Y-%m-%d %H:%i:%s') as create_time,
@@ -65,7 +65,7 @@
         ORDER BY create_time DESC
     </select>
 
-    <update id="editInterface" parameterType="com.test.jm.dto.test.ApiDTO">
+    <update id="editInterface" parameterType="com.test.jm.dto.ApiDTO">
         UPDATE interface
         <set>
             <if test="project_id != null">

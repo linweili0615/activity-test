@@ -2,7 +2,7 @@ package com.test.jm.service;
 
 import com.test.jm.dao.CaseDao;
 import com.test.jm.dto.CaseExtend;
-import com.test.jm.dto.test.CaseDTO;
+import com.test.jm.dto.CaseDTO;
 import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

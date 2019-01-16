@@ -24,11 +24,9 @@ public class CaseService {
         String id = UUID.randomUUID().toString();
         caseDTO.setId(id);
         caseDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
+        caseDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
         Integer count = caseDao.addCase(caseDTO);
-        if(count > 0 ){
-            return id;
-        }
-        return null;
+        return id;
     }
 
     public Integer modifyCase(CaseDTO caseDTO){

@@ -9,6 +9,11 @@ public class Result {
     public Result() {
     }
 
+    public Result(String status, String msg) {
+        this.status = status;
+        this.msg = msg;
+    }
+
     public Result(String id, String status, String msg, Object data) {
         this.id = id;
         this.status = status;

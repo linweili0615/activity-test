@@ -42,7 +42,7 @@ public class TaskJobService {
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(taskJobInfo.getTask_id())
                     .withSchedule(CronScheduleBuilder.cronSchedule(taskJobInfo.getCron_expression()))
-                    .startNow()
+                    .startAt(start_time)
                     .endAt(end_time)
                     .build();
             log.info("4");

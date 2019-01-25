@@ -9,6 +9,8 @@ spring:
     port: 6379
     password: linweili123
     timeout: 10ms
+  quartz:
+    job-store-type: jdbc
   datasource:
     master:
       type: com.alibaba.druid.pool.DruidDataSource

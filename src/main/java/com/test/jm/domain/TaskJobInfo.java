@@ -2,6 +2,7 @@ package com.test.jm.domain;
 
 public class TaskJobInfo {
     private String task_id;
+    private String name;
     private String job_name;
     private String job_group;
     private String trigger_name;
@@ -13,8 +14,9 @@ public class TaskJobInfo {
     public TaskJobInfo() {
     }
 
-    public TaskJobInfo(String task_id, String job_name, String job_group, String trigger_name, String trigger_group, String start_time, String end_time, String cron_expression) {
+    public TaskJobInfo(String task_id, String name, String job_name, String job_group, String trigger_name, String trigger_group, String start_time, String end_time, String cron_expression) {
         this.task_id = task_id;
+        this.name = name;
         this.job_name = job_name;
         this.job_group = job_group;
         this.trigger_name = trigger_name;
@@ -30,6 +32,14 @@ public class TaskJobInfo {
 
     public void setTask_id(String task_id) {
         this.task_id = task_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getJob_name() {
@@ -86,19 +96,5 @@ public class TaskJobInfo {
 
     public void setCron_expression(String cron_expression) {
         this.cron_expression = cron_expression;
-    }
-
-    @Override
-    public String toString() {
-        return "TaskJobInfo{" +
-                "task_id='" + task_id + '\'' +
-                ", job_name='" + job_name + '\'' +
-                ", job_group='" + job_group + '\'' +
-                ", trigger_name='" + trigger_name + '\'' +
-                ", trigger_group='" + trigger_group + '\'' +
-                ", start_time='" + start_time + '\'' +
-                ", end_time='" + end_time + '\'' +
-                ", cron_expression='" + cron_expression + '\'' +
-                '}';
     }
 }

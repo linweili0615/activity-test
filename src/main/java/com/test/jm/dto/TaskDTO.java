@@ -5,11 +5,30 @@ import java.time.LocalDateTime;
 public class TaskDTO {
     private String id;
     private String name;
-    private String status;
+    private String cron_expression;
+    private String start_time;
+    private String end_time;
+    private Integer status;
     private String author;
     private String update_author;
     private LocalDateTime create_time;
     private LocalDateTime modify_time;
+
+    public TaskDTO() {
+    }
+
+    public TaskDTO(String id, String name, String cron_expression, String start_time, String end_time, Integer status, String author, String update_author, LocalDateTime create_time, LocalDateTime modify_time) {
+        this.id = id;
+        this.name = name;
+        this.cron_expression = cron_expression;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.status = status;
+        this.author = author;
+        this.update_author = update_author;
+        this.create_time = create_time;
+        this.modify_time = modify_time;
+    }
 
     public String getId() {
         return id;
@@ -27,11 +46,35 @@ public class TaskDTO {
         this.name = name;
     }
 
-    public String getStatus() {
+    public String getCron_expression() {
+        return cron_expression;
+    }
+
+    public void setCron_expression(String cron_expression) {
+        this.cron_expression = cron_expression;
+    }
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
+
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -65,18 +108,5 @@ public class TaskDTO {
 
     public void setModify_time(LocalDateTime modify_time) {
         this.modify_time = modify_time;
-    }
-
-    @Override
-    public String toString() {
-        return "TaskDTO{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", status='" + status + '\'' +
-                ", author='" + author + '\'' +
-                ", update_author='" + update_author + '\'' +
-                ", create_time=" + create_time +
-                ", modify_time=" + modify_time +
-                '}';
     }
 }

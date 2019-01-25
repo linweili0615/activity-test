@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.jm.dao.TaskDao">
+
+    <resultMap id="task_extend_list" type="com.test.jm.dto.TaskExtendDTO">
+        <id column="id" property="id"></id>
+        <result column="task_id" property="task_id"></result>
+        <result column="project_id" property="project_id"/>
+        <result column="case_id" property="case_id"/>
+        <result column="api_id" property="api_id"/>
+        <result column="api_name" property="api_name"/>
+        <result column="rank" property="rank"/>
+        <result column="post_processors" property="post_processors"/>
+        <result column="valid_data" property="valid_data"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <select id="getTaskList" resultMap="task_extend_list">
+        SELECT
+        t.id,
+        t.task_id,
+        t.project_id,
+        t.case_id,
+        t.api_id,
+        t.api_name,
+        t.rank,
+        t.post_processors,
+        t.valid_data,
+        t.status
+        FROM
+        task_case c
+        LEFT JOIN task_case_extend t ON c.id = t.task_id
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id != null">
+                c.id = #{id}
+            </if>
+            <if test="status != null">
+                t.status = #{status}
+            </if>
+        </trim>
+        ORDER BY t.rank ASC
+    </select>
+
+
+</mapper>

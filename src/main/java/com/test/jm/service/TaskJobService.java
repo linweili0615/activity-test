@@ -1,6 +1,7 @@
 package com.test.jm.service;
 
 import com.test.jm.domain.TaskJobInfo;
+import com.test.jm.dto.TaskDTO;
 import com.test.jm.jobs.TaskTronJob;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.*;
@@ -21,41 +22,37 @@ public class TaskJobService {
     @Autowired
     private Scheduler scheduler;
 
-    public boolean create_job(TaskJobInfo taskJobInfo){
-        if(StringUtils.isBlank(taskJobInfo.getTask_id())){
-            log.error("任务id不能为空,{}",taskJobInfo.toString());
+    public boolean create_job(TaskDTO taskDTO){
+        if(StringUtils.isBlank(taskDTO.getId())){
+            log.error("任务id不能为空",taskDTO.toString());
             return false;
         }
-        log.info("1");
         try {
             JobDataMap jobDataMap = new JobDataMap();
-            jobDataMap.put("taskid",taskJobInfo.getTask_id());
+            jobDataMap.put("taskid",taskDTO.getId());
             JobDetail jobDetail = JobBuilder.newJob(TaskTronJob.class)
-                    .withIdentity(taskJobInfo.getTask_id())
+                    .withIdentity(taskDTO.getId())
                     .usingJobData(jobDataMap)
                     .build();
-            log.info("2");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date start_time = dateFormat.parse(taskJobInfo.getStart_time());
-            Date end_time = dateFormat.parse(taskJobInfo.getEnd_time());
-            log.info("3");
+            Date start_time = dateFormat.parse(taskDTO.getStart_time());
+            Date end_time = dateFormat.parse(taskDTO.getEnd_time());
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(taskJobInfo.getTask_id())
-                    .withSchedule(CronScheduleBuilder.cronSchedule(taskJobInfo.getCron_expression()))
+                    .withIdentity(taskDTO.getId())
+                    .withSchedule(CronScheduleBuilder.cronSchedule(taskDTO.getCron_expression()))
                     .startAt(start_time)
                     .endAt(end_time)
                     .build();
-            log.info("4");
             scheduler.scheduleJob(jobDetail, trigger);
-            log.info("任务添加成功：{}",taskJobInfo.getTask_id());
+            log.info("任务添加成功：{}",taskDTO.getId());
             return true;
         } catch (SchedulerException e) {
             e.printStackTrace();
-            log.error("添加任务失败：{}",taskJobInfo.getTask_id());
+            log.error("添加任务失败：{}",taskDTO.getId());
             return false;
         } catch (ParseException e) {
             e.printStackTrace();
-            log.error("任务执行时间转换失败：start_time:{},end_time:{}",taskJobInfo.getStart_time(),taskJobInfo.getEnd_time());
+            log.error("任务执行时间转换失败：start_time:{},end_time:{}",taskDTO.getStart_time(),taskDTO.getEnd_time());
             return false;
         }
     }
@@ -109,6 +106,26 @@ public class TaskJobService {
         } catch (SchedulerException e) {
             e.printStackTrace();
             log.error("任务删除失败,{}",job_key);
+            return false;
+        }
+    }
+
+    public boolean update_job(TaskJobInfo taskJobInfo){
+        if(StringUtils.isBlank(taskJobInfo.getTask_id())){
+            log.info("任务id不能为空");
+            return false;
+        }
+        try {
+            TriggerKey triggerKey = TriggerKey.triggerKey(taskJobInfo.getTask_id());
+            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(taskJobInfo.getCron_expression());
+            trigger.getTriggerBuilder().withIdentity(taskJobInfo.getTask_id()).withSchedule(scheduleBuilder);
+            scheduler.rescheduleJob(triggerKey,trigger);
+            log.info("任务信息更新成功");
+            return true;
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            log.info("任务信息更新失败");
             return false;
         }
     }

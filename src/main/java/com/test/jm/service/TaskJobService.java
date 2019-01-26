@@ -130,6 +130,32 @@ public class TaskJobService {
         }
     }
 
+    public boolean stopAllJobs(){
+        log.info("开始关闭所有定时任务...");
+        try {
+            scheduler.standby();
+            log.info("所有定时任务已关闭");
+            return true;
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            log.error("定时任务关闭异常：{}",e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean startAllJobs(){
+        log.info("开始启动定时任务...");
+        try {
+            scheduler.start();
+            log.info("定时任务已启动...");
+            return true;
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            log.error("定时任务启动异常：{}",e.getMessage());
+            return false;
+        }
+    }
+
 
 
 }

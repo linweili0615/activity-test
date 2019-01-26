@@ -11,6 +11,12 @@ public class TaskExtendResult<T> {
     public TaskExtendResult() {
     }
 
+    public TaskExtendResult(String status, String msg, List<T> data) {
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public TaskExtendResult(String status, String msg) {
         this.status = status;
         this.msg = msg;

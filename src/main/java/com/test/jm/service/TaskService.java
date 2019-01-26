@@ -5,6 +5,7 @@ import com.test.jm.dao.TaskExtendDao;
 import com.test.jm.domain.TaskExtendStatusParams;
 import com.test.jm.dto.TaskDTO;
 import com.test.jm.dto.TaskExtendDTO;
+import com.test.jm.dto.TaskJob;
 import com.test.jm.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,12 +57,15 @@ public class TaskService {
     }
 
     public Integer addTask(TaskDTO taskDTO){
-        taskDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
-        taskDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
-        return taskDao.updateTask(taskDTO);
+//        taskDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
+//        taskDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
+        taskDTO.setStatus(1);
+        taskDTO.setAuthor("linweili");
+        taskDTO.setUpdate_author("linweili");
+        return taskDao.addTask(taskDTO);
     }
 
-    public List<TaskDTO> getTaskList(){
+    public List<TaskJob> getTaskList(){
         return taskDao.getTaskList();
     }
 

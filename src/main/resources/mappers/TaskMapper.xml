@@ -3,44 +3,36 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.jm.dao.TaskDao">
 
-    <resultMap id="task_extend_list" type="com.test.jm.dto.TaskExtendDTO">
+    <resultMap id="task_list" type="com.test.jm.dto.TaskJob">
         <id column="id" property="id"></id>
-        <result column="task_id" property="task_id"></result>
-        <result column="project_id" property="project_id"/>
-        <result column="case_id" property="case_id"/>
-        <result column="api_id" property="api_id"/>
-        <result column="api_name" property="api_name"/>
-        <result column="rank" property="rank"/>
-        <result column="post_processors" property="post_processors"/>
-        <result column="valid_data" property="valid_data"/>
+        <result column="name" property="name"></result>
+        <result column="cron_expression" property="cron_expression"/>
+        <result column="start_time" property="start_time"/>
+        <result column="end_time" property="end_time"/>
         <result column="status" property="status"/>
+        <result column="TRIGGER_STATE" property="TRIGGER_STATE"/>
+        <result column="update_author" property="update_author"/>
+        <result column="modify_time" property="modify_time"/>
     </resultMap>
 
-    <select id="getTaskList" resultMap="task_extend_list">
-        SELECT
-        t.id,
-        t.task_id,
-        t.project_id,
-        t.case_id,
-        t.api_id,
-        t.api_name,
-        t.rank,
-        t.post_processors,
-        t.valid_data,
-        t.status
-        FROM
-        task_case c
-        LEFT JOIN task_case_extend t ON c.id = t.task_id
-        <trim prefix="WHERE" prefixOverrides="AND">
-            <if test="id != null">
-                c.id = #{id}
-            </if>
-            <if test="status != null">
-                t.status = #{status}
-            </if>
-        </trim>
-        ORDER BY t.rank ASC
+    <select id="getTaskList" resultMap="task_list">
+        SELECT c.id,c.name,c.cron_expression,c.start_time,
+        c.end_time,c.status,s.TRIGGER_STATE,c.update_author,date_format(c.modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
+        from task_case c
+        LEFT JOIN QRTZ_TRIGGERS s
+        on c.id=s.TRIGGER_NAME
     </select>
+
+    <insert id="addTask" parameterType="com.test.jm.dto.TaskDTO">
+        INSERT INTO `task_case` (
+        `id`,`name`, `cron_expression`, `start_time`, `end_time`,
+        `status`, `author`, `update_author`, `create_time`, `modify_time`)
+        VALUES
+        (
+            #{id},#{name},#{cron_expression},#{start_time},#{end_time},
+            #{status},#{author},#{update_author},now(),now()
+        )
+    </insert>
 
 
 </mapper>

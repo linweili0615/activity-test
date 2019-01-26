@@ -1,7 +1,5 @@
 package com.test.jm.dto;
 
-import java.time.LocalDateTime;
-
 public class ProjectDTO {
     private String id;
     private String project_name;

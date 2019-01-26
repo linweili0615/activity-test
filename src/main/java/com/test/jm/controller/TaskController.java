@@ -2,21 +2,24 @@ package com.test.jm.controller;
 
 import com.test.jm.domain.*;
 import com.test.jm.dto.ApiDTO;
+import com.test.jm.dto.TaskDTO;
 import com.test.jm.dto.TaskExtendDTO;
+import com.test.jm.dto.TaskJob;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.RequestService;
+import com.test.jm.service.TaskJobService;
 import com.test.jm.service.TaskService;
 import com.test.jm.util.RedisUtil;
 import com.test.jm.util.UserThreadLocal;
 import org.apache.commons.lang.StringUtils;
+import org.quartz.CronExpression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequestMapping("/task")
 @RestController
@@ -25,8 +28,13 @@ public class TaskController {
     //超时时间 40秒
     private static final int TIMEOUT = 40 * 1000;
 
+    private static final Logger log = LoggerFactory.getLogger(TaskController.class);
+
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private TaskJobService taskJobService;
 
     @Autowired
     private RequestService requestService;
@@ -254,4 +262,61 @@ public class TaskController {
         return new TaskExtendResult(null, ResultType.FAIL, "添加步骤信息失败", null);
     }
 
+    @PostMapping("/add")
+    public Result addTask(@RequestBody TaskDTO task){
+        if(StringUtils.isBlank(task.getStart_time()) || StringUtils.isBlank(task.getEnd_time())){
+            return new Result(ResultType.FAIL,"任务执行时间段不能为空");
+        }
+        if(StringUtils.isBlank(task.getCron_expression())){
+            return new Result(ResultType.FAIL,"任务定时策略不能为空");
+        }
+        if(!CronExpression.isValidExpression(task.getCron_expression())){
+            return new Result(ResultType.FAIL,"请输入正确的定时策略");
+        }
+
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setId(UUID.randomUUID().toString());
+        taskDTO.setName(task.getName());
+        taskDTO.setStart_time(task.getStart_time());
+        taskDTO.setEnd_time(task.getEnd_time());
+        taskDTO.setCron_expression(task.getCron_expression());
+        try {
+            log.info("开始写入任务信息");
+            Integer count = taskService.addTask(taskDTO);
+            if(count > 0){
+                log.info("成功写入任务信息: {}",taskDTO.getId());
+                if(taskJobService.create_job(taskDTO)){
+                    log.info("添加任务定时策略成功: {}",taskDTO.getId());
+                    return new Result(ResultType.SUCCESS,"添加定时任务成功",taskDTO.getId());
+                }else {
+                    log.info("添加任务定时策略失败: {}",taskDTO.toString());
+                    return new Result(ResultType.FAIL,"添加定时任务失败",taskDTO.getId());
+                }
+            }
+            log.info("写入任务信息失败: {}",taskDTO.toString());
+            return new Result(ResultType.FAIL,"添加任务失败",taskDTO.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("写入任务信息异常: {}",e.getMessage());
+            return new Result(ResultType.ERROR,"添加定时任务成功，更新任务信息失败",taskDTO.getId());
+        }
+    }
+
+    @GetMapping("/list")
+    public TaskExtendResult getTaskList(){
+        log.info("开始获取任务列表");
+        try {
+            List<TaskJob> data = taskService.getTaskList();
+            log.info("获取任务列表成功");
+            if(data != null && data.size()>0){
+                return new TaskExtendResult(ResultType.SUCCESS,"获取任务列表成功",data);
+            }
+            log.info("暂无任务列表信息");
+            return new TaskExtendResult(ResultType.SUCCESS,"暂无任务列表信息");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("获取任务列表异常: {}",e.getMessage());
+            return new TaskExtendResult(ResultType.ERROR,e.getMessage());
+        }
+    }
 }

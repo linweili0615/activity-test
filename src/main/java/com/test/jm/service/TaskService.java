@@ -69,4 +69,19 @@ public class TaskService {
         return taskDao.getTaskList();
     }
 
+    public Integer updateTaskStatus(TaskDTO task) {
+        task.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
+        return taskDao.updateTask(task);
+    }
+    public Integer delTaskById(String id) {
+        return taskDao.deleteTask(id);
+    }
+
+    public Integer delTaskExtendByTaskId(String task_id) {
+        return taskExtendDao.deleteTaskExtendByTakk(task_id);
+    }
+
+    public TaskDTO getTaskById(String id) {
+        return taskDao.getTaskById(id);
+    }
 }

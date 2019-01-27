@@ -24,4 +24,5 @@ public interface TaskExtendDao {
 
     Integer updateTaskExtendRankByList(List<TaskExtendDTO> list);
 
+    Integer deleteTaskExtendByTakk(String task_id);
 }

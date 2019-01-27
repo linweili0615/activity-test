@@ -23,6 +23,10 @@
         on c.id=s.TRIGGER_NAME
     </select>
 
+    <select id="getTaskById" parameterType="java.lang.String" resultType="com.test.jm.dto.TaskDTO">
+        SELECT * FROM task_case WHERE id = #{id}
+    </select>
+
     <insert id="addTask" parameterType="com.test.jm.dto.TaskDTO">
         INSERT INTO `task_case` (
         `id`,`name`, `cron_expression`, `start_time`, `end_time`,
@@ -33,6 +37,41 @@
             #{status},#{author},#{update_author},now(),now()
         )
     </insert>
+
+    <update id="updateTask" parameterType="com.test.jm.dto.TaskDTO">
+            UPDATE task_case
+            <set>
+                <if test="name != null">
+                name = #{name},
+                </if>
+                <if test="cron_expression != null">
+                    cron_expression = #{cron_expression},
+                </if>
+                <if test="start_time != null">
+                    start_time = #{start_time},
+                </if>
+                <if test="end_time != null">
+                    end_time = #{end_time},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+                <if test="update_author != null">
+                    update_author = #{update_author},
+                </if>
+                    modify_time = now()
+            </set>
+            WHERE id =#{id}
+    </update>
+
+    <delete id="deleteTask" parameterType="java.lang.String">
+        DELETE FROM task_case
+        <trim prefix="WHERE">
+            <if test="_parameter != null">
+                id = #{id}
+            </if>
+        </trim>
+    </delete>
 
 
 </mapper>

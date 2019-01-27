@@ -6,7 +6,7 @@ public class TaskJob {
     private String cron_expression;
     private String start_time;
     private String end_time;
-    private Integer status;
+    private String status;
     private String TRIGGER_STATE;
     private String update_author;
     private String modify_time;
@@ -51,11 +51,11 @@ public class TaskJob {
         this.end_time = end_time;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

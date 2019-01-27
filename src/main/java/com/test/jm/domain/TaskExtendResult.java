@@ -17,6 +17,7 @@ public class TaskExtendResult<T> {
         this.data = data;
     }
 
+
     public TaskExtendResult(String status, String msg) {
         this.status = status;
         this.msg = msg;

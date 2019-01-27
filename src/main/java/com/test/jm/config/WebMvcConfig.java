@@ -33,6 +33,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .addPathPatterns("/project/**")
                 .addPathPatterns("/case/**")
                 .addPathPatterns("/task/**")
+                .addPathPatterns("/job/**")
                 .excludePathPatterns("/user/login", "/user/register","/user/2login");
         super.addInterceptors(registry);
     }

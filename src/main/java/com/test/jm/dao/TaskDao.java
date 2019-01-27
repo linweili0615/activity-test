@@ -9,4 +9,6 @@ public interface TaskDao {
     Integer addTask(TaskDTO taskDTO);
     Integer updateTask(TaskDTO taskDTO);
     List<TaskJob> getTaskList();
+    Integer deleteTask(String id);
+    TaskDTO getTaskById(String id);
 }

@@ -208,22 +208,22 @@ public class ApiController {
     @PostMapping("/test")
     public TestResult test_interface(@RequestBody ApiDTO apiDTO){
         if (StringUtils.isBlank(apiDTO.getMethod())) {
-            return new TestResult(null, ResultType.FAIL, "请求方法不能为空", null);
+            return new TestResult(ResultType.FAIL, "请求方法不能为空");
         }
         if (StringUtils.isBlank(apiDTO.getUrl())) {
-            return new TestResult(null, ResultType.FAIL, "请求URL不能为空", null);
+            return new TestResult(ResultType.FAIL, "请求URL不能为空");
         }
 
         try {
             org.apache.logging.log4j.Logger log = LogUtil.getLogger("12345678");
             HttpClientResult result = requestService.request(log, apiDTO);
             if(result.getRes_code().equals(1000)){
-                return new TestResult(null, ResultType.SUCCESS, result.getRes_body(), result);
+                return new TestResult(ResultType.SUCCESS, result.getRes_body(), result);
             }
-            return new TestResult(null, ResultType.SUCCESS, "", result);
+            return new TestResult(ResultType.SUCCESS, "", result);
         } catch (Exception e) {
             e.printStackTrace();
-            return new TestResult(null, ResultType.ERROR, e.getMessage(), null);
+            return new TestResult(ResultType.ERROR, e.getMessage());
         }
 
 
@@ -232,28 +232,28 @@ public class ApiController {
     @PostMapping("/save")
     public TestResult save_interface(@RequestBody ApiDTO apiDTO) {
         if (StringUtils.isBlank(apiDTO.getProject_id())) {
-            return new TestResult("", ResultType.NOT_FOUND, "项目ID不能为空", null);
+            return new TestResult(ResultType.FAIL, "项目ID不能为空");
         }
         if (StringUtils.isBlank(apiDTO.getMethod())) {
-            return new TestResult("", ResultType.NOT_FOUND, "请求方法不能为空", null);
+            return new TestResult(ResultType.FAIL, "请求方法不能为空");
         }
         if (StringUtils.isBlank(apiDTO.getUrl())) {
-            return new TestResult("", ResultType.NOT_FOUND, "请求URL不能为空", null);
+            return new TestResult(ResultType.FAIL, "请求URL不能为空");
         }
 
         try {
             if(StringUtils.isNotBlank(apiDTO.getId())){
                 Integer count = apiService.editInterface(apiDTO);
                 if(count > 0){
-                    return new TestResult(apiDTO.getId(), ResultType.SUCCESS, "接口信息已更新", null);
+                    return new TestResult(apiDTO.getId(),ResultType.SUCCESS, "接口信息已更新");
                 }else {
-                    return new TestResult(apiDTO.getId(), ResultType.NOT_FOUND, "接口信息不存在", null);
+                    return new TestResult(ResultType.NOT_FOUND, "接口信息不存在");
                 }
             }
             String id = apiService.addInterface(apiDTO);
-            return new TestResult(id, ResultType.SUCCESS, "接口信息已保存", null);
+            return new TestResult(id,ResultType.SUCCESS,"接口信息已保存");
         } catch (Exception e) {
-            return new TestResult(null, ResultType.ERROR, e.getMessage(), null);
+            return new TestResult(ResultType.ERROR, e.getMessage());
         }
 
     }
@@ -261,16 +261,16 @@ public class ApiController {
     @PostMapping("/edit")
     public TestResult edit_interface(@RequestBody ApiDTO apiDTO) {
         if (StringUtils.isBlank(apiDTO.getId())) {
-            return new TestResult("", ResultType.NOT_FOUND, "接口ID不能为空", null);
+            return new TestResult(ResultType.FAIL, "接口ID不能为空");
         }
         if (StringUtils.isBlank(apiDTO.getProject_id())) {
-            return new TestResult("", ResultType.NOT_FOUND, "项目ID不能为空", null);
+            return new TestResult(ResultType.FAIL, "项目ID不能为空");
         }
         if (StringUtils.isBlank(apiDTO.getMethod())) {
-            return new TestResult("", ResultType.NOT_FOUND, "请求方法不能为空", null);
+            return new TestResult(ResultType.FAIL, "请求方法不能为空");
         }
         if (StringUtils.isBlank(apiDTO.getUrl())) {
-            return new TestResult("", ResultType.NOT_FOUND, "请求URL不能为空", null);
+            return new TestResult(ResultType.FAIL, "请求URL不能为空");
         }
 
         ApiDTO res = apiService.selectInterfaceById(apiDTO.getId());
@@ -278,15 +278,15 @@ public class ApiController {
             try {
                 Integer result = apiService.editInterface(apiDTO);
                 if (result > 0) {
-                    return new TestResult(apiDTO.getId(), ResultType.SUCCESS, "", null);
+                    return new TestResult(ResultType.SUCCESS,"api信息已修改");
                 }
-                return new TestResult(apiDTO.getId(), ResultType.FAIL, "修改失败", "");
+                return new TestResult(ResultType.FAIL, "api信息修改失败");
             } catch (Exception e) {
-//                e.printStackTrace();
-                return new TestResult(apiDTO.getId(), ResultType.ERROR, e.getMessage(), null);
+                e.printStackTrace();
+                return new TestResult(ResultType.ERROR, e.getMessage());
             }
         }
-        return new TestResult(apiDTO.getId(), ResultType.NOT_FOUND, "接口ID不存在", apiDTO);
+        return new TestResult(ResultType.NOT_FOUND, "接口ID不存在");
 
 
     }
@@ -294,18 +294,18 @@ public class ApiController {
     @PostMapping("/del")
     public TestResult removerInterfaceById(@RequestBody String id) {
         if (StringUtils.isBlank(id)) {
-            return new TestResult("", ResultType.NOT_FOUND, "接口ID不能为空", null);
+            return new TestResult(ResultType.FAIL, "接口ID不能为空");
         }
 
         try {
             Integer count = apiService.delInterfaceById(id);
             if(count > 0){
-                return new TestResult(id, ResultType.SUCCESS, "记录已删除", null);
+                return new TestResult(ResultType.SUCCESS, "记录已删除");
             }
-            return new TestResult(id, ResultType.NOT_FOUND, "接口不存在", null);
+            return new TestResult(ResultType.NOT_FOUND, "接口不存在");
         } catch (Exception e) {
-//            e.printStackTrace();
-            return new TestResult(id, ResultType.ERROR, e.getMessage(), null);
+            e.printStackTrace();
+            return new TestResult(ResultType.ERROR, e.getMessage());
         }
     }
 
@@ -321,7 +321,7 @@ public class ApiController {
             }
             return new TestResult(ResultType.FAIL, "接口ID不存在");
         } catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
             return new TestResult(ResultType.ERROR, e.getMessage());
         }
     }

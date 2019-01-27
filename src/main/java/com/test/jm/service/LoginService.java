@@ -27,10 +27,11 @@ public class LoginService {
     @DataSource("master")
     public TokenDTO validToken(HttpServletRequest request){
         String jm_cookie = CookieUtils.getCookie(request,"jm");
-        Claims claims;
+        logger.info("cookie: jm|{}",jm_cookie);
         if(StringUtils.isBlank(jm_cookie)){
             return null;
         }
+        Claims claims;
         try {
             claims = TokenUtils.parseJWTToken(jm_cookie);
             if(null == claims){

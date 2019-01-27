@@ -12,6 +12,18 @@ public class TestResult {
         this.msg = msg;
     }
 
+    public TestResult(String id, String status, String msg) {
+        this.id = id;
+        this.status = status;
+        this.msg = msg;
+    }
+
+    public TestResult(String status, String msg, Object data) {
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public TestResult(String id, String status, String msg, Object data) {
         this.id = id;
         this.status = status;

@@ -45,7 +45,7 @@ public class TaskController {
     @PostMapping("/getLog")
     public Result getlog(@RequestBody String id){
         if(StringUtils.isBlank(id)){
-            return new Result(ResultType.ERROR,"taskid不能为空",null);
+            return new Result(ResultType.ERROR,"taskid不能为空");
         }
         String logname = new File("").getAbsolutePath() + "/task/" + id +"/" + UserThreadLocal.getUserInfo().getUser_id()+"/task.log";
         try {
@@ -63,23 +63,23 @@ public class TaskController {
             return new Result(ResultType.SUCCESS,null,list);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return new Result(ResultType.ERROR,e.getMessage(),null);
+            return new Result(ResultType.ERROR,e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            return new Result(ResultType.ERROR,e.getMessage(),null);
+            return new Result(ResultType.ERROR,e.getMessage());
         }
     }
 
     @RequestMapping("/getResult")
     public Result getresult(@RequestBody String id){
         if(StringUtils.isBlank(id)){
-            return new Result(ResultType.FAIL,"taskid不能为空",null);
+            return new Result(ResultType.FAIL,"taskid不能为空");
         }
         String fullPath = "task/" + File.separator +id +  File.separator + UserThreadLocal.getUserInfo().getUser_id() +   File.separator + "result.json";
         try {
             File file = new File(fullPath);
             if(!file.exists()){
-                return new Result(ResultType.NOT_FOUND,"该任务结果不存在",null);
+                return new Result(ResultType.NOT_FOUND,"该任务结果不存在");
             }
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -94,10 +94,10 @@ public class TaskController {
             return new Result(id, ResultType.SUCCESS,null,buffer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return new Result(ResultType.NOT_FOUND,e.getMessage(),null);
+            return new Result(ResultType.NOT_FOUND,e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            return new Result(ResultType.ERROR,e.getMessage(),null);
+            return new Result(ResultType.ERROR,e.getMessage());
         }
     }
 
@@ -114,67 +114,51 @@ public class TaskController {
         try {
 
             List<HttpClientResult> list = requestService.runCase(task_id);
-            if(null != list){
+            if(null != list && list.size()>0){
                 return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行成功", list);
             }
-            return new TaskExtendResult(task_id, ResultType.FAIL, "task执行失败", null);
+            return new TaskExtendResult(task_id, ResultType.FAIL, "task执行失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new TaskExtendResult(task_id, ResultType.ERROR, "task执行异常", null);
+            return new TaskExtendResult(task_id, ResultType.ERROR, "task执行异常");
         }finally {
 //            redisUtil.unlock(key, String.valueOf(time));
         }
     }
 
     @PostMapping("/extend/info")
-    public Map getTaskInfo(@RequestBody String id){
-        Map<String,Object> resultMap = new HashMap<>();
+    public TaskExtendResult getTaskInfo(@RequestBody String id){
         if(StringUtils.isBlank(id)){
-            resultMap.put("msg", "任务ID不能为空");
-            resultMap.put("status", ResultType.FAIL);
-            resultMap.put("data",null);
-            return resultMap;
+            return new TaskExtendResult(ResultType.FAIL,"任务ID不能为空");
         }
         try {
             TaskExtendDTO taskExtendDTO = new TaskExtendDTO();
             taskExtendDTO.setTask_id(id);
             List<TaskExtendDTO> data = taskService.getTaskExtendListById(taskExtendDTO);
-            if(null == data){
-                resultMap.put("id",id);
-                resultMap.put("msg", "任务详情无记录");
-                resultMap.put("status", ResultType.FAIL);
-                resultMap.put("data",null);
-                return resultMap;
+            if(null != data && data.size()>0){
+                return new TaskExtendResult(id, ResultType.SUCCESS,"获取任务详情成功",data);
             }
-            resultMap.put("id",id);
-            resultMap.put("msg", "获取任务详情成功");
-            resultMap.put("status", ResultType.SUCCESS);
-            resultMap.put("data",data);
-            return resultMap;
+            return new TaskExtendResult(id, ResultType.SUCCESS,"任务详情无记录");
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("id",id);
-            resultMap.put("msg", e.getMessage());
-            resultMap.put("status", ResultType.ERROR);
-            resultMap.put("data",null);
-            return resultMap;
+            return new TaskExtendResult(id, ResultType.ERROR, e.getMessage());
         }
     }
 
     @PostMapping("/extend/status")
     public TaskExtendResult modifyTaskExtendStatus(@RequestBody TaskExtendStatusParams params){
         if(null == params.getList() && params.getList().size() ==0){
-            return new TaskExtendResult(null, ResultType.FAIL, "任务ID不能为空", null);
+            return new TaskExtendResult(ResultType.FAIL, "任务ID不能为空");
         }
         try {
             Integer count = taskService.updateTaskExtendStatusList(params);
             if(count > 0){
-                return new TaskExtendResult(null, ResultType.SUCCESS, "更新任务集合status成功", null);
+                return new TaskExtendResult(ResultType.SUCCESS, "更新任务集合status成功");
             }
-            return new TaskExtendResult(null, ResultType.FAIL, "更新任务集合status失败", null);
+            return new TaskExtendResult(ResultType.FAIL, "更新任务集合status失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new TaskExtendResult(null, ResultType.ERROR, e.getMessage(), null);
+            return new TaskExtendResult(ResultType.ERROR, e.getMessage());
         }
 
     }
@@ -182,7 +166,7 @@ public class TaskController {
     @PostMapping("/extend/deal")
     public TaskExtendResult dealTaskExtend(@RequestBody TaskExtendRank taskExtendRank){
         if(null == taskExtendRank){
-            return new TaskExtendResult(null, ResultType.FAIL, "任务详情信息不能为空", null);
+            return new TaskExtendResult(ResultType.FAIL, "任务详情信息不能为空");
         }
         List<TaskExtendDTO> list = new ArrayList<>();
         TaskExtendDTO oldTaskExtend = new TaskExtendDTO();
@@ -196,12 +180,12 @@ public class TaskController {
         try {
             Integer count = taskService.updateTaskExtendRankByList(list);
             if(count > 0){
-                return new TaskExtendResult(null, ResultType.SUCCESS, "任务详情顺序修改成功", null);
+                return new TaskExtendResult(ResultType.SUCCESS, "任务详情顺序修改成功");
             }
-            return new TaskExtendResult(null, ResultType.FAIL, "任务详情顺序修改失败", null);
+            return new TaskExtendResult(ResultType.FAIL, "任务详情顺序修改失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new TaskExtendResult(null, ResultType.ERROR, e.getMessage(), null);
+            return new TaskExtendResult(ResultType.ERROR, e.getMessage());
         }
     }
 
@@ -209,27 +193,27 @@ public class TaskController {
     @PostMapping("/extend/del")
     public TaskExtendResult delTaskInfoById(@RequestBody List<String> list){
         if(null == list && list.size() == 0){
-            return new TaskExtendResult(null, ResultType.FAIL, "任务ID列表不能为空", null);
+            return new TaskExtendResult(ResultType.FAIL, "任务ID列表不能为空");
         }
         try {
             Integer count = taskService.deleteTaskExtendByList(list);
             if(count > 0){
-                return new TaskExtendResult(null, ResultType.SUCCESS, "任务详情删除成功", null);
+                return new TaskExtendResult(ResultType.SUCCESS, "任务详情删除成功");
             }
-            return new TaskExtendResult(null, ResultType.FAIL, "任务详情删除失败", null);
+            return new TaskExtendResult(ResultType.FAIL, "任务详情删除失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new TaskExtendResult(null, ResultType.ERROR, e.getMessage(), null);
+            return new TaskExtendResult(ResultType.ERROR, e.getMessage());
         }
     }
 
     @PostMapping("/extend/add")
     public TaskExtendResult addTaskInfo(@RequestBody TaskExtendParams params){
         if(StringUtils.isBlank(params.getTask_id())){
-            return new TaskExtendResult(null, ResultType.FAIL, "task_id不能为空", null);
+            return new TaskExtendResult(ResultType.FAIL, "task_id不能为空");
         }
         if(null == params.getList()){
-            return new TaskExtendResult(null, ResultType.FAIL, "步骤信息不能为空", null);
+            return new TaskExtendResult(ResultType.FAIL, "步骤信息不能为空");
         }
         Integer count = 0;
         for (ApiDTO apiDTO: params.getList()) {
@@ -257,13 +241,16 @@ public class TaskController {
             }
         }
         if(count > 0){
-            return new TaskExtendResult(null, ResultType.SUCCESS, "添加步骤信息成功", null);
+            return new TaskExtendResult(ResultType.SUCCESS, "添加步骤信息成功");
         }
-        return new TaskExtendResult(null, ResultType.FAIL, "添加步骤信息失败", null);
+        return new TaskExtendResult(ResultType.FAIL, "添加步骤信息失败");
     }
 
     @PostMapping("/add")
     public Result addTask(@RequestBody TaskDTO task){
+        if(StringUtils.isBlank(task.getName())){
+            return new Result(ResultType.FAIL,"任务名称不能为空");
+        }
         if(StringUtils.isBlank(task.getStart_time()) || StringUtils.isBlank(task.getEnd_time())){
             return new Result(ResultType.FAIL,"任务执行时间段不能为空");
         }
@@ -285,16 +272,10 @@ public class TaskController {
             Integer count = taskService.addTask(taskDTO);
             if(count > 0){
                 log.info("成功写入任务信息: {}",taskDTO.getId());
-                if(taskJobService.create_job(taskDTO)){
-                    log.info("添加任务定时策略成功: {}",taskDTO.getId());
-                    return new Result(ResultType.SUCCESS,"添加定时任务成功",taskDTO.getId());
-                }else {
-                    log.info("添加任务定时策略失败: {}",taskDTO.toString());
-                    return new Result(ResultType.FAIL,"添加定时任务失败",taskDTO.getId());
-                }
+                return new Result(ResultType.SUCCESS,taskDTO.getId());
             }
             log.info("写入任务信息失败: {}",taskDTO.toString());
-            return new Result(ResultType.FAIL,"添加任务失败",taskDTO.getId());
+            return new Result(ResultType.FAIL,"添加任务失败",taskDTO.toString());
         } catch (Exception e) {
             e.printStackTrace();
             log.info("写入任务信息异常: {}",e.getMessage());
@@ -319,4 +300,57 @@ public class TaskController {
             return new TaskExtendResult(ResultType.ERROR,e.getMessage());
         }
     }
+    @PostMapping("/status")
+    public Result modifyTaskStatus(@RequestBody TaskDTO task){
+        if(null == task){
+            return new Result(ResultType.FAIL, "任务信息不能为空");
+        }
+        if(StringUtils.isBlank(task.getId()) || StringUtils.isBlank(task.getStatus().toString())){
+            return new Result(ResultType.FAIL, "任务ID或状态信息不能为空");
+        }
+        try {
+            Integer count = taskService.updateTaskStatus(task);
+            if(count > 0){
+                if(task.getStatus()>0){
+                    taskJobService.create_job(task);
+                }else {
+                    taskJobService.delete_job(task.getId());
+                }
+                return new Result(ResultType.SUCCESS,"更新任务status成功");
+            }
+            return new Result(ResultType.FAIL, "更新任务status失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(ResultType.ERROR, e.getMessage());
+        }
+    }
+
+    @PostMapping("/del")
+    public Result delTaskStatus(@RequestBody String id){
+        if(StringUtils.isBlank(id)){
+            return new Result(ResultType.FAIL, "任务ID不能为空");
+        }
+        try {
+            Integer count = taskService.delTaskById(id);
+            if(count > 0){
+                log.info("任务：{}已删除",id);
+                taskService.delTaskExtendByTaskId(id);
+                log.info("任务详情：{}已删除",id);
+                if(taskJobService.isJobExists(id)){
+                    log.info("开始删除定时策略相关：{}...",id);
+                    taskJobService.delete_job(id);
+                    log.info("定时策略相关已删除:{}...",id);
+                }
+                return new Result(ResultType.SUCCESS,"定时任务已删除");
+            }
+            log.info("定时任务删除失败:{}",id);
+            return new Result(ResultType.FAIL, "删除任务失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("定时任务删除异常:{}{}",id,e.getMessage());
+            return new Result(ResultType.ERROR, e.getMessage());
+        }
+
+    }
+
 }

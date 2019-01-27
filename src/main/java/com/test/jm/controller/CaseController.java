@@ -33,79 +33,49 @@ public class CaseController {
             return new CaseResult(ResultType.SUCCESS, "获取分组成功", CommonUtils.caseTree(caseExtends));
         } catch (Exception e) {
             e.printStackTrace();
-            return new CaseResult(ResultType.ERROR, "获取分组异常", null);
+            return new CaseResult(ResultType.ERROR, "获取分组异常");
         }
     }
 
     @PostMapping("/add")
     public Result addCase(@RequestBody CaseDTO caseDTO){
-        Result result = new Result();
-        if(StringUtils.isNotBlank(caseDTO.getProject_id()) && StringUtils.isNotBlank(caseDTO.getName())){
-            try {
-                String uid = caseService.addCase(caseDTO);
-                result.setId(uid);
-                result.setStatus(ResultType.SUCCESS);
-                result.setMsg("分组已添加");
-                return result;
-            } catch (Exception e) {
-                e.printStackTrace();
-                result.setStatus(ResultType.ERROR);
-                result.setMsg(e.getMessage());
-                return result;
-            }
+        if(StringUtils.isBlank(caseDTO.getProject_id()) && StringUtils.isBlank(caseDTO.getName())){
+            return new Result(ResultType.FAIL,"分组信息不能为空");
         }
-        result.setStatus(ResultType.FAIL);
-        result.setMsg("项目id或分组名称不能为空");
-        return result;
+        try {
+            caseService.addCase(caseDTO);
+            return new Result(ResultType.SUCCESS,"分组已添加");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(ResultType.ERROR,e.getMessage());
+        }
     }
 
     @PostMapping("/edit")
     public Result editCase(@RequestBody CaseDTO caseDTO){
-        Result result = new Result();
-
-            try {
-                if(StringUtils.isNotBlank(caseDTO.getAuthor()) && caseDTO.getAuthor().equals("1") ){
-                    Integer count = caseService.delCaseById(caseDTO);
-                    if(count > 0){
-                        result.setId(caseDTO.getId());
-                        result.setStatus(ResultType.SUCCESS);
-                        result.setMsg("分组已删除");
-                        return result;
-                    }else {
-                        result.setId(caseDTO.getId());
-                        result.setStatus(ResultType.NOT_FOUND);
-                        result.setMsg("该分组不存在");
-                        return result;
-                    }
-
+        if(StringUtils.isBlank(caseDTO.getProject_id()) && StringUtils.isBlank(caseDTO.getName())){
+            return new Result(ResultType.FAIL,"项目ID或分组名称不能为空");
+        }
+        try {
+            if(StringUtils.isNotBlank(caseDTO.getAuthor()) && caseDTO.getAuthor().equals("1")){
+                Integer count = caseService.delCaseById(caseDTO);
+                if(count > 0){
+                    return new Result(ResultType.SUCCESS,"分组已删除");
                 }else {
-                    if(StringUtils.isNotBlank(caseDTO.getProject_id()) && StringUtils.isNotBlank(caseDTO.getName())){
-                        Integer count = caseService.modifyCase(caseDTO);
-                        result.setId(caseDTO.getId());
-                        if(count > 0){
-                            result.setStatus(ResultType.SUCCESS);
-                            result.setMsg("分组已修改");
-                            return result;
-                        }else {
-                            result.setStatus(ResultType.NOT_FOUND);
-                            result.setMsg("该分组不存在");
-                            return result;
-                        }
-                    }
-                    result.setStatus(ResultType.ERROR);
-                    result.setMsg("项目id或测试集名称不能为空");
-                    return result;
-
+                    return new Result(ResultType.FAIL,"该分组不存在");
                 }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                result.setStatus(ResultType.ERROR);
-                result.setMsg(e.getMessage());
-                return result;
+            } else {
+                    Integer count = caseService.modifyCase(caseDTO);
+                    if(count > 0){
+                        return new Result(ResultType.SUCCESS,"分组已修改");
+                    }else {
+                        return new Result(ResultType.FAIL,"该分组不存在");
+                    }
             }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(ResultType.ERROR,e.getMessage());
+        }
     }
-
 
 }

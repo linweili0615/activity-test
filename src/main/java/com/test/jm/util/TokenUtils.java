@@ -58,7 +58,7 @@ public class TokenUtils {
      * @return
      */
     public static Claims parseJWTToken(String token) {
-        logger.info("parseJWTToken: {}",token);
+//        logger.info("parseJWTToken: {}",token);
         Claims claims = null;
         try{
             claims = Jwts.parser()

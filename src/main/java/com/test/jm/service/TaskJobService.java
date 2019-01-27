@@ -22,29 +22,51 @@ public class TaskJobService {
     @Autowired
     private Scheduler scheduler;
 
-    public boolean create_job(TaskDTO taskDTO){
+    @Autowired
+    private TaskService taskService;
+
+    public boolean create_job(TaskDTO taskDTO) {
         if(StringUtils.isBlank(taskDTO.getId())){
             log.error("任务id不能为空",taskDTO.toString());
             return false;
         }
+        if(isJobExists(taskDTO.getId())){
+            return true;
+        }
+        TaskDTO tt = taskService.getTaskById(taskDTO.getId());
+        if(null == tt){
+            log.info("任务信息:{}不存在",taskDTO.getId());
+            return false;
+        }
         try {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(dateFormat.parse(tt.getEnd_time()).before(new Date())){
+            log.info("任务已过期，不需要创建");
+            return true;
+        }
+        if(dateFormat.parse(tt.getStart_time()).after(new Date())){
+            log.info("未到任务开始时间，不需要创建");
+            return true;
+        }
             JobDataMap jobDataMap = new JobDataMap();
-            jobDataMap.put("taskid",taskDTO.getId());
+            jobDataMap.put("taskid",tt.getId());
             JobDetail jobDetail = JobBuilder.newJob(TaskTronJob.class)
-                    .withIdentity(taskDTO.getId())
+                    .withIdentity(tt.getId())
                     .usingJobData(jobDataMap)
                     .build();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date start_time = dateFormat.parse(taskDTO.getStart_time());
-            Date end_time = dateFormat.parse(taskDTO.getEnd_time());
+
+            Date start_time = dateFormat.parse(tt.getStart_time());
+            Date end_time = dateFormat.parse(tt.getEnd_time());
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(taskDTO.getId())
-                    .withSchedule(CronScheduleBuilder.cronSchedule(taskDTO.getCron_expression()))
+                    .withIdentity(tt.getId())
+                    .withSchedule(CronScheduleBuilder.cronSchedule(tt.getCron_expression()))
                     .startAt(start_time)
                     .endAt(end_time)
                     .build();
             scheduler.scheduleJob(jobDetail, trigger);
-            log.info("任务添加成功：{}",taskDTO.getId());
+            log.info("任务添加成功：{}",tt.getId());
+            resume_job(tt.getId());
+
             return true;
         } catch (SchedulerException e) {
             e.printStackTrace();
@@ -80,11 +102,11 @@ public class TaskJobService {
         }
         try {
             scheduler.resumeJob(JobKey.jobKey(job_key));
-            log.info("任务恢复成功：{}",job_key);
+            log.info("任务已启动：{}",job_key);
             return true;
         } catch (SchedulerException e) {
             e.printStackTrace();
-            log.error("任务恢复失败：{}",job_key);
+            log.error("任务启动失败：{}",job_key);
             return false;
         }
     }
@@ -93,6 +115,9 @@ public class TaskJobService {
         if(StringUtils.isBlank(job_key)){
             log.info("任务id不能为空");
             return false;
+        }
+        if(!isJobExists(job_key)){
+            return true;
         }
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(job_key));
@@ -110,16 +135,16 @@ public class TaskJobService {
         }
     }
 
-    public boolean update_job(TaskJobInfo taskJobInfo){
-        if(StringUtils.isBlank(taskJobInfo.getTask_id())){
+    public boolean update_job(TaskDTO taskDTO){
+        if(StringUtils.isBlank(taskDTO.getId())){
             log.info("任务id不能为空");
             return false;
         }
         try {
-            TriggerKey triggerKey = TriggerKey.triggerKey(taskJobInfo.getTask_id());
+            TriggerKey triggerKey = TriggerKey.triggerKey(taskDTO.getId());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(taskJobInfo.getCron_expression());
-            trigger.getTriggerBuilder().withIdentity(taskJobInfo.getTask_id()).withSchedule(scheduleBuilder);
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(taskDTO.getCron_expression());
+            trigger.getTriggerBuilder().withIdentity(taskDTO.getId()).withSchedule(scheduleBuilder);
             scheduler.rescheduleJob(triggerKey,trigger);
             log.info("任务信息更新成功");
             return true;
@@ -130,28 +155,60 @@ public class TaskJobService {
         }
     }
 
+    public boolean isJobExists(String job_id){
+        try {
+            if(scheduler.checkExists(JobKey.jobKey(job_id))){
+                log.info("job: {} exists",job_id);
+                return true;
+            }
+            log.info("job: {} not exists",job_id);
+            return false;
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            log.info("获取job是否存在失败,{}",job_id);
+            return false;
+        }
+
+    }
+
+    public boolean isStandBy(){
+        log.info("开始获取调度器状态...");
+        try {
+            if(scheduler.isInStandbyMode()){
+                log.info("调度器状态为: started");
+                return true;
+            }
+            log.info("调度器状态为：standy");
+            return false;
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            log.error("获取调度器状态失败：{}",e.getMessage());
+            return false;
+        }
+    }
+
     public boolean stopAllJobs(){
-        log.info("开始关闭所有定时任务...");
+        log.info("开始暂停调度器...");
         try {
             scheduler.standby();
-            log.info("所有定时任务已关闭");
+            log.info("调度器已暂停");
             return true;
         } catch (SchedulerException e) {
             e.printStackTrace();
-            log.error("定时任务关闭异常：{}",e.getMessage());
+            log.error("调度器暂停异常：{}",e.getMessage());
             return false;
         }
     }
 
     public boolean startAllJobs(){
-        log.info("开始启动定时任务...");
+        log.info("开始启动调度器...");
         try {
             scheduler.start();
-            log.info("定时任务已启动...");
+            log.info("调度器已启动...");
             return true;
         } catch (SchedulerException e) {
             e.printStackTrace();
-            log.error("定时任务启动异常：{}",e.getMessage());
+            log.error("调度器启动异常：{}",e.getMessage());
             return false;
         }
     }

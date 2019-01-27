@@ -13,6 +13,11 @@ public class CaseResult {
         this.data = data;
     }
 
+    public CaseResult(String status, String msg) {
+        this.status = status;
+        this.msg = msg;
+    }
+
     public String getStatus() {
         return status;
     }

@@ -38,7 +38,8 @@ public class ScanJobs {
                     continue;
                 }
                 if(end_time.before(new Date())){
-                    log.info("任务已过期，无需处理:{}",taskJob.getId());
+                    log.info("任务已过期，开始删除:{}",taskJob.getId());
+                    taskJobService.delete_job(taskJob.getId());
                     continue;
                 }
                 if(taskJob.getStatus().equals("-1")){

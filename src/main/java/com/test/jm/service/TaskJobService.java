@@ -158,10 +158,10 @@ public class TaskJobService {
     public boolean isJobExists(String job_id){
         try {
             if(scheduler.checkExists(JobKey.jobKey(job_id))){
-                log.info("job: {} exists",job_id);
+                log.info("job: {} 已存在",job_id);
                 return true;
             }
-            log.info("job: {} not exists",job_id);
+            log.info("job: {} 不存在",job_id);
             return false;
         } catch (SchedulerException e) {
             e.printStackTrace();

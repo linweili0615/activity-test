@@ -127,7 +127,7 @@ public class TaskController {
     }
 
     @PostMapping("/extend/info")
-    public TaskExtendResult getTaskInfo(@RequestBody String id){
+    public TaskExtendResult getTaskExtendInfo(@RequestBody String id){
         if(StringUtils.isBlank(id)){
             return new TaskExtendResult(ResultType.FAIL,"任务ID不能为空");
         }
@@ -324,6 +324,25 @@ public class TaskController {
             return new Result(ResultType.ERROR, e.getMessage());
         }
     }
+
+    @PostMapping("/info")
+    public Result getTaskInfo(@RequestBody String id){
+        if(StringUtils.isBlank(id)){
+            return new Result(ResultType.FAIL, "任务ID不能为空");
+        }
+        try {
+            TaskDTO taskDTO = taskService.getTaskById(id);
+            if(taskDTO !=null){
+                return new Result(ResultType.SUCCESS,"定时任务已删除",taskDTO);
+            }
+            return new Result(ResultType.FAIL, "任务ID不存在");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(ResultType.ERROR, e.getMessage());
+        }
+
+    }
+
 
     @PostMapping("/del")
     public Result delTaskStatus(@RequestBody String id){

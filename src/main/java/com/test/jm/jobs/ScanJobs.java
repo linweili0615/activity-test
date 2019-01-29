@@ -29,7 +29,9 @@ public class ScanJobs {
     public void add_jobs() throws ParseException {
         log.info("开始获取任务列表...");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<TaskJob> jobList = taskService.getTaskList(new TaskPage());
+        TaskPage taskPage = new TaskPage();
+        taskPage.setName("%%");
+        List<TaskJob> jobList = taskService.getTaskList(taskPage);
         if(null != jobList && jobList.size() > 0){
             for (TaskJob taskJob:jobList) {
                 Date start_time = dateFormat.parse(taskJob.getStart_time());

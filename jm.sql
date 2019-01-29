@@ -188,6 +188,9 @@ DROP TABLE IF EXISTS `task_case`;
 CREATE TABLE `task_case` (
   `id` varchar(255) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `cron_expression` varchar(255) DEFAULT NULL,
+  `start_time` varchar(255) DEFAULT NULL,
+  `end_time` varchar(255) DEFAULT NULL,
   `status` int(2) DEFAULT '1',
   `author` varchar(255) DEFAULT NULL,
   `update_author` varchar(255) DEFAULT NULL,

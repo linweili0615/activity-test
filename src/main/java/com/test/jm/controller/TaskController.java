@@ -1,6 +1,9 @@
 package com.test.jm.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.test.jm.domain.*;
+import com.test.jm.domain.page.TaskPage;
 import com.test.jm.dto.ApiDTO;
 import com.test.jm.dto.TaskDTO;
 import com.test.jm.dto.TaskExtendDTO;
@@ -283,14 +286,28 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/list")
-    public TaskExtendResult getTaskList(){
-        log.info("开始获取任务列表");
+    @PostMapping("/list")
+    public TaskExtendResult getTaskList(@RequestBody TaskPage taskPage){
+        if(null == taskPage){
+            return new TaskExtendResult(ResultType.FAIL,"请求参数不能为空");
+        }
         try {
-            List<TaskJob> data = taskService.getTaskList();
+            Integer pageSize = taskPage.getPageSize();
+            Integer pageNo = taskPage.getPageNo();
+            if(null == pageSize){
+                pageSize = 30;
+            }
+            if(null == pageNo){
+                pageNo = 1;
+            }
+            PageHelper.startPage(pageNo,pageSize);
+            List<TaskJob> data = taskService.getTaskList(taskPage);
+            PageInfo<TaskJob> pageInfo = new PageInfo<>(data);
+            int row_count = (int) pageInfo.getTotal();
+            int pageCount = row_count % pageSize==0 ? row_count/pageSize : row_count/pageSize + 1;
             log.info("获取任务列表成功");
             if(data != null && data.size()>0){
-                return new TaskExtendResult(ResultType.SUCCESS,"获取任务列表成功",data);
+                return new TaskExtendResult(ResultType.SUCCESS,"获取任务列表成功",pageInfo.getTotal(), pageSize, pageCount, pageNo,data);
             }
             log.info("暂无任务列表信息");
             return new TaskExtendResult(ResultType.SUCCESS,"暂无任务列表信息");

@@ -15,12 +15,21 @@
         <result column="modify_time" property="modify_time"/>
     </resultMap>
 
-    <select id="getTaskList" resultMap="task_list">
+    <select id="getTaskList" parameterType="com.test.jm.domain.page.TaskPage" resultMap="task_list">
         SELECT c.id,c.name,c.cron_expression,c.start_time,
         c.end_time,c.status,s.TRIGGER_STATE,c.update_author,date_format(c.modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
         from task_case c
         LEFT JOIN QRTZ_TRIGGERS s
         on c.id=s.TRIGGER_NAME
+        <bind name="pattern" value="'%' + name + '%'" />
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test='id != null and id != ""'>
+                c.id = #{id}
+            </if>
+            <if test='name != "" and name != null'>
+                c.name LIKE #{pattern}
+            </if>
+        </trim>
     </select>
 
     <select id="getTaskById" parameterType="java.lang.String" resultType="com.test.jm.dto.TaskDTO">

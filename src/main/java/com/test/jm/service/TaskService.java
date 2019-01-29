@@ -3,6 +3,7 @@ package com.test.jm.service;
 import com.test.jm.dao.TaskDao;
 import com.test.jm.dao.TaskExtendDao;
 import com.test.jm.domain.TaskExtendStatusParams;
+import com.test.jm.domain.page.TaskPage;
 import com.test.jm.dto.TaskDTO;
 import com.test.jm.dto.TaskExtendDTO;
 import com.test.jm.dto.TaskJob;
@@ -65,8 +66,8 @@ public class TaskService {
         return taskDao.addTask(taskDTO);
     }
 
-    public List<TaskJob> getTaskList(){
-        return taskDao.getTaskList();
+    public List<TaskJob> getTaskList(TaskPage taskPage){
+        return taskDao.getTaskList(taskPage);
     }
 
     public Integer updateTaskStatus(TaskDTO task) {

@@ -1,4 +1,5 @@
 package com.test.jm.jobs;
+import com.test.jm.domain.page.TaskPage;
 import com.test.jm.dto.TaskDTO;
 import com.test.jm.dto.TaskJob;
 import com.test.jm.service.TaskJobService;
@@ -28,7 +29,7 @@ public class ScanJobs {
     public void add_jobs() throws ParseException {
         log.info("开始获取任务列表...");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<TaskJob> jobList = taskService.getTaskList();
+        List<TaskJob> jobList = taskService.getTaskList(new TaskPage());
         if(null != jobList && jobList.size() > 0){
             for (TaskJob taskJob:jobList) {
                 Date start_time = dateFormat.parse(taskJob.getStart_time());

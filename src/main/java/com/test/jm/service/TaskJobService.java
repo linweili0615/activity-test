@@ -140,15 +140,17 @@ public class TaskJobService {
             log.info("任务id不能为空");
             return false;
         }
+        if(taskDTO.getStatus().equals("-1")){
+            log.info("任务:{} 状态为-1，无需更新",taskDTO.getId());
+            return false;
+        }
         try {
-            TriggerKey triggerKey = TriggerKey.triggerKey(taskDTO.getId());
-            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(taskDTO.getCron_expression());
-            trigger.getTriggerBuilder().withIdentity(taskDTO.getId()).withSchedule(scheduleBuilder);
-            scheduler.rescheduleJob(triggerKey,trigger);
+            log.info("开始任务信息更新..");
+            delete_job(taskDTO.getId());
+            create_job(taskDTO);
             log.info("任务信息更新成功");
             return true;
-        } catch (SchedulerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             log.info("任务信息更新失败");
             return false;

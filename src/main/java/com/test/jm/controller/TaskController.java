@@ -249,41 +249,68 @@ public class TaskController {
         return new TaskExtendResult(ResultType.FAIL, "添加步骤信息失败");
     }
 
-    @PostMapping("/add")
+    @PostMapping("/deal")
     public Result addTask(@RequestBody TaskDTO task){
-        if(StringUtils.isBlank(task.getName())){
-            return new Result(ResultType.FAIL,"任务名称不能为空");
-        }
+
         if(StringUtils.isBlank(task.getStart_time()) || StringUtils.isBlank(task.getEnd_time())){
             return new Result(ResultType.FAIL,"任务执行时间段不能为空");
         }
         if(StringUtils.isBlank(task.getCron_expression())){
             return new Result(ResultType.FAIL,"任务定时策略不能为空");
         }
+        if(StringUtils.isBlank(task.getStatus())){
+            return new Result(ResultType.FAIL,"任务状态不能为空");
+        }
         if(!CronExpression.isValidExpression(task.getCron_expression())){
             return new Result(ResultType.FAIL,"请输入正确的定时策略");
         }
 
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setId(UUID.randomUUID().toString());
-        taskDTO.setName(task.getName());
-        taskDTO.setStart_time(task.getStart_time());
-        taskDTO.setEnd_time(task.getEnd_time());
-        taskDTO.setCron_expression(task.getCron_expression());
-        try {
-            log.info("开始写入任务信息");
-            Integer count = taskService.addTask(taskDTO);
-            if(count > 0){
-                log.info("成功写入任务信息: {}",taskDTO.getId());
-                return new Result(ResultType.SUCCESS,taskDTO.getId());
+        if(StringUtils.isBlank(task.getId())){
+            if(StringUtils.isBlank(task.getName())){
+                return new Result(ResultType.FAIL,"任务名称不能为空");
             }
-            log.info("写入任务信息失败: {}",taskDTO.toString());
-            return new Result(ResultType.FAIL,"添加任务失败",taskDTO.toString());
+            TaskDTO taskDTO = new TaskDTO();
+            taskDTO.setId(UUID.randomUUID().toString());
+            taskDTO.setName(task.getName());
+            taskDTO.setStart_time(task.getStart_time());
+            taskDTO.setEnd_time(task.getEnd_time());
+            taskDTO.setCron_expression(task.getCron_expression());
+            try {
+                log.info("开始写入任务信息");
+                Integer count = taskService.addTask(taskDTO);
+                if(count > 0){
+                    taskJobService.create_job(taskDTO);
+                    log.info("成功写入任务信息: {}",taskDTO.getId());
+                    return new Result(ResultType.SUCCESS,taskDTO.getId());
+                }
+                log.info("写入任务信息失败: {}",taskDTO.toString());
+                return new Result(ResultType.FAIL,"添加任务失败",taskDTO.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.info("写入任务信息异常: {}",e.getMessage());
+                return new Result(ResultType.ERROR,"添加定时任务成功，更新任务信息失败",taskDTO.getId());
+            }
+        }
+        try {
+            TaskDTO t1 = taskService.getTaskById(task.getId());
+            if(t1 != null){
+                log.info("开始更新任务信息:{}",task.getId());
+                Integer count = taskService.updateTask(task);
+                if(count > 0){
+                    log.info("任务信息已更新,开始更新定时任务策略...");
+                    taskJobService.update_job(task);
+                    return new Result(ResultType.SUCCESS,"任务信息已更新");
+                }else {
+                    log.info("更新任务信息失败:{}",task.getId());
+                    return new Result(ResultType.FAIL,"更新任务信息失败");
+                }
+            }
+            return new Result(ResultType.FAIL,"请输入正确的任务的ID");
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("写入任务信息异常: {}",e.getMessage());
-            return new Result(ResultType.ERROR,"添加定时任务成功，更新任务信息失败",taskDTO.getId());
+            return new Result(ResultType.ERROR,e.getMessage());
         }
+
     }
 
     @PostMapping("/list")
@@ -328,7 +355,7 @@ public class TaskController {
         try {
             Integer count = taskService.updateTaskStatus(task);
             if(count > 0){
-                if(task.getStatus()>0){
+                if(task.getStatus().equals("1")){
                     taskJobService.create_job(task);
                 }else {
                     taskJobService.delete_job(task.getId());

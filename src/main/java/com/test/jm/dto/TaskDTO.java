@@ -8,7 +8,7 @@ public class TaskDTO {
     private String cron_expression;
     private String start_time;
     private String end_time;
-    private Integer status;
+    private String status;
     private String author;
     private String update_author;
     private LocalDateTime create_time;
@@ -17,7 +17,7 @@ public class TaskDTO {
     public TaskDTO() {
     }
 
-    public TaskDTO(String id, String name, String cron_expression, String start_time, String end_time, Integer status, String author, String update_author, LocalDateTime create_time, LocalDateTime modify_time) {
+    public TaskDTO(String id, String name, String cron_expression, String start_time, String end_time, String status, String author, String update_author, LocalDateTime create_time, LocalDateTime modify_time) {
         this.id = id;
         this.name = name;
         this.cron_expression = cron_expression;
@@ -70,11 +70,11 @@ public class TaskDTO {
         this.end_time = end_time;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

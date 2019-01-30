@@ -31,6 +31,7 @@ public class ProjectService {
         projectDTO.setProject_name(project_name);
         projectDTO.setStatus(1);
         projectDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
+        projectDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
         projectDTO.setId(uid);
         int count = projectDao.addProject(projectDTO);
         return uid;

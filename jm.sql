@@ -199,6 +199,16 @@ CREATE TABLE `task_case` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `task_draw`;
+CREATE TABLE `task_draw` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `types` varchar(255) DEFAULT NULL,
+  `values` varchar(255) DEFAULT NULL,
+  `left` varchar(255) DEFAULT NULL,
+  `right` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 -- Records of task_case
 -- ----------------------------

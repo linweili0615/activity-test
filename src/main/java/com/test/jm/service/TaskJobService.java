@@ -141,8 +141,9 @@ public class TaskJobService {
             return false;
         }
         if(taskDTO.getStatus().equals("-1")){
-            log.info("任务:{} 状态为-1，无需更新",taskDTO.getId());
-            return false;
+            log.info("任务:{} 状态为-1，开始移除定时策略",taskDTO.getId());
+            delete_job(taskDTO.getId());
+            return true;
         }
         try {
             log.info("开始任务信息更新..");

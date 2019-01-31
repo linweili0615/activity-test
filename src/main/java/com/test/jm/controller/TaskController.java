@@ -275,6 +275,7 @@ public class TaskController {
             taskDTO.setStart_time(task.getStart_time());
             taskDTO.setEnd_time(task.getEnd_time());
             taskDTO.setCron_expression(task.getCron_expression());
+            taskDTO.setStatus(task.getStatus());
             try {
                 log.info("开始写入任务信息");
                 Integer count = taskService.addTask(taskDTO);

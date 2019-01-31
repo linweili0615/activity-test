@@ -60,7 +60,6 @@ public class TaskService {
     public Integer addTask(TaskDTO taskDTO){
         taskDTO.setAuthor(UserThreadLocal.getUserInfo().getUser_name());
         taskDTO.setUpdate_author(UserThreadLocal.getUserInfo().getUser_name());
-        taskDTO.setStatus("1");
         return taskDao.addTask(taskDTO);
     }
 

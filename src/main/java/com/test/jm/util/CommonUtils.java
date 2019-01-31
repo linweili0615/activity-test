@@ -12,9 +12,12 @@ import com.test.jm.dto.CaseExtend;
 import com.test.jm.dto.ApiDTO;
 import com.test.jm.dto.CaseDTO;
 import com.test.jm.keys.CommonType;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.cookie.Cookie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -24,6 +27,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(CommonUtils.class);
 
     //json提取
 
@@ -45,11 +50,13 @@ public class CommonUtils {
     public static String regMatch(String pre, String post, String source){
         String result = null;
         if(StringUtils.isNotBlank(pre) && StringUtils.isNotBlank(post)){
-            String rgex = pre + "(.*?)" + post;
-            Pattern pattern = Pattern.compile(rgex);
+            String regx = new StringBuilder().append(pre).append("(.*?)").append(post).toString();
+            log.info("regMatch正则提取：{}",StringEscapeUtils.escapeJava(regx));
+            Pattern pattern = Pattern.compile(StringEscapeUtils.escapeJava(regx));
             Matcher matcher = pattern.matcher(source);
             while (matcher.find()) {
                 result = matcher.group(1);
+                log.info("匹配到第一个值：{}", result);
             }
         }
         return result;
@@ -57,6 +64,7 @@ public class CommonUtils {
 
     //常亮字符替换
     public static void replaceCommon(String type, ApiDTO apiDTO, String special_str){
+        System.out.println("special_str: " + special_str);
         if(null != special_str){
             switch (special_str){
                 case CommonType.TELNO:
@@ -72,21 +80,19 @@ public class CommonUtils {
                     setCommon(type, apiDTO, special_str, UUID.randomUUID().toString());
                     break;
                 default:
+                    setPre(type,apiDTO,special_str);
                     break;
             }
         }
     }
 
-    //前置字符替换
-    public static void replacePre(ApiDTO apiDTO, String special_str){
-        System.out.println("replacePre: " + special_str);
-        if(null != special_str){
-            String special = special_str.split("\\{")[1].split("\\}")[0];
-            System.out.println("special: " + special_str);
-            Object getPre = RequestThreadLocal.getInfo().getOrDefault( special, "replacePre");
-            System.out.println("getPre: " + getPre);
-            if(!"replacePre".equals(getPre)){
-                apiDTO.setBody(apiDTO.getBody().replaceAll(replaceSpecial(special_str), String.valueOf(getPre)));
+    public static void setPre(String type, ApiDTO apiDTO, String special_str){
+        Map<String,Object> info = RequestThreadLocal.getInfo();
+        if(null != info){
+            if("param".equals(type)){
+                apiDTO.setBody(apiDTO.getBody().replaceAll(replaceSpecial(special_str), String.valueOf(info.get(special_str))));
+            }else{
+                apiDTO.setUrl(apiDTO.getUrl().replaceAll(replaceSpecial(special_str), String.valueOf(info.get(special_str))));
             }
         }
     }

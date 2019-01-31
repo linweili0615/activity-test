@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.jm.dao.TaskDrawDao">
+
+    <select id="getTaskDraw" parameterType="java.lang.Integer"
+            resultType="com.test.jm.dto.TaskDrawDTO">
+        SELECT *
+        FROM task_draw
+        WHERE id=#{id}
+    </select>
+
+
+
+
+
+</mapper>

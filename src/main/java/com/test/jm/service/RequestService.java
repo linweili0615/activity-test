@@ -3,6 +3,7 @@ package com.test.jm.service;
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskResult;
 import com.test.jm.dto.ApiDTO;
+import com.test.jm.dto.TaskDrawDTO;
 import com.test.jm.dto.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
 import com.test.jm.util.*;
@@ -23,6 +24,9 @@ public class RequestService {
     private TaskService taskService;
 
     @Autowired
+    private TaskDrawService taskDrawService;
+
+    @Autowired
     private ApiService apiService;
 
     //前置处理
@@ -32,7 +36,6 @@ public class RequestService {
         if(null != matchList && matchList.size()>0){
             for (String match: matchList) {
                 CommonUtils.replaceCommon("param", apiDTO, match);
-//                CommonUtils.replacePre(apiDTO, match);
             }
         }
         //提取url
@@ -40,24 +43,20 @@ public class RequestService {
         if(null != matchList1 && matchList1.size()>0){
             for (String match: matchList1) {
                 CommonUtils.replaceCommon("url", apiDTO, match);
-//                CommonUtils.replacePre(apiDTO, match);
             }
         }
     }
     //后置处理
-    private void replacePost(String post_processors){
-        Map<String, Object> map = RequestThreadLocal.getInfo();
-        if(StringUtils.isNotBlank(post_processors)){
-            Set<Map.Entry<String, Object>> entrySet = CommonUtils.strToMap(post_processors).entrySet();
-            for (Map.Entry<String, Object> entry : entrySet) {
-                String pre = "";
-                String post = "";
-                String match = CommonUtils.regMatch(pre, post, "body");
-                if(StringUtils.isNotBlank(match)){
-                    map.put("telno", match);
-                    RequestThreadLocal.setInfo(map);
-                }
+    private void replacePost(HttpClientResult result, TaskDrawDTO taskDrawDTO){
+        System.out.println("taskDrawDTO: " +taskDrawDTO.toString());
+        String match = CommonUtils.regMatch(taskDrawDTO.getLeft(),taskDrawDTO.getRight(),result.getRes_body());
+        if(StringUtils.isNotBlank(match)){
+            Map<String,Object> info = RequestThreadLocal.getInfo();
+            if(null ==info){
+                info = new HashMap<>();
             }
+            info.put(taskDrawDTO.getValues(),match);
+            RequestThreadLocal.setInfo(info);
         }
     }
 
@@ -119,8 +118,12 @@ public class RequestService {
                     success++;
                 }
                 //后置处理
-                String post_processors = taskExtendDTO.getPost_processors();
-                replacePost(post_processors);
+//                String post_processors = taskExtendDTO.getPost_processors();
+                TaskDrawDTO taskDrawDTO = taskDrawService.getTaskDrawById(1);
+
+                replacePost(result,taskDrawDTO);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("请求异常：api:{}\n{}",apiDTO.getId(),e.getMessage());

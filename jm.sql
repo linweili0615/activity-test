@@ -209,6 +209,8 @@ CREATE TABLE `task_draw` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `jm`.`task_draw` (`id`, `types`, `values`, `left`, `right`) VALUES ('1', 'reguler', '${readName}', '\"realName\":\"', '\",');
+
 -- ----------------------------
 -- Records of task_case
 -- ----------------------------

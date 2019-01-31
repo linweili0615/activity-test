@@ -215,7 +215,7 @@ public class ApiController {
         }
 
         try {
-            org.apache.logging.log4j.Logger log = LogUtil.getLogger("12345678");
+            org.apache.logging.log4j.Logger log = LogUtil.getLogger("0");
             HttpClientResult result = requestService.request(log, apiDTO);
             if(result.getRes_code().equals(1000)){
                 return new TestResult(ResultType.SUCCESS, result.getRes_body(), result);

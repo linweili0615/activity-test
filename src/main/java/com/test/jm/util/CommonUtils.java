@@ -18,7 +18,6 @@ import org.apache.http.Header;
 import org.apache.http.cookie.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,31 +31,34 @@ public class CommonUtils {
 
     //json提取
 
-    //正则提取需传入参数
+    //正则提取变量列表
     public static List<String> getMatchList(String source) {
+//        log.info("开始提取变量列表...");
         List<String> list = new ArrayList<>();
         if(StringUtils.isNotBlank(source) && !"{}".equalsIgnoreCase(source)){
             Pattern regex = Pattern.compile("\\$\\{([^}]*)\\}");
             Matcher matcher = regex.matcher(source);
             while(matcher.find()) {
-                String e = matcher.group();
-                list.add(e);
+                String mt = matcher.group();
+//                log.info("提取到变量：{}", mt);
+                list.add(mt);
             }
         }
+//        log.info("提取变量列表完成，{}", list.toString());
         return list;
     }
 
-    //正则提取所需参数值
+    //正则提取2者之间的内容
     public static String regMatch(String pre, String post, String source){
         String result = null;
         if(StringUtils.isNotBlank(pre) && StringUtils.isNotBlank(post)){
             String regx = new StringBuilder().append(pre).append("(.*?)").append(post).toString();
-            log.info("regMatch正则提取：{}",StringEscapeUtils.escapeJava(regx));
+//            log.info("regMatch正则提取：{}",StringEscapeUtils.escapeJava(regx));
             Pattern pattern = Pattern.compile(StringEscapeUtils.escapeJava(regx));
             Matcher matcher = pattern.matcher(source);
             while (matcher.find()) {
                 result = matcher.group(1);
-                log.info("匹配到第一个值：{}", result);
+//                log.info("匹配到第一个值：{}", result);
             }
         }
         return result;
@@ -64,7 +66,6 @@ public class CommonUtils {
 
     //常亮字符替换
     public static void replaceCommon(String type, ApiDTO apiDTO, String special_str){
-        System.out.println("special_str: " + special_str);
         if(null != special_str){
             switch (special_str){
                 case CommonType.TELNO:
@@ -89,15 +90,22 @@ public class CommonUtils {
     public static void setPre(String type, ApiDTO apiDTO, String special_str){
         Map<String,Object> info = RequestThreadLocal.getInfo();
         if(null != info){
-            if("param".equals(type)){
-                apiDTO.setBody(apiDTO.getBody().replaceAll(replaceSpecial(special_str), String.valueOf(info.get(special_str))));
-            }else{
-                apiDTO.setUrl(apiDTO.getUrl().replaceAll(replaceSpecial(special_str), String.valueOf(info.get(special_str))));
+            Object end = info.get(special_str);
+            if(end != null){
+//                log.info("替换引用变量{}:{}",special_str,end);
+                if("param".equals(type)){
+                    apiDTO.setBody(apiDTO.getBody().replaceAll(replaceSpecial(special_str), String.valueOf(end)));
+                }else{
+                    apiDTO.setUrl(apiDTO.getUrl().replaceAll(replaceSpecial(special_str), String.valueOf(end)));
+                }
+            }else {
+//                log.info("引用变量{} 为空",special_str,end);
             }
         }
     }
 
     public static void setCommon(String type, ApiDTO apiDTO, String special_str, String str){
+//        log.info("替换公共变量{}:{}",special_str,str);
         if("param".equals(type)){
             apiDTO.setBody(apiDTO.getBody().replaceAll(replaceSpecial(special_str), str));
         }else{

@@ -3,12 +3,16 @@ package com.test.jm.service;
 import com.test.jm.domain.HttpClientResult;
 import com.test.jm.domain.TaskResult;
 import com.test.jm.dto.ApiDTO;
+import com.test.jm.dto.TaskCaseLog;
 import com.test.jm.dto.TaskDrawDTO;
 import com.test.jm.dto.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
+import com.test.jm.keys.TaskType;
 import com.test.jm.util.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
+import org.omg.CORBA.OBJ_ADAPTER;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +24,12 @@ import java.util.*;
 @Service
 public class RequestService {
 
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RequestService.class);
+
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private TaskCaseLogService logService;
 
     @Autowired
     private TaskDrawService taskDrawService;
@@ -48,7 +56,6 @@ public class RequestService {
     }
     //后置处理
     private void replacePost(HttpClientResult result, TaskDrawDTO taskDrawDTO){
-        System.out.println("taskDrawDTO: " +taskDrawDTO.toString());
         String match = CommonUtils.regMatch(taskDrawDTO.getLeft(),taskDrawDTO.getRight(),result.getRes_body());
         if(StringUtils.isNotBlank(match)){
             Map<String,Object> info = RequestThreadLocal.getInfo();
@@ -83,15 +90,40 @@ public class RequestService {
         return result;
     }
 
-    public List<HttpClientResult> runCase(String id) throws IOException {
+    public Map<String, Object> getLog(String run_type, String task_id){
+        Map<String, Object> map = new HashMap<>();
+        TaskCaseLog caseLog = null;
+        String u_id = UserThreadLocal.getUserInfo().getUser_id();
+        if(run_type.equals(TaskType.TEST)){
+            caseLog = new TaskCaseLog(task_id,u_id);
+        }else {
+            caseLog = new TaskCaseLog(task_id,task_id);
+        }
+        TaskCaseLog taskCaseLog = logService.getTaskCaseLog(caseLog);
+        if(null == taskCaseLog){
+            Integer log_id = logService.insertTaskCaseLog(caseLog);
+            Logger log = LogUtil.getLogger(log_id.toString());
+            map.put("log_id",log_id);
+            map.put("log",log);
+        }else {
+            Logger log = LogUtil.getLogger(taskCaseLog.getId().toString());
+            map.put("log_id",taskCaseLog.getId());
+            map.put("log",log);
+        }
+        return map;
+    }
+
+    public List<HttpClientResult> runCase(String run_type, String task_id) throws IOException {
+        logger.info("runCase: {}",task_id);
+        Map<String, Object> task_map = getLog(run_type, task_id);
+        Logger log = (Logger) task_map.get("log");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-        Logger log = LogUtil.getLogger(id);
-        log.info("开始执行 TASK: {} ...",id);
+        log.info("开始执行 TASK: {} ...",task_id);
         TaskResult taskResult = new TaskResult();
         TaskExtendDTO tt = new TaskExtendDTO();
         Date start = new Date();
         taskResult.setStart_time(dateFormat.format(start));
-        tt.setTask_id(id);
+        tt.setTask_id(task_id);
         tt.setStatus("1");
         List<TaskExtendDTO> data = taskService.getTaskExtendListById(tt);
         taskResult.setTotal(data.size());
@@ -118,11 +150,12 @@ public class RequestService {
                     success++;
                 }
                 //后置处理
-//                String post_processors = taskExtendDTO.getPost_processors();
-                TaskDrawDTO taskDrawDTO = taskDrawService.getTaskDrawById(1);
-
-                replacePost(result,taskDrawDTO);
-
+                if(taskExtendDTO.getPost_processors() != null){
+                    List<TaskDrawDTO> taskDrawDTOList = taskDrawService.getTaskDrawById(taskExtendDTO.getPost_processors());
+                    for (TaskDrawDTO drawDTO:taskDrawDTOList) {
+                        replacePost(result,drawDTO);
+                    }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,7 +163,7 @@ public class RequestService {
                 continue;
             }
         }
-        log.info("执行结束 TASK: {}",id);
+        log.info("执行结束 TASK: {}",task_id);
         Date end = new Date();
         long interval = ( end.getTime() - start.getTime())/1000;
         taskResult.setConsuming_time(interval);
@@ -143,7 +176,7 @@ public class RequestService {
         taskResult.setPercent(percent);
         taskResult.setResultList(res);
 
-        String fullPath = "task/" + File.separator +id +  File.separator + UserThreadLocal.getUserInfo().getUser_id() +   File.separator + "result.json";
+        String fullPath = "task/" + File.separator +task_map.get("log_id") +  File.separator  + "result.json";
         File file = new File(fullPath);
         if (!file.getParentFile().exists()) { // 如果父目录不存在，创建父目录
             file.getParentFile().mkdirs();
@@ -159,6 +192,7 @@ public class RequestService {
         write.flush();
         write.close();
         //写入执行结果
+        logger.info("runCase end: {}",task_id);
         return res;
     }
 

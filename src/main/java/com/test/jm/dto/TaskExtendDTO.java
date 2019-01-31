@@ -10,7 +10,7 @@ public class TaskExtendDTO {
     private String api_id;
     private String api_name;
     private Integer rank;
-    private String post_processors;
+    private Integer post_processors;
     private String valid_data;
     private String status;
     private LocalDateTime create_time;
@@ -71,11 +71,11 @@ public class TaskExtendDTO {
         this.rank = rank;
     }
 
-    public String getPost_processors() {
+    public Integer getPost_processors() {
         return post_processors;
     }
 
-    public void setPost_processors(String post_processors) {
+    public void setPost_processors(Integer post_processors) {
         this.post_processors = post_processors;
     }
 

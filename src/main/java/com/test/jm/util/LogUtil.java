@@ -44,7 +44,7 @@ public class LogUtil {
         TriggeringPolicy tp = SizeBasedTriggeringPolicy.createPolicy("10M");
         CompositeTriggeringPolicy policyComposite = CompositeTriggeringPolicy.createPolicy(tbtp, tp);
 
-        String loggerDir = datalogDir + File.separator + loggerName + File.separator + UserThreadLocal.getUserInfo().getUser_id() + File.separator + "task.log";
+        String loggerDir = datalogDir + File.separator + loggerName + File.separator + "task.log";
         //删除日志的条件
         IfFileName ifFileName = IfFileName.createNameCondition(null, loggerName + "\\.\\d{4}-\\d{2}-\\d{2}.*");
         IfLastModified ifLastModified = IfLastModified.createAgeCondition(Duration.parse("1d"));
@@ -90,7 +90,7 @@ public class LogUtil {
 
     /**获取Logger*/
     public static Logger getLogger(String loggerName) {
-        File resultfile = new File("/task/"+loggerName +"/" + UserThreadLocal.getUserInfo().getUser_id() + "/task.log");
+        File resultfile = new File("/task/"+loggerName +"/" + "/task.log");
         resultfile.deleteOnExit();
         synchronized (config) {
             if (!config.getLoggers().containsKey(loggerName)) {

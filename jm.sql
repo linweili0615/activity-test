@@ -211,6 +211,14 @@ CREATE TABLE `task_draw` (
 
 INSERT INTO `jm`.`task_draw` (`id`, `types`, `values`, `left`, `right`) VALUES ('1', 'reguler', '${readName}', '\"realName\":\"', '\",');
 
+DROP TABLE IF EXISTS `task_case_log`;
+CREATE TABLE `task_case_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` varchar(255) DEFAULT NULL,
+  `u_id` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 -- ----------------------------
 -- Records of task_case
 -- ----------------------------

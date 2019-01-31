@@ -9,6 +9,7 @@ import com.test.jm.dto.TaskDTO;
 import com.test.jm.dto.TaskExtendDTO;
 import com.test.jm.dto.TaskJob;
 import com.test.jm.keys.ResultType;
+import com.test.jm.keys.TaskType;
 import com.test.jm.service.RequestService;
 import com.test.jm.service.TaskJobService;
 import com.test.jm.service.TaskService;
@@ -46,11 +47,16 @@ public class TaskController {
     private RedisUtil redisUtil;
 
     @PostMapping("/getLog")
-    public Result getlog(@RequestBody String id){
-        if(StringUtils.isBlank(id)){
-            return new Result(ResultType.ERROR,"taskid不能为空");
+    public Result getlog(@RequestBody TaskParams params){
+        if(StringUtils.isBlank(params.getRun_type())){
+            return new Result(ResultType.ERROR,"任务类型不能为空");
         }
-        String logname = new File("").getAbsolutePath() + "/task/" + id +"/" + UserThreadLocal.getUserInfo().getUser_id()+"/task.log";
+        if(StringUtils.isBlank(params.getTask_id())){
+            return new Result(ResultType.ERROR,"任务ID不能为空");
+        }
+        Map<String, Object> info = requestService.getLog(params.getRun_type(),params.getTask_id());
+        String log_id = info.get("log_id").toString();
+        String logname = new File("").getAbsolutePath() + "/task/" + log_id + "/task.log";
         try {
             File file = new File(logname);
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file),"UTF-8");
@@ -74,11 +80,16 @@ public class TaskController {
     }
 
     @RequestMapping("/getResult")
-    public Result getresult(@RequestBody String id){
-        if(StringUtils.isBlank(id)){
-            return new Result(ResultType.FAIL,"taskid不能为空");
+    public Result getresult(@RequestBody TaskParams params){
+        if(StringUtils.isBlank(params.getRun_type())){
+            return new Result(ResultType.ERROR,"任务类型不能为空");
         }
-        String fullPath = "task/" + File.separator +id +  File.separator + UserThreadLocal.getUserInfo().getUser_id() +   File.separator + "result.json";
+        if(StringUtils.isBlank(params.getTask_id())){
+            return new Result(ResultType.ERROR,"任务ID不能为空");
+        }
+        Map<String, Object> info = requestService.getLog(params.getRun_type(),params.getTask_id());
+        String log_id = info.get("log_id").toString();
+        String fullPath = "task/" + File.separator +log_id +File.separator + "result.json";
         try {
             File file = new File(fullPath);
             if(!file.exists()){
@@ -94,7 +105,7 @@ public class TaskController {
                 }
             }
             reader.close();
-            return new Result(id, ResultType.SUCCESS,null,buffer.toString());
+            return new Result(log_id, ResultType.SUCCESS,null,buffer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return new Result(ResultType.NOT_FOUND,e.getMessage());
@@ -116,7 +127,7 @@ public class TaskController {
 //        }
         try {
 
-            List<HttpClientResult> list = requestService.runCase(task_id);
+            List<HttpClientResult> list = requestService.runCase(TaskType.TEST, task_id);
             if(null != list && list.size()>0){
                 return new TaskExtendResult(task_id, ResultType.SUCCESS, "task执行成功", list);
             }

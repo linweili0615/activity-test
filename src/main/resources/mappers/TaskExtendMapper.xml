@@ -37,7 +37,7 @@
                 c.id = #{id}
             </if>
             <if test="status != null">
-                t.status = #{status}
+                AND t.status = #{status}
             </if>
         </trim>
         ORDER BY t.rank ASC

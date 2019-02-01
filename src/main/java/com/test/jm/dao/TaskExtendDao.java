@@ -14,7 +14,7 @@ public interface TaskExtendDao {
 
     List<TaskExtendDTO> getTaskExtendListById(TaskExtendDTO taskExtendDTO);
 
-    TaskExtendDTO getTaskExtendById(String id);
+    TaskExtendDTO getTaskExtendByParams(TaskExtendDTO taskExtendDTO);
 
     List<TaskExtendDTO> getTaskExtendList();
 

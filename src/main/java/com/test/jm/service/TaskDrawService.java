@@ -12,7 +12,7 @@ public class TaskDrawService {
 
     @Autowired
     private TaskDrawDao taskDrawDao;
-    List<TaskDrawDTO> getTaskDrawById(Integer id){
+    public List<TaskDrawDTO> getTaskDrawById(Integer id){
         return taskDrawDao.getTaskDraw(id);
     }
 }

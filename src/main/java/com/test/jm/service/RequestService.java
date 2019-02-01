@@ -90,7 +90,7 @@ public class RequestService {
         return result;
     }
 
-    public Map<String, Object> getLog(String run_type, String task_id){
+    public Map<String, Object> getLog(String log_type, String run_type, String task_id){
         Map<String, Object> map = new HashMap<>();
         TaskCaseLog caseLog = null;
         String u_id = UserThreadLocal.getUserInfo().getUser_id();
@@ -102,11 +102,11 @@ public class RequestService {
         TaskCaseLog taskCaseLog = logService.getTaskCaseLog(caseLog);
         if(null == taskCaseLog){
             Integer log_id = logService.insertTaskCaseLog(caseLog);
-            Logger log = LogUtil.getLogger(log_id.toString());
+            Logger log = LogUtil.getLogger(log_type,log_id.toString());
             map.put("log_id",log_id);
             map.put("log",log);
         }else {
-            Logger log = LogUtil.getLogger(taskCaseLog.getId().toString());
+            Logger log = LogUtil.getLogger(log_type,taskCaseLog.getId().toString());
             map.put("log_id",taskCaseLog.getId());
             map.put("log",log);
         }
@@ -115,7 +115,7 @@ public class RequestService {
 
     public List<HttpClientResult> runCase(String run_type, String task_id) throws IOException {
         logger.info("runCase: {}",task_id);
-        Map<String, Object> task_map = getLog(run_type, task_id);
+        Map<String, Object> task_map = getLog("WRITE",run_type, task_id);
         Logger log = (Logger) task_map.get("log");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
         log.info("开始执行 TASK: {} ...",task_id);

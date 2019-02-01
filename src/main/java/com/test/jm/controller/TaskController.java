@@ -2,15 +2,14 @@ package com.test.jm.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mchange.lang.IntegerUtils;
 import com.test.jm.domain.*;
 import com.test.jm.domain.page.TaskPage;
-import com.test.jm.dto.ApiDTO;
-import com.test.jm.dto.TaskDTO;
-import com.test.jm.dto.TaskExtendDTO;
-import com.test.jm.dto.TaskJob;
+import com.test.jm.dto.*;
 import com.test.jm.keys.ResultType;
 import com.test.jm.keys.TaskType;
 import com.test.jm.service.RequestService;
+import com.test.jm.service.TaskDrawService;
 import com.test.jm.service.TaskJobService;
 import com.test.jm.service.TaskService;
 import com.test.jm.util.RedisUtil;
@@ -38,6 +37,9 @@ public class TaskController {
     private TaskService taskService;
 
     @Autowired
+    private TaskDrawService taskDrawService;
+
+    @Autowired
     private TaskJobService taskJobService;
 
     @Autowired
@@ -54,7 +56,7 @@ public class TaskController {
         if(StringUtils.isBlank(params.getTask_id())){
             return new Result(ResultType.ERROR,"任务ID不能为空");
         }
-        Map<String, Object> info = requestService.getLog(params.getRun_type(),params.getTask_id());
+        Map<String, Object> info = requestService.getLog("GET", params.getRun_type(),params.getTask_id());
         String log_id = info.get("log_id").toString();
         String logname = new File("").getAbsolutePath() + "/task/" + log_id + "/task.log";
         try {
@@ -69,6 +71,7 @@ public class TaskController {
                 }
             }
             reader.close();
+            list.remove(0);
             return new Result(ResultType.SUCCESS,null,list);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -87,7 +90,7 @@ public class TaskController {
         if(StringUtils.isBlank(params.getTask_id())){
             return new Result(ResultType.ERROR,"任务ID不能为空");
         }
-        Map<String, Object> info = requestService.getLog(params.getRun_type(),params.getTask_id());
+        Map<String, Object> info = requestService.getLog("GET",params.getRun_type(),params.getTask_id());
         String log_id = info.get("log_id").toString();
         String fullPath = "task/" + File.separator +log_id +File.separator + "result.json";
         try {
@@ -238,7 +241,7 @@ public class TaskController {
                 tt.setCase_id(apiDTO.getCase_id());
                 tt.setApi_id(apiDTO.getId());
                 tt.setApi_name(apiDTO.getName());
-                TaskExtendDTO ts = taskService.getTaskExtendById(params.getTask_id());
+                TaskExtendDTO ts = taskService.getTaskExtendByParams(new TaskExtendDTO(params.getTask_id()));
                 if(null != ts){
                     tt.setRank(ts.getRank() + 1);
                 }else {
@@ -325,6 +328,28 @@ public class TaskController {
 
     }
 
+    @PostMapping("/draw")
+    public ListResult getTaskDrawList(@RequestBody TaskExtendDTO taskextend){
+        if(null == taskextend){
+            return new ListResult(ResultType.FAIL,"请求参数不能为空");
+        }
+        try {
+            TaskExtendDTO taskExtendDTO = taskService.getTaskExtendByParams(taskextend);
+            if(null == taskExtendDTO){
+                return new ListResult(ResultType.FAIL,"请输入正确的extend_id");
+            }
+            List<TaskDrawDTO> taskDrawDTOList = taskDrawService.getTaskDrawById(taskExtendDTO.getPost_processors());
+            if(taskDrawDTOList != null && taskDrawDTOList.size()>0){
+                return new ListResult(ResultType.SUCCESS,"获取提取列表成功",taskDrawDTOList);
+            }
+            return new ListResult(ResultType.SUCCESS,"暂无提取列表记录");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ListResult(ResultType.ERROR,e.getMessage());
+        }
+    }
+
+
     @PostMapping("/list")
     public TaskExtendResult getTaskList(@RequestBody TaskPage taskPage){
         if(null == taskPage){
@@ -356,6 +381,7 @@ public class TaskController {
             return new TaskExtendResult(ResultType.ERROR,e.getMessage());
         }
     }
+
     @PostMapping("/status")
     public Result modifyTaskStatus(@RequestBody TaskDTO task){
         if(null == task){
@@ -389,7 +415,7 @@ public class TaskController {
         try {
             TaskDTO taskDTO = taskService.getTaskById(id);
             if(taskDTO !=null){
-                return new Result(ResultType.SUCCESS,"定时任务已删除",taskDTO);
+                return new Result(ResultType.SUCCESS,"定时任务配置获取成功",taskDTO);
             }
             return new Result(ResultType.FAIL, "任务ID不存在");
         } catch (Exception e) {
@@ -411,11 +437,9 @@ public class TaskController {
                 log.info("任务：{}已删除",id);
                 taskService.delTaskExtendByTaskId(id);
                 log.info("任务详情：{}已删除",id);
-                if(taskJobService.isJobExists(id)){
-                    log.info("开始删除定时策略相关：{}...",id);
-                    taskJobService.delete_job(id);
-                    log.info("定时策略相关已删除:{}...",id);
-                }
+                log.info("开始删除定时策略相关：{}...",id);
+                taskJobService.delete_job(id);
+                log.info("定时策略相关已删除:{}...",id);
                 return new Result(ResultType.SUCCESS,"定时任务已删除");
             }
             log.info("定时任务删除失败:{}",id);

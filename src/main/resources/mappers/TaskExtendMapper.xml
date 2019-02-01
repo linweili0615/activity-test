@@ -43,11 +43,14 @@
         ORDER BY t.rank ASC
     </select>
 
-    <select id="getTaskExtendById" parameterType="java.lang.String" resultType="com.test.jm.dto.TaskExtendDTO">
+    <select id="getTaskExtendByParams" parameterType="com.test.jm.dto.TaskExtendDTO" resultType="com.test.jm.dto.TaskExtendDTO">
         SELECT * FROM task_case_extend
-        <trim prefix="WHERE">
-            <if test="_parameter != null">
-                task_id = #{task_id}
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id != null">
+                 id = #{id}
+            </if>
+            <if test="task_id != null">
+                AND task_id = #{task_id}
             </if>
         </trim>
         ORDER BY rank DESC LIMIT 1

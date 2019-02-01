@@ -36,8 +36,8 @@ public class TaskService {
         return taskExtendDao.addTaskExtend(taskExtendDTO);
     }
 
-    public TaskExtendDTO getTaskExtendById(String id){
-        return taskExtendDao.getTaskExtendById(id);
+    public TaskExtendDTO getTaskExtendByParams(TaskExtendDTO taskExtendDTO){
+        return taskExtendDao.getTaskExtendByParams(taskExtendDTO);
     }
 
     public Integer updateTaskExtendStatusList(TaskExtendStatusParams params){

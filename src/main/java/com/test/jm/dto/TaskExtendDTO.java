@@ -15,6 +15,27 @@ public class TaskExtendDTO {
     private String status;
     private LocalDateTime create_time;
 
+    public TaskExtendDTO() {
+    }
+
+    public TaskExtendDTO(String task_id) {
+        this.task_id = task_id;
+    }
+
+    public TaskExtendDTO(Integer id, String task_id, String project_id, String case_id, String api_id, String api_name, Integer rank, Integer post_processors, String valid_data, String status, LocalDateTime create_time) {
+        this.id = id;
+        this.task_id = task_id;
+        this.project_id = project_id;
+        this.case_id = case_id;
+        this.api_id = api_id;
+        this.api_name = api_name;
+        this.rank = rank;
+        this.post_processors = post_processors;
+        this.valid_data = valid_data;
+        this.status = status;
+        this.create_time = create_time;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -10,6 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URIUtils;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -210,7 +212,10 @@ public class RequestUtils {
      * @throws Exception
      */
     public static HttpClientResult doPost(Logger log, HttpClientResult result, ApiDTO apiDTO) throws Exception {
-        HttpPost httpPost = new HttpPost(apiDTO.getUrl());
+        URL url1 = new URL(apiDTO.getUrl());
+        URI uri = new URI(url1.getProtocol(), null,url1.getHost(),url1.getPort(), url1.getPath(), url1.getQuery(), null);
+        HttpPost httpPost = new HttpPost(uri);
+//        HttpPost httpPost = new HttpPost(apiDTO.getUrl());
         result.setReq_url(httpPost.getURI().toString());
         log.info("Request URL: {}",httpPost.getURI().toString());
         log.info("Request Method: {} {}",httpPost.getRequestLine().getProtocolVersion(),httpPost.getMethod());

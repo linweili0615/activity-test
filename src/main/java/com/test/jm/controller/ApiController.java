@@ -137,7 +137,7 @@ public class ApiController {
         ApiDTO apiDTO = new ApiDTO();
         apiDTO.setUrl(reqInfo.getUrl());
         apiDTO.setMethod("GET");
-        org.apache.logging.log4j.Logger log = LogUtil.getLogger("12345678");
+        org.apache.logging.log4j.Logger log = LogUtil.getLogger("GET","12345678");
         try {
             HttpClientResult results = requestService.request(log, apiDTO);
             String res = results.getRes_body();
@@ -215,7 +215,7 @@ public class ApiController {
         }
 
         try {
-            org.apache.logging.log4j.Logger log = LogUtil.getLogger("0");
+            org.apache.logging.log4j.Logger log = LogUtil.getLogger("GET","0");
             HttpClientResult result = requestService.request(log, apiDTO);
             if(result.getRes_code().equals(1000)){
                 return new TestResult(ResultType.SUCCESS, result.getRes_body(), result);

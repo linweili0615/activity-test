@@ -1,6 +1,10 @@
 package com.test.jm.util;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import com.test.jm.keys.TaskType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,9 +93,22 @@ public class LogUtil {
     }
 
     /**获取Logger*/
-    public static Logger getLogger(String loggerName) {
-        File resultfile = new File("/task/"+loggerName +"/" + "/task.log");
-        resultfile.deleteOnExit();
+    public static Logger getLogger(String log_type, String loggerName) {
+        if(log_type.equals(TaskType.WRITE)){
+            String logname = new File("").getAbsolutePath() + "/task/" + loggerName + "/task.log";
+            File resultfile = new File(logname);
+            if(resultfile.exists()){
+                try {
+                    FileWriter fileWriter =new FileWriter(resultfile);
+                    fileWriter.write("");
+                    fileWriter.flush();
+                    fileWriter.close();
+                    System.out.println("ok");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         synchronized (config) {
             if (!config.getLoggers().containsKey(loggerName)) {
                 start(loggerName);

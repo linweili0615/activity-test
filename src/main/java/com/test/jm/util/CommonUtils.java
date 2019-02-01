@@ -89,6 +89,7 @@ public class CommonUtils {
 
     public static void setPre(String type, ApiDTO apiDTO, String special_str){
         Map<String,Object> info = RequestThreadLocal.getInfo();
+        System.out.println("info: "+info.toString());
         if(null != info){
             Object end = info.get(special_str);
             if(end != null){

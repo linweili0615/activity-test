@@ -57,6 +57,7 @@ public class RequestService {
     //后置处理
     private void replacePost(HttpClientResult result, TaskDrawDTO taskDrawDTO){
         String match = CommonUtils.regMatch(taskDrawDTO.getLeft(),taskDrawDTO.getRight(),result.getRes_body());
+        System.out.println("match: "+match);
         if(StringUtils.isNotBlank(match)){
             Map<String,Object> info = RequestThreadLocal.getInfo();
             if(null ==info){
@@ -150,13 +151,11 @@ public class RequestService {
                     success++;
                 }
                 //后置处理
-                if(taskExtendDTO.getPost_processors() != null){
-                    List<TaskDrawDTO> taskDrawDTOList = taskDrawService.getTaskDrawById(taskExtendDTO.getPost_processors());
-                    for (TaskDrawDTO drawDTO:taskDrawDTOList) {
-                        replacePost(result,drawDTO);
-                    }
-                }
 
+                List<TaskDrawDTO> taskDrawDTOList = taskDrawService.getTaskDrawById(taskExtendDTO.getId());
+                for (TaskDrawDTO drawDTO:taskDrawDTOList) {
+                    replacePost(result,drawDTO);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("请求异常：api:{}\n{}",apiDTO.getId(),e.getMessage());

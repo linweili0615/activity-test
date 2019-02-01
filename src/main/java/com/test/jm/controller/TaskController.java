@@ -328,7 +328,7 @@ public class TaskController {
 
     }
 
-    @PostMapping("/draw")
+    @PostMapping("/draw/list")
     public ListResult getTaskDrawList(@RequestBody TaskExtendDTO taskextend){
         if(null == taskextend){
             return new ListResult(ResultType.FAIL,"请求参数不能为空");
@@ -338,7 +338,7 @@ public class TaskController {
             if(null == taskExtendDTO){
                 return new ListResult(ResultType.FAIL,"请输入正确的extend_id");
             }
-            List<TaskDrawDTO> taskDrawDTOList = taskDrawService.getTaskDrawById(taskExtendDTO.getPost_processors());
+            List<TaskDrawDTO> taskDrawDTOList = taskDrawService.getTaskDrawById(taskExtendDTO.getId());
             if(taskDrawDTOList != null && taskDrawDTOList.size()>0){
                 return new ListResult(ResultType.SUCCESS,"获取提取列表成功",taskDrawDTOList);
             }
@@ -346,6 +346,21 @@ public class TaskController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ListResult(ResultType.ERROR,e.getMessage());
+        }
+    }
+
+    @PostMapping("/draw/add")
+    public Result addTaskDrawList(@RequestBody TaskDrawExtend taskDrawExtend){
+        if(null == taskDrawExtend){
+            return new Result(ResultType.FAIL,"请求参数不能为空");
+        }
+        try {
+            TaskDrawDTO drawDTO = new TaskDrawDTO(taskDrawExtend.getDraw_id(),taskDrawExtend.getTypes(),taskDrawExtend.getValues(),taskDrawExtend.getLeft(),taskDrawExtend.getRight());
+            taskDrawService.addTaskDraw(drawDTO);
+            return new Result(ResultType.SUCCESS,"提取参数已添加");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(ResultType.ERROR,e.getMessage());
         }
     }
 

@@ -82,4 +82,8 @@ public class TaskService {
     public TaskDTO getTaskById(String id) {
         return taskDao.getTaskById(id);
     }
+
+    public Integer updateTaskExtendByParams(TaskExtendDTO taskExtendDTO) {
+        return taskExtendDao.updateTaskExtend(taskExtendDTO);
+    }
 }

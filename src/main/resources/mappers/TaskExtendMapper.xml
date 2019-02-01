@@ -11,7 +11,6 @@
         <result column="api_id" property="api_id"/>
         <result column="api_name" property="api_name"/>
         <result column="rank" property="rank"/>
-        <result column="post_processors" property="post_processors"/>
         <result column="valid_data" property="valid_data"/>
         <result column="status" property="status"/>
     </resultMap>
@@ -26,7 +25,6 @@
         t.api_id,
         t.api_name,
         t.rank,
-        t.post_processors,
         t.valid_data,
         t.status
         FROM
@@ -67,10 +65,10 @@
 
     <insert id="addTaskExtend" parameterType="com.test.jm.dto.TaskExtendDTO">
         INSERT INTO `task_case_extend` (`task_id`,project_id,case_id,
-        `api_id`,`api_name`,`rank`,`post_processors`,`valid_data`,
+        `api_id`,`api_name`,`rank`,`valid_data`,
         `status`,`create_time`)
         VALUES
-        (#{task_id}, #{project_id}, #{case_id}, #{api_id}, #{api_name}, #{rank}, #{post_processors},
+        (#{task_id}, #{project_id}, #{case_id}, #{api_id}, #{api_name}, #{rank},
         #{valid_data}, #{status}, now())
     </insert>
 
@@ -110,5 +108,6 @@
             </if>
         </trim>
     </delete>
+
 
 </mapper>

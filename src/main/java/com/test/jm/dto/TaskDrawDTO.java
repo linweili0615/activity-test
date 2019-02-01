@@ -2,6 +2,7 @@ package com.test.jm.dto;
 
 public class TaskDrawDTO {
     private Integer id;
+    private Integer extend_id;
     private String types;
     private String values;
     private String left;
@@ -10,8 +11,8 @@ public class TaskDrawDTO {
     public TaskDrawDTO() {
     }
 
-    public TaskDrawDTO(Integer id, String types, String values, String left, String right) {
-        this.id = id;
+    public TaskDrawDTO(Integer extend_id, String types, String values, String left, String right) {
+        this.extend_id = extend_id;
         this.types = types;
         this.values = values;
         this.left = left;
@@ -24,6 +25,14 @@ public class TaskDrawDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getExtend_id() {
+        return extend_id;
+    }
+
+    public void setExtend_id(Integer extend_id) {
+        this.extend_id = extend_id;
     }
 
     public String getTypes() {
@@ -61,7 +70,8 @@ public class TaskDrawDTO {
     @Override
     public String toString() {
         return "TaskDrawDTO{" +
-                "id='" + id + '\'' +
+                "id=" + id +
+                ", extend_id='" + extend_id + '\'' +
                 ", types='" + types + '\'' +
                 ", values='" + values + '\'' +
                 ", left='" + left + '\'' +

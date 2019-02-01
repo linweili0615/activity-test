@@ -14,8 +14,18 @@
             resultMap="TaskDrawMap">
         SELECT *
         FROM task_draw
-        WHERE id=#{id}
+        WHERE extend_id=#{extend_id}
     </select>
+
+    <insert id="createTaskDraw" parameterType="com.test.jm.dto.TaskDrawDTO"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO `task_draw` (
+        `extend_id`,`types`, `values`, `left`, `right`)
+        VALUES
+        (
+          #{extend_id},#{types},#{values},#{left},#{right}
+        )
+    </insert>
 
 
 

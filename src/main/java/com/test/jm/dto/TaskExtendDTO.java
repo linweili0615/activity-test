@@ -10,7 +10,6 @@ public class TaskExtendDTO {
     private String api_id;
     private String api_name;
     private Integer rank;
-    private Integer post_processors;
     private String valid_data;
     private String status;
     private LocalDateTime create_time;
@@ -18,11 +17,12 @@ public class TaskExtendDTO {
     public TaskExtendDTO() {
     }
 
+
     public TaskExtendDTO(String task_id) {
         this.task_id = task_id;
     }
 
-    public TaskExtendDTO(Integer id, String task_id, String project_id, String case_id, String api_id, String api_name, Integer rank, Integer post_processors, String valid_data, String status, LocalDateTime create_time) {
+    public TaskExtendDTO(Integer id, String task_id, String project_id, String case_id, String api_id, String api_name, Integer rank,String valid_data, String status, LocalDateTime create_time) {
         this.id = id;
         this.task_id = task_id;
         this.project_id = project_id;
@@ -30,7 +30,6 @@ public class TaskExtendDTO {
         this.api_id = api_id;
         this.api_name = api_name;
         this.rank = rank;
-        this.post_processors = post_processors;
         this.valid_data = valid_data;
         this.status = status;
         this.create_time = create_time;
@@ -92,14 +91,6 @@ public class TaskExtendDTO {
         this.rank = rank;
     }
 
-    public Integer getPost_processors() {
-        return post_processors;
-    }
-
-    public void setPost_processors(Integer post_processors) {
-        this.post_processors = post_processors;
-    }
-
     public String getValid_data() {
         return valid_data;
     }
@@ -134,7 +125,6 @@ public class TaskExtendDTO {
                 ", api_id='" + api_id + '\'' +
                 ", api_name='" + api_name + '\'' +
                 ", rank=" + rank +
-                ", post_processors='" + post_processors + '\'' +
                 ", valid_data='" + valid_data + '\'' +
                 ", status='" + status + '\'' +
                 ", create_time=" + create_time +

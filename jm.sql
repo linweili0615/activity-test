@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 192.168.1.3
-Source Server Version : 50561
-Source Host           : 192.168.1.3:3306
+Source Server         : 10.100.99.164
+Source Server Version : 50557
+Source Host           : 10.100.99.164:3306
 Source Database       : jm
 
 Target Server Type    : MYSQL
-Target Server Version : 50561
+Target Server Version : 50557
 File Encoding         : 65001
 
-Date: 2018-12-21 21:57:45
+Date: 2019-02-01 17:05:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for interface
+-- Table structure for api_variables
 -- ----------------------------
 DROP TABLE IF EXISTS `api_variables`;
 CREATE TABLE `api_variables` (
@@ -27,29 +27,15 @@ CREATE TABLE `api_variables` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of api_variables
+-- Table structure for interface
 -- ----------------------------
-INSERT INTO `api_variables` VALUES ('1', '手机号', '${telno}');
-INSERT INTO `api_variables` VALUES ('2', '身份证', '${idcard}');
-INSERT INTO `api_variables` VALUES ('3', '银行卡', '${bankcard}');
-INSERT INTO `api_variables` VALUES ('4', '随机ID', '${newid}');
-DROP TABLE IF EXISTS `task_case_result`;
-CREATE TABLE `task_case_result` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `task_id` varchar(255) DEFAULT NULL,
-  `u_id` varchar(255) DEFAULT NULL,
-  `u_name` varchar(255) DEFAULT NULL,
-  `execute_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `interface`;
 CREATE TABLE `interface` (
   `id` varchar(255) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `project_id` varchar(255) DEFAULT NULL,
+  `project_id` varchar(255) NOT NULL,
   `case_id` varchar(255) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
   `headers` longtext,
   `cookies` longtext,
   `method` varchar(255) DEFAULT NULL,
@@ -63,71 +49,6 @@ CREATE TABLE `interface` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of interface
--- ----------------------------
-INSERT INTO `interface` VALUES ('3e73bd80-f95c-11e8-a19c-0242ac110002', '登录接口23231', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('3edd14e3-f95c-11e8-a19c-0242ac110002', '登录接口234323', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('3f38d536-f95c-11e8-a19c-0242ac110002', '登录接口3', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('3f8fe46f-f95c-11e8-a19c-0242ac110002', '登录接口34', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4052dc6d-f95c-11e8-a19c-0242ac110002', '登录接口34', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('40cc2dcc-f95c-11e8-a19c-0242ac110002', '登录接口w34', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('41417f7f-f95c-11e8-a19c-0242ac110002', '登录接口rew', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('41abeb4e-f95c-11e8-a19c-0242ac110002', '登录接口423', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('422158d9-f95c-11e8-a19c-0242ac110002', '登录接口42', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('42ad6c62-f95c-11e8-a19c-0242ac110002', '登录接口23', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('43425b65-f95c-11e8-a19c-0242ac110002', '登录接口432', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('43a9624d-f95c-11e8-a19c-0242ac110002', '登录接口321', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4425cca4-f95c-11e8-a19c-0242ac110002', '登录接口321', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('44ae6ec4-f95c-11e8-a19c-0242ac110002', '登录接口23', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('45309dcf-f95c-11e8-a19c-0242ac110002', '登录接口423', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('45a3d32d-f95c-11e8-a19c-0242ac110002', '登录接口43', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('460b69ef-f95c-11e8-a19c-0242ac110002', '登录接口wer', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4683e373-f95c-11e8-a19c-0242ac110002', '登录接口wre', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('46f1de18-f95c-11e8-a19c-0242ac110002', '登录接口ewr', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'GET', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('475ffdd6-f95c-11e8-a19c-0242ac110002', '登录接口rew', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('49a12a58-f95c-11e8-a19c-0242ac110002', '登录接口42', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4a5e9242-f95c-11e8-a19c-0242ac110002', '登录接口423', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4ad52c10-f95c-11e8-a19c-0242ac110002', '登录接口342', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4b56e6bd-f95c-11e8-a19c-0242ac110002', '登录接口34', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4bec7c6e-f95c-11e8-a19c-0242ac110002', '登录接口634', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4ca514e6-f95c-11e8-a19c-0242ac110002', '登录接口23', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4d2d1f68-f95c-11e8-a19c-0242ac110002', '登录接口53', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4d9793de-f95c-11e8-a19c-0242ac110002', '登录接口2', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4e1e0dec-f95c-11e8-a19c-0242ac110002', '登录接口564', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4e8bb526-f95c-11e8-a19c-0242ac110002', '登录接口564', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4f1fab97-f95c-11e8-a19c-0242ac110002', '登录接口65', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4f9a5960-9d3f-405b-89db-e886117c57bf', '登录接口65786', 'a7448d5c-997a-47bf-925e-4d223afbbf51', null, 'https://www.sojson.com/api/qqmusic/8446666', '{\"user-agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36\"}', null, 'POST', '{\"k1\":\"v1\",\"k2\":\"v2\"}', 'form', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('4f9ab073-f95c-11e8-a19c-0242ac110002', '登录接口8', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('5019c367-f95c-11e8-a19c-0242ac110002', '登录接口53', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('5089e970-f95c-11e8-a19c-0242ac110002', '登录接口43', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('51468abe-f95c-11e8-a19c-0242ac110002', '登录接口89', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('51e1f1f8-f95c-11e8-a19c-0242ac110002', '登录接口6763', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('528fffe7-f95c-11e8-a19c-0242ac110002', '登录接口26', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('5336c32d-f95c-11e8-a19c-0242ac110002', '登录接口7654', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('53b6f204-f95c-11e8-a19c-0242ac110002', '登录接口75', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('54476949-f95c-11e8-a19c-0242ac110002', '登录接口96', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('54caf8a2-f95c-11e8-a19c-0242ac110002', '登录接口666', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('55527f80-f95c-11e8-a19c-0242ac110002', '登录接口999', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('55ddc901-f95c-11e8-a19c-0242ac110002', '登录接口90', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('566182c3-f95c-11e8-a19c-0242ac110002', '登录接口24', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('56db9a1d-f95c-11e8-a19c-0242ac110002', '登录接口42', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('57567105-f95c-11e8-a19c-0242ac110002', '登录接口423', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('57ce7e71-f95c-11e8-a19c-0242ac110002', '登录接口423', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('5801ff12-4f5c-4387-86a2-5d1dc3f3a67f', '分组一下面的接口', '2616319c-b48a-404e-b82e-2c683eea6b0c', '', 'https://localhost:9002/2login', '{\"fds\":\"fsd\"}', null, 'GET', '{\"dfs\":\"dfsdfssdf\"}', 'from', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('5842dd75-f95c-11e8-a19c-0242ac110002', '登录接口42', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('58cc37e5-f95c-11e8-a19c-0242ac110002', '登录接口5464', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('59a17b30-6e52-45bb-b8c7-c793b1089f53', '通过邮件注册接口', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'dcfde1e0-f315-11e8-a19c-0242ac110002', 'https://www.tuandai.com/2login', '{\"fsd\":\"dfsfds\"}', null, 'GET', 'fds', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('5c66a67d-f95c-11e8-a19c-0242ac110002', '登录接口64', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('5cacb0e4-a9db-4f0b-b012-1f3e1542c43d', 'retert53', null, null, 'https://passport.tuandai.com/2login', '{\"Content-Type\":\"application/json;charset=UTF-8\"}', null, 'POST', 'project=666', 'raw', 'linweili', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('6aa26241-e999-46b3-b1f6-4bd031d61ca3', '和规范化广发华福', '2a6dfe5a-e80d-11e8-9ff0-0242ac110002', 'e828eb5d-ecce-11e8-9ff0-0242ac110002', 'https://www.tuandai.com/2login', '{}', null, 'GET', '{}', 'from', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('6cbe92dd-8f39-4982-a4f8-afdd276a95b1', '登录接口54', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', 'https://passport.tuandai.com/2login', '{\"content-type\":\"application/json; charset=UTF-8\"}', null, 'POST', 'un=THy7FxL9Z7DgVUq2HAP18Ew9YBfPB%2BxA6XhxbZS2gRjW46U8lRfm1kHvWW685S%2BPf0H0WSXm3ZQ0y7T5v7ne4vn9Rt5q3ALukmNIKIXDIc7Yjhi3ww3PGChMSSlbZJNHkKChxoD9PbsT8c2AF%2BI%2BA6syCQvd3UWYOCsPBgIgT2A%3D&pd=EEElA4eTOAvqiqbc9AoVwMQiS7yIU5zt5XrZ63BH12HhJCpHO8w2F%2FO1uf6X5e0MetOK9NkFI2n1kObXe6ERdjSq1oaflB1emmL%2BRmsX5hH0MaJRGDRncOvvcRJJmWf8dl2YoLzWNadXzWUKr0HcuqE3eSeYpPjOrL9ZP%2F2UInM%3D&loadType=2&encrypt=1&t=1543844345110&geetestChallenge=f8681c166ec49bf4be65f7c687ba24043m&geetestValidate=53c25237d519d0a8888d98e262efe7d7&geetestSeccode=53c25237d519d0a8888d98e262efe7d7%7Cjordan', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('84d5412e-9465-4e40-84e0-f4e5c56494bc', '53', '84eb4357-033e-40c5-b078-9dc3e1cbc973', null, 'https://www.sojson.com/api/qqmusic/8446666', '{\"user-agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36\"}', null, 'POST', '{\"k1\":\"v1\",\"k2\":\"v2\"}', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('b7d7f344-003d-4957-bbf7-ea874b0bbd0e', 'FANCIFUL53', '2616319c-b48a-404e-b82e-2c683eea6b0c', '7a890a3d-f5fa-11e8-a19c-0242ac110002', 'https://www.tuandai.com/2login', '{}', null, 'POST', '{}', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('d84cff70-a533-4027-a427-399c73bc4a2d', '543', null, null, 'https://passport', '{\"Content-Type\":\"application/json;charset=UTF-8\"}', null, 'POST', 'project=666', 'raw', 'linweili', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('e3d36a8d-89d6-4527-b338-33145184e741', '用户登录token校验', '2616319c-b48a-404e-b82e-2c683eea6b0c', '', 'https://www.tuandai.com/2login', '{}', null, 'GET', '{}', 'from', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-INSERT INTO `interface` VALUES ('ec59c5f0-3654-46dd-a690-f8df2a6a4703', 'FSDFSDF', '2616319c-b48a-404e-b82e-2c683eea6b0c', '7a890a3d-f5fa-11e8-a19c-0242ac110002', 'https://www.baidu.com/2login', '{}', null, 'GET', '{}', 'raw', 'test_user', 'test_user', '2018-12-03 14:47:26', '2018-12-03 14:47:26');
-
--- ----------------------------
 -- Table structure for project
 -- ----------------------------
 DROP TABLE IF EXISTS `project`;
@@ -139,47 +60,201 @@ CREATE TABLE `project` (
   `update_author` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
-  `project_id` varchar(255) DEFAULT NULL,
-  `case_id` varchar(255) DEFAULT NULL,
-  `paramstype` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of project
+-- Table structure for qrtz_blob_triggers
 -- ----------------------------
-INSERT INTO `project` VALUES ('2616319c-b48a-404e-b82e-2c683eea6b0c', '用户服务', '1', 'linweili', 'test_user', '2018-11-16 15:06:41', '2018-12-17 13:49:15', null, null, null);
-INSERT INTO `project` VALUES ('2a6dfe5a-e80d-11e8-9ff0-0242ac110002', '用户服务后台', '1', 'linweili', 'linweili', '2018-11-14 12:59:47', '2018-11-14 12:59:47', null, null, null);
-INSERT INTO `project` VALUES ('2fd18260-5aab-4053-bdbd-01aaa4afbb9d', '很反感', '1', 'linweili', null, '2018-11-18 11:05:06', '2018-11-18 11:05:06', null, null, null);
-INSERT INTO `project` VALUES ('35350488-e80d-11e8-9ff0-0242ac110002', '单点登录', '1', 'linweili', 'linweili', '2018-11-14 13:00:05', '2018-11-14 13:00:05', null, null, null);
-INSERT INTO `project` VALUES ('38b4ca08-6619-4d42-a81c-6523c0ede8e9', '那你呢', '1', 'linweili', null, '2018-11-16 15:10:13', '2018-11-16 15:10:13', null, null, null);
-INSERT INTO `project` VALUES ('38f2feef-e80d-11e8-9ff0-0242ac110002', '佣金服务', '1', 'linweili', 'linweili', '2018-11-14 13:00:12', '2018-11-14 13:00:12', null, null, null);
-INSERT INTO `project` VALUES ('3e572bbf-e80d-11e8-9ff0-0242ac110002', '团宝箱服务', '1', 'linweili', 'linweili', '2018-11-14 13:00:21', '2018-11-14 13:00:21', null, null, null);
-INSERT INTO `project` VALUES ('423a3e62-e80d-11e8-9ff0-0242ac110002', '会员服务', '1', 'linweili', 'linweili', '2018-11-14 13:00:27', '2018-11-14 13:00:27', null, null, null);
-INSERT INTO `project` VALUES ('428adb04-f72e-4e88-ab26-8b0e47d06b9d', '特特人', '1', 'linweili', null, '2018-11-16 15:03:18', '2018-11-16 15:03:18', null, null, null);
-INSERT INTO `project` VALUES ('47013873-e80d-11e8-9ff0-0242ac110002', '商家后台', '1', 'linweili', 'linweili', '2018-11-14 13:00:35', '2018-11-14 13:00:35', null, null, null);
-INSERT INTO `project` VALUES ('4a19f826-0ae7-409b-880e-0904c78aa29b', '给对方热', '1', 'linweili', null, '2018-11-16 15:12:01', '2018-11-16 15:12:01', null, null, null);
-INSERT INTO `project` VALUES ('50d7c60d-77d2-4643-82c3-c6095ecd8279', '水电费水电费', '1', 'linweili', null, '2018-11-18 11:47:47', '2018-11-18 11:47:47', null, null, null);
-INSERT INTO `project` VALUES ('50fea2a2-e80d-11e8-9ff0-0242ac110002', '极验', '1', 'linweili', 'linweili', '2018-11-14 13:00:52', '2018-11-14 13:00:52', null, null, null);
-INSERT INTO `project` VALUES ('552f92ec-e80d-11e8-9ff0-0242ac110002', '呼叫系统', '1', 'linweili', 'linweili', '2018-11-14 13:00:59', '2018-11-14 13:00:59', null, null, null);
-INSERT INTO `project` VALUES ('5b97cb16-e481-4fef-85d0-35bed0954eb6', '鼓捣鼓捣', '1', 'linweili', null, '2018-11-18 12:35:48', '2018-11-18 12:35:48', null, null, null);
-INSERT INTO `project` VALUES ('6198b182-b157-4e48-8cee-b3d092051dd8', '发的所发生的广发华福', '1', 'linweili', null, '2018-11-16 15:13:01', '2018-11-16 15:13:01', null, null, null);
-INSERT INTO `project` VALUES ('63b87049-e81a-11e8-9ff0-0242ac110002', '用户服务1', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('67ed7b5b-e81a-11e8-9ff0-0242ac110002', '用户服务2', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('6a59233c-e81a-11e8-9ff0-0242ac110002', '用户服务3', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('6de93131-e81a-11e8-9ff0-0242ac110002', '用户服务4', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('70b2fa9f-e81a-11e8-9ff0-0242ac110002', '用户服务6', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-19 12:32:00', null, null, null);
-INSERT INTO `project` VALUES ('730ff1fd-e81a-11e8-9ff0-0242ac110002', '用户服务56', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('78473178-e81a-11e8-9ff0-0242ac110002', '用户服务7', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('7ab289fe-e81a-11e8-9ff0-0242ac110002', '用户服务8', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('7cf85706-e81a-11e8-9ff0-0242ac110002', '用户服务9', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('80431262-e81a-11e8-9ff0-0242ac110002', '用户服务0', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('8290a5e0-e81a-11e8-9ff0-0242ac110002', '用户服务60', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('85c5a2b4-e81a-11e8-9ff0-0242ac110002', '用户服务50', '1', 'linweili', 'linweili', '2018-11-14 12:59:37', '2018-11-14 12:59:37', null, null, null);
-INSERT INTO `project` VALUES ('9387a53c-b9d9-45dd-9ee0-f19e285dd033', '反倒是', '1', 'linweili', null, '2018-11-16 15:11:39', '2018-11-16 15:11:39', null, null, null);
-INSERT INTO `project` VALUES ('96aa9255-6cfb-471d-9594-71c14fe09b78', '发的所发生的', '1', 'linweili', null, '2018-11-16 15:12:42', '2018-11-16 15:12:42', null, null, null);
-INSERT INTO `project` VALUES ('fbbf9ccd-5a87-4d14-bf50-75b55f44fe56', '水电费', '1', 'linweili', null, '2018-11-16 15:04:49', '2018-11-16 15:04:49', null, null, null);
-INSERT INTO `project` VALUES ('ff969229-f061-4df7-984a-439a51f36aeb', '范德萨发生', '1', 'linweili', null, '2018-11-18 11:42:43', '2018-11-18 11:42:43', null, null, null);
+DROP TABLE IF EXISTS `qrtz_blob_triggers`;
+CREATE TABLE `qrtz_blob_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(190) NOT NULL,
+  `TRIGGER_GROUP` varchar(190) NOT NULL,
+  `BLOB_DATA` blob,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  KEY `SCHED_NAME` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_calendars
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_calendars`;
+CREATE TABLE `qrtz_calendars` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `CALENDAR_NAME` varchar(190) NOT NULL,
+  `CALENDAR` blob NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`CALENDAR_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_cron_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_cron_triggers`;
+CREATE TABLE `qrtz_cron_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(190) NOT NULL,
+  `TRIGGER_GROUP` varchar(190) NOT NULL,
+  `CRON_EXPRESSION` varchar(120) NOT NULL,
+  `TIME_ZONE_ID` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_fired_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_fired_triggers`;
+CREATE TABLE `qrtz_fired_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `ENTRY_ID` varchar(95) NOT NULL,
+  `TRIGGER_NAME` varchar(190) NOT NULL,
+  `TRIGGER_GROUP` varchar(190) NOT NULL,
+  `INSTANCE_NAME` varchar(190) NOT NULL,
+  `FIRED_TIME` bigint(13) NOT NULL,
+  `SCHED_TIME` bigint(13) NOT NULL,
+  `PRIORITY` int(11) NOT NULL,
+  `STATE` varchar(16) NOT NULL,
+  `JOB_NAME` varchar(190) DEFAULT NULL,
+  `JOB_GROUP` varchar(190) DEFAULT NULL,
+  `IS_NONCONCURRENT` varchar(1) DEFAULT NULL,
+  `REQUESTS_RECOVERY` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`ENTRY_ID`),
+  KEY `IDX_QRTZ_FT_TRIG_INST_NAME` (`SCHED_NAME`,`INSTANCE_NAME`),
+  KEY `IDX_QRTZ_FT_INST_JOB_REQ_RCVRY` (`SCHED_NAME`,`INSTANCE_NAME`,`REQUESTS_RECOVERY`),
+  KEY `IDX_QRTZ_FT_J_G` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
+  KEY `IDX_QRTZ_FT_JG` (`SCHED_NAME`,`JOB_GROUP`),
+  KEY `IDX_QRTZ_FT_T_G` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  KEY `IDX_QRTZ_FT_TG` (`SCHED_NAME`,`TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_job_details
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_job_details`;
+CREATE TABLE `qrtz_job_details` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `JOB_NAME` varchar(190) NOT NULL,
+  `JOB_GROUP` varchar(190) NOT NULL,
+  `DESCRIPTION` varchar(250) DEFAULT NULL,
+  `JOB_CLASS_NAME` varchar(250) NOT NULL,
+  `IS_DURABLE` varchar(1) NOT NULL,
+  `IS_NONCONCURRENT` varchar(1) NOT NULL,
+  `IS_UPDATE_DATA` varchar(1) NOT NULL,
+  `REQUESTS_RECOVERY` varchar(1) NOT NULL,
+  `JOB_DATA` blob,
+  PRIMARY KEY (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
+  KEY `IDX_QRTZ_J_REQ_RECOVERY` (`SCHED_NAME`,`REQUESTS_RECOVERY`),
+  KEY `IDX_QRTZ_J_GRP` (`SCHED_NAME`,`JOB_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_locks
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_locks`;
+CREATE TABLE `qrtz_locks` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `LOCK_NAME` varchar(40) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`LOCK_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_paused_trigger_grps
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
+CREATE TABLE `qrtz_paused_trigger_grps` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_GROUP` varchar(190) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_scheduler_state
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_scheduler_state`;
+CREATE TABLE `qrtz_scheduler_state` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `INSTANCE_NAME` varchar(190) NOT NULL,
+  `LAST_CHECKIN_TIME` bigint(13) NOT NULL,
+  `CHECKIN_INTERVAL` bigint(13) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`INSTANCE_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_simple_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_simple_triggers`;
+CREATE TABLE `qrtz_simple_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(190) NOT NULL,
+  `TRIGGER_GROUP` varchar(190) NOT NULL,
+  `REPEAT_COUNT` bigint(7) NOT NULL,
+  `REPEAT_INTERVAL` bigint(12) NOT NULL,
+  `TIMES_TRIGGERED` bigint(10) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_simprop_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
+CREATE TABLE `qrtz_simprop_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(190) NOT NULL,
+  `TRIGGER_GROUP` varchar(190) NOT NULL,
+  `STR_PROP_1` varchar(512) DEFAULT NULL,
+  `STR_PROP_2` varchar(512) DEFAULT NULL,
+  `STR_PROP_3` varchar(512) DEFAULT NULL,
+  `INT_PROP_1` int(11) DEFAULT NULL,
+  `INT_PROP_2` int(11) DEFAULT NULL,
+  `LONG_PROP_1` bigint(20) DEFAULT NULL,
+  `LONG_PROP_2` bigint(20) DEFAULT NULL,
+  `DEC_PROP_1` decimal(13,4) DEFAULT NULL,
+  `DEC_PROP_2` decimal(13,4) DEFAULT NULL,
+  `BOOL_PROP_1` varchar(1) DEFAULT NULL,
+  `BOOL_PROP_2` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for qrtz_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_triggers`;
+CREATE TABLE `qrtz_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(190) NOT NULL,
+  `TRIGGER_GROUP` varchar(190) NOT NULL,
+  `JOB_NAME` varchar(190) NOT NULL,
+  `JOB_GROUP` varchar(190) NOT NULL,
+  `DESCRIPTION` varchar(250) DEFAULT NULL,
+  `NEXT_FIRE_TIME` bigint(13) DEFAULT NULL,
+  `PREV_FIRE_TIME` bigint(13) DEFAULT NULL,
+  `PRIORITY` int(11) DEFAULT NULL,
+  `TRIGGER_STATE` varchar(16) NOT NULL,
+  `TRIGGER_TYPE` varchar(8) NOT NULL,
+  `START_TIME` bigint(13) NOT NULL,
+  `END_TIME` bigint(13) DEFAULT NULL,
+  `CALENDAR_NAME` varchar(190) DEFAULT NULL,
+  `MISFIRE_INSTR` smallint(2) DEFAULT NULL,
+  `JOB_DATA` blob,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  KEY `IDX_QRTZ_T_J` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
+  KEY `IDX_QRTZ_T_JG` (`SCHED_NAME`,`JOB_GROUP`),
+  KEY `IDX_QRTZ_T_C` (`SCHED_NAME`,`CALENDAR_NAME`),
+  KEY `IDX_QRTZ_T_G` (`SCHED_NAME`,`TRIGGER_GROUP`),
+  KEY `IDX_QRTZ_T_STATE` (`SCHED_NAME`,`TRIGGER_STATE`),
+  KEY `IDX_QRTZ_T_N_STATE` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
+  KEY `IDX_QRTZ_T_N_G_STATE` (`SCHED_NAME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
+  KEY `IDX_QRTZ_T_NEXT_FIRE_TIME` (`SCHED_NAME`,`NEXT_FIRE_TIME`),
+  KEY `IDX_QRTZ_T_NFT_ST` (`SCHED_NAME`,`TRIGGER_STATE`,`NEXT_FIRE_TIME`),
+  KEY `IDX_QRTZ_T_NFT_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`),
+  KEY `IDX_QRTZ_T_NFT_ST_MISFIRE` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_STATE`),
+  KEY `IDX_QRTZ_T_NFT_ST_MISFIRE_GRP` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
+  CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `qrtz_job_details` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for task_case
@@ -199,31 +274,6 @@ CREATE TABLE `task_case` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `task_draw`;
-CREATE TABLE `task_draw` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `types` varchar(255) DEFAULT NULL,
-  `values` varchar(255) DEFAULT NULL,
-  `left` varchar(255) DEFAULT NULL,
-  `right` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO `jm`.`task_draw` (`id`, `types`, `values`, `left`, `right`) VALUES ('1', 'reguler', '${readName}', '\"realName\":\"', '\",');
-
-DROP TABLE IF EXISTS `task_case_log`;
-CREATE TABLE `task_case_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `task_id` varchar(255) DEFAULT NULL,
-  `u_id` varchar(255) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of task_case
--- ----------------------------
-INSERT INTO `task_case` VALUES ('81598efb-ffa9-11e8-a19c-0242ac110002', '任务一', '1', 'linweili', 'linweili', '2018-12-14 22:11:36', '2018-12-14 22:11:38');
-
 -- ----------------------------
 -- Table structure for task_case_extend
 -- ----------------------------
@@ -236,47 +286,50 @@ CREATE TABLE `task_case_extend` (
   `api_id` varchar(255) DEFAULT NULL,
   `api_name` varchar(255) DEFAULT NULL,
   `rank` int(11) DEFAULT NULL,
-  `post_processors` longtext,
   `valid_data` longtext,
   `status` int(2) DEFAULT '1',
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of task_case_extend
+-- Table structure for task_case_log
 -- ----------------------------
-INSERT INTO `task_case_extend` VALUES ('9', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '3e73bd80-f95c-11e8-a19c-0242ac110002', '登录接口23231', '2', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('11', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '3edd14e3-f95c-11e8-a19c-0242ac110002', '登录接口234323', '3', null, null, '1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('15', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '3f38d536-f95c-11e8-a19c-0242ac110002', '登录接口3', '7', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('21', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '3f8fe46f-f95c-11e8-a19c-0242ac110002', '登录接口34', '13', null, null, '1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('22', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4052dc6d-f95c-11e8-a19c-0242ac110002', '登录接口34', '14', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('23', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '40cc2dcc-f95c-11e8-a19c-0242ac110002', '登录接口w34', '15', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('24', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '41417f7f-f95c-11e8-a19c-0242ac110002', '登录接口rew', '16', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('25', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '41abeb4e-f95c-11e8-a19c-0242ac110002', '登录接口423', '17', null, null, '1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('27', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '422158d9-f95c-11e8-a19c-0242ac110002', '登录接口42', '19', null, null, '1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('28', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '42ad6c62-f95c-11e8-a19c-0242ac110002', '登录接口23', '20', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('29', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '43425b65-f95c-11e8-a19c-0242ac110002', '登录接口432', '21', null, null, '1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('30', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '43a9624d-f95c-11e8-a19c-0242ac110002', '登录接口321', '22', null, null, '1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('31', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4425cca4-f95c-11e8-a19c-0242ac110002', '登录接口321', '23', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('32', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '44ae6ec4-f95c-11e8-a19c-0242ac110002', '登录接口23', '24', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('33', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '45309dcf-f95c-11e8-a19c-0242ac110002', '登录接口423', '25', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('34', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '45a3d32d-f95c-11e8-a19c-0242ac110002', '登录接口43', '26', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('35', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '460b69ef-f95c-11e8-a19c-0242ac110002', '登录接口wer', '27', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('36', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4683e373-f95c-11e8-a19c-0242ac110002', '登录接口wre', '28', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('37', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '46f1de18-f95c-11e8-a19c-0242ac110002', '登录接口ewr', '29', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('38', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '475ffdd6-f95c-11e8-a19c-0242ac110002', '登录接口rew', '30', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('39', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '49a12a58-f95c-11e8-a19c-0242ac110002', '登录接口42', '31', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('40', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4a5e9242-f95c-11e8-a19c-0242ac110002', '登录接口423', '32', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('41', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4ad52c10-f95c-11e8-a19c-0242ac110002', '登录接口342', '33', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('42', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4b56e6bd-f95c-11e8-a19c-0242ac110002', '登录接口34', '34', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('43', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4bec7c6e-f95c-11e8-a19c-0242ac110002', '登录接口634', '35', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('45', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4ca514e6-f95c-11e8-a19c-0242ac110002', '登录接口23', '37', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('46', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4d2d1f68-f95c-11e8-a19c-0242ac110002', '登录接口53', '38', null, null, '-1', '2018-12-14 22:11:36');
-INSERT INTO `task_case_extend` VALUES ('51', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4d9793de-f95c-11e8-a19c-0242ac110002', '登录接口2', '39', null, null, '-1', '2018-12-16 12:36:11');
-INSERT INTO `task_case_extend` VALUES ('52', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4e1e0dec-f95c-11e8-a19c-0242ac110002', '登录接口564', '40', null, null, '-1', '2018-12-21 12:39:04');
-INSERT INTO `task_case_extend` VALUES ('53', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4e8bb526-f95c-11e8-a19c-0242ac110002', '登录接口564', '41', null, null, '-1', '2018-12-21 12:39:04');
-INSERT INTO `task_case_extend` VALUES ('54', '81598efb-ffa9-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '118be6cf-f3dd-11e8-a19c-0242ac110002', '4f1fab97-f95c-11e8-a19c-0242ac110002', '登录接口65', '42', null, null, '-1', '2018-12-21 12:40:27');
+DROP TABLE IF EXISTS `task_case_log`;
+CREATE TABLE `task_case_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` varchar(255) DEFAULT NULL,
+  `u_id` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for task_case_result
+-- ----------------------------
+DROP TABLE IF EXISTS `task_case_result`;
+CREATE TABLE `task_case_result` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` varchar(255) DEFAULT NULL,
+  `u_id` varchar(255) DEFAULT NULL,
+  `u_name` varchar(255) DEFAULT NULL,
+  `execute_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for task_draw
+-- ----------------------------
+DROP TABLE IF EXISTS `task_draw`;
+CREATE TABLE `task_draw` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `extend_id` int(11) DEFAULT NULL,
+  `types` varchar(255) DEFAULT NULL,
+  `values` varchar(255) DEFAULT NULL,
+  `left` varchar(255) DEFAULT NULL,
+  `right` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for test_case
@@ -292,41 +345,6 @@ CREATE TABLE `test_case` (
   `modify_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of test_case
--- ----------------------------
-INSERT INTO `test_case` VALUES ('118be6cf-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'Spring boot+Mybatis', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('12070015-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'Spring+SpringMVC+Mybatis简单好多', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('127ac7db-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '对于多表多条件分页查询', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('12e15863-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '以LZ把Mybatis整合进去', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('13684024-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'java web开发环境搭建', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('13e9391c-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '默认的Service URL', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('14656c14-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '中间一侧选择Web', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('14df46c7-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'mysql数据连接的jar包', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('159ca0a1-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '扫描它下面的Controller等类的', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('160eaf16-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'Spring boot启动默认是要加载数据源', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('167c4a35-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '在application.yml中添加数据源', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('16fa3901-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'Mybatis的实体和配置文件位置', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('175a6538-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '用MyBatis Generator自动生成代码', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('17d5d5eb-f3dd-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '扫描dao层接口', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('7a890a3d-f5fa-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '传统SSM框架整合', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('7d7b24e3-a5de-4e9e-91ba-e76a17bf31c1', '2616319c-b48a-404e-b82e-2c683eea6b0c', '用户二期重构查询接口', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('84f3d2a8-f5fa-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '数据源配置及mybatis映射配置', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('913c2805-f5fa-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '关于事务的引用', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('97429e1a-f5fa-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '发现抛出异常', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('a47e571a-f5fa-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '什么是spring boot', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('a9bbbf86-f5fa-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '使用spring boot有什么好处', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('afd92258-f5fa-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '快速入门', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('cb539c07-ba23-4e77-ae57-664f178f9b2d', '2a6dfe5a-e80d-11e8-9ff0-0242ac110002', '测试集3', 'linweili', null, '2018-11-20 14:34:12', '2018-11-20 14:34:12');
-INSERT INTO `test_case` VALUES ('dcfde1e0-f315-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '借款项目新增MQ广播', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('dd9e00ea-f315-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '去除手机后缀校验', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('de164f73-f315-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '修复用户登录token并发问题', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('de90da13-f315-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '修复同步用户数据兼容为空的数据', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('e828eb5d-ecce-11e8-9ff0-0242ac110002', '2a6dfe5a-e80d-11e8-9ff0-0242ac110002', '测试集11', 'linweili', null, '2018-11-20 22:19:08', '2018-11-20 22:19:10');
-INSERT INTO `test_case` VALUES ('fb76eb97-f3dc-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '使用mybatis官方提供的Spring Boot整合包实现', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('fbdc0136-f3dc-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', 'mybatis全局配置文件', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
-INSERT INTO `test_case` VALUES ('fc404248-f3dc-11e8-a19c-0242ac110002', '2616319c-b48a-404e-b82e-2c683eea6b0c', '注意接口上的注解是@mapper', 'linweili', null, '2018-11-20 14:31:29', '2018-11-20 14:31:29');
 
 -- ----------------------------
 -- Table structure for user_info
@@ -345,11 +363,6 @@ CREATE TABLE `user_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of user_info
--- ----------------------------
-INSERT INTO `user_info` VALUES ('dd7863e5-eac9-41d4-bf67-b846f3fa8a90', 'test_user', '15866660001', 'afe48d8e5878947928495483da730f63', '0', '0', '2018-11-07 13:25:21', '2018-11-07 13:25:21');
-
--- ----------------------------
 -- Table structure for user_token
 -- ----------------------------
 DROP TABLE IF EXISTS `user_token`;
@@ -363,9 +376,4 @@ CREATE TABLE `user_token` (
   `create_time` datetime DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user_token
--- ----------------------------
-INSERT INTO `user_token` VALUES ('9', 'test_user', 'dd7863e5-eac9-41d4-bf67-b846f3fa8a90', 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZDc4NjNlNS1lYWM5LTQxZDQtYmY2Ny1iODQ2ZjNmYThhOTAiLCJpYXQiOjE1NDUzOTU5MjYsInN1YiI6ImFjdGl2aXR5IiwiaXNzIjoiMjk1Mjg3NzY1QHFxLmNvbSIsImV4cCI6MTU0NTQwMzEyNn0.JugmLEKhHBNkK_PmynWpPYQwVT5W5zfR2eW0KbIkAoE', '0', '2018-12-21 20:40:46', '2018-11-07 13:27:18', '2018-12-21 12:38:45');
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;

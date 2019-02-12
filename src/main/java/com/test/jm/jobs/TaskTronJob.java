@@ -21,7 +21,6 @@ public class TaskTronJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-        log.info("{} {}", LocalDateTime.now(),TaskTronJob.class.getName());
         JobDetail detail = jobExecutionContext.getJobDetail();
         JobDataMap jobDataMap = detail.getJobDataMap();
         String taskid = String.valueOf(jobDataMap.get("taskid"));

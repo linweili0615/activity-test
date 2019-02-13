@@ -72,11 +72,17 @@ public class LoginController {
         try {
             Integer count = tokenService.addToken(tokenDTO, expirationdate);
             if(count > 0){
-                Cookie cookie = new Cookie("jm",token);
-                cookie.setPath("/");
+                Cookie jmcookie = new Cookie("jm",token);
+                jmcookie.setPath("/");
                 //设置Cookie的有效期为1天
-                cookie.setMaxAge(60*60*24*7);
-                response.addCookie(cookie);
+                jmcookie.setMaxAge(60*60*24*7);
+
+                Cookie uncookie = new Cookie("un",token);
+                uncookie.setPath("/");
+                //设置Cookie的有效期为1天
+                uncookie.setMaxAge(60*60*24*7);
+                response.addCookie(jmcookie);
+                response.addCookie(uncookie);
             }
             return new TokenResult(ResultType.LOGIN,"获取token成功",tokenDTO.getUser_id(),userInfo.getUsername(),token);
         } catch (Exception e) {

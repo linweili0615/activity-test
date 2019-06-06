@@ -3,7 +3,7 @@ package com.test.jm.service;
 import com.test.jm.config.DataSource;
 import com.test.jm.dao.SlaveDao;
 import com.test.jm.dto.Person;
-import org.bouncycastle.cms.PasswordRecipientId;
+//import org.bouncycastle.cms.PasswordRecipientId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

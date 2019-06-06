@@ -9,7 +9,7 @@ import com.test.jm.dto.TaskExtendDTO;
 import com.test.jm.keys.RequestType;
 import com.test.jm.keys.TaskType;
 import com.test.jm.util.*;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.omg.CORBA.OBJ_ADAPTER;
 import org.slf4j.LoggerFactory;

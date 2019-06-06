@@ -7,7 +7,7 @@ import com.test.jm.dto.CaseDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.CaseService;
 import com.test.jm.util.CommonUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

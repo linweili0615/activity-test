@@ -7,7 +7,7 @@ import com.test.jm.dto.TaskJob;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.TaskJobService;
 import com.test.jm.service.TaskService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

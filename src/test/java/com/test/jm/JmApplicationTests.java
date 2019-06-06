@@ -63,7 +63,7 @@ public class JmApplicationTests {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         userInfoDTO.setId(UUID.randomUUID().toString());
         userInfoDTO.setUsername("test_user");
-        userInfoDTO.setTelno("15866660001");
+        userInfoDTO.setTelno("18800000000");
         userInfoDTO.setPwd(Md5Util.encoder("123456a"));
         Integer status = userInfoService.addUserInfo(userInfoDTO);
         System.out.println("status:" + status);

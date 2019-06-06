@@ -8,7 +8,7 @@ import com.test.jm.domain.Result;
 import com.test.jm.dto.ProjectDTO;
 import com.test.jm.keys.ResultType;
 import com.test.jm.service.ProjectService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

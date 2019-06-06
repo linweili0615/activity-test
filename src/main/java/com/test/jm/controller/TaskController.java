@@ -14,7 +14,7 @@ import com.test.jm.service.TaskJobService;
 import com.test.jm.service.TaskService;
 import com.test.jm.util.RedisUtil;
 import com.test.jm.util.UserThreadLocal;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,13 +15,13 @@ spring:
     master:
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://10.100.99.164:3306/jm?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+      jdbc-url: jdbc:mysql://192.168.6.30:3308/jm?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
       username: root
       password: 123456a
     slave:
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://10.100.99.164:3306/test?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+      jdbc-url: jdbc:mysql://192.168.6.30:3308/test?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
       username: root
       password: 123456a
 test:
@@ -32,12 +32,12 @@ pagehelper:
   support-methods-arguments: true
   params: count=countSql
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: false
-    serviceUrl:
-      defaultZone: http://10.100.14.107:21111/eureka/
-  instance:
-    ip-address: 10.100.97.31
-    prefer-ip-address: true
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: false
+#    serviceUrl:
+#      defaultZone: http://10.100.14.107:21111/eureka/
+#  instance:
+#    ip-address: 10.100.97.31
+#    prefer-ip-address: true

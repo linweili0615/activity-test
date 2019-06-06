@@ -18,7 +18,7 @@ import com.test.jm.service.CaseService;
 import com.test.jm.service.RequestService;
 import com.test.jm.util.LogUtil;
 import com.test.jm.util.UserThreadLocal;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

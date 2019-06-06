@@ -10,7 +10,7 @@ import com.test.jm.service.UserInfoService;
 import com.test.jm.util.CookieUtils;
 import com.test.jm.util.Md5Util;
 import com.test.jm.util.TokenUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
